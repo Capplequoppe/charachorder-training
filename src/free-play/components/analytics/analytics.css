@@ -1,0 +1,739 @@
+/**
+ * Analytics Dashboard Styles
+ *
+ * Comprehensive styles for the analytics dashboard and all sub-components.
+ */
+
+/* ==================== Dashboard Layout ==================== */
+
+.analytics-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  color: #e0e0e0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.export-button {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.time-range-selector {
+  display: flex;
+  gap: 4px;
+  background: #121212;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.time-range-selector button {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #888;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.time-range-selector button:hover {
+  color: #fff;
+  background: #2a2a2a;
+}
+
+.time-range-selector button.active {
+  color: #fff;
+  background: #3498db;
+}
+
+/* ==================== Overview Cards ==================== */
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.overview-card {
+  background: #121212;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-value-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.card-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.trend-icon {
+  font-size: 10px;
+}
+
+.trend-icon.up {
+  color: #2ecc71;
+}
+
+.trend-icon.down {
+  color: #e74c3c;
+}
+
+.trend-icon.neutral {
+  color: #888;
+}
+
+.trend-positive {
+  color: #2ecc71;
+}
+
+.trend-negative {
+  color: #e74c3c;
+}
+
+.trend-neutral {
+  color: #888;
+}
+
+.change-percent {
+  font-size: 11px;
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: #666;
+}
+
+/* ==================== Section Styles ==================== */
+
+.chart-section,
+.skills-section,
+.trouble-section,
+.calendar-section,
+.insights-section {
+  background: #121212;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-section h2,
+.skills-section h2,
+.trouble-section h2,
+.calendar-section h2,
+.insights-section h2 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ==================== Progress Chart ==================== */
+
+.progress-chart {
+  position: relative;
+}
+
+.progress-chart canvas {
+  width: 100%;
+  height: 250px;
+  display: block;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #888;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.color-dot.accuracy {
+  background: #3498db;
+}
+
+.color-dot.wpm {
+  background: #2ecc71;
+}
+
+.color-dot.items {
+  background: #f1c40f;
+}
+
+/* ==================== Skills Section ==================== */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skill-summary h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+}
+
+.skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.skill-list li {
+  padding: 8px 12px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.skill-list.strong li {
+  border-left: 3px solid #2ecc71;
+}
+
+.skill-list.weak li {
+  border-left: 3px solid #e74c3c;
+}
+
+/* ==================== Finger Heatmap ==================== */
+
+.finger-heatmap h3 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+}
+
+.hands-container {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hand-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.fingers {
+  display: flex;
+  gap: 6px;
+}
+
+.finger-cell {
+  width: 40px;
+  height: 50px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+
+.finger-cell:hover {
+  transform: scale(1.05);
+}
+
+.finger-cell.no-data {
+  opacity: 0.5;
+}
+
+.finger-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.finger-accuracy {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #666;
+}
+
+.heatmap-legend .gradient {
+  width: 100px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, hsl(0, 70%, 45%), hsl(60, 70%, 45%), hsl(120, 70%, 45%));
+}
+
+/* ==================== Trouble Items ==================== */
+
+.trouble-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trouble-items.empty {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-state {
+  color: #666;
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+  color: #2ecc71;
+}
+
+.empty-state p {
+  margin: 0 0 8px 0;
+}
+
+.empty-hint {
+  font-size: 13px;
+  color: #555;
+}
+
+.trouble-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #fff;
+}
+
+.item-type {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.item-stats {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.item-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.item-stats .value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.item-stats .label {
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.trend-mini {
+  opacity: 0.7;
+}
+
+.practice-button {
+  padding: 8px 16px;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.practice-button:hover {
+  background: #2980b9;
+}
+
+/* ==================== Calendar Heatmap ==================== */
+
+.calendar-heatmap {
+  overflow-x: auto;
+}
+
+.month-labels {
+  display: grid;
+  grid-template-columns: 30px repeat(53, 1fr);
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #666;
+}
+
+.month-label {
+  padding-left: 4px;
+}
+
+.calendar-body {
+  display: flex;
+  gap: 4px;
+}
+
+.day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: #666;
+}
+
+.day-labels span {
+  height: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.calendar-grid {
+  display: flex;
+  gap: 2px;
+}
+
+.calendar-week {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.day-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #2a2a2a;
+  cursor: default;
+}
+
+.day-cell.today {
+  outline: 2px solid #3498db;
+  outline-offset: 1px;
+}
+
+.day-cell.intensity-0 {
+  background: #2a2a2a;
+}
+
+.day-cell.intensity-1 {
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.day-cell.intensity-2 {
+  background: rgba(46, 204, 113, 0.4);
+}
+
+.day-cell.intensity-3 {
+  background: rgba(46, 204, 113, 0.6);
+}
+
+.day-cell.intensity-4 {
+  background: rgba(46, 204, 113, 0.9);
+}
+
+.calendar-heatmap .heatmap-legend {
+  margin-top: 12px;
+}
+
+.calendar-heatmap .heatmap-legend .day-cell {
+  width: 12px;
+  height: 12px;
+}
+
+/* ==================== Insights List ==================== */
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.insights-list.empty {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.insights-section h3,
+.recommendations-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+}
+
+.insights-grid,
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.insight-card {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 16px;
+  border-left: 4px solid #888;
+}
+
+.insight-card.achievement {
+  border-left-color: #f1c40f;
+}
+
+.insight-card.improvement {
+  border-left-color: #2ecc71;
+}
+
+.insight-card.warning {
+  border-left-color: #e74c3c;
+}
+
+.insight-card.tip {
+  border-left-color: #3498db;
+}
+
+.insight-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.insight-icon {
+  font-size: 18px;
+}
+
+.insight-title {
+  font-weight: 600;
+  color: #fff;
+}
+
+.insight-message {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.4;
+}
+
+.insight-action {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid #888;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.insight-action:hover {
+  background: #3498db;
+  border-color: #3498db;
+}
+
+.recommendation-card {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.recommendation-title {
+  font-weight: 600;
+  color: #fff;
+}
+
+.priority-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.recommendation-description {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.4;
+}
+
+.recommendation-reason {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.recommendation-action {
+  padding: 8px 16px;
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.recommendation-action:hover {
+  background: #27ae60;
+}
+
+/* ==================== Responsive Adjustments ==================== */
+
+@media (max-width: 600px) {
+  .analytics-dashboard {
+    padding: 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .overview-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-value {
+    font-size: 22px;
+  }
+
+  .hands-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .trouble-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .insights-grid,
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}

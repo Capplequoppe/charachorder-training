@@ -1,0 +1,1327 @@
+/**
+ * Gamification Component Styles
+ *
+ * Styles for combo system, achievements, and reward effects.
+ */
+
+/* ==================== Screen Effects ==================== */
+
+@keyframes screen-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes screen-shake-light {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+@keyframes screen-shake-heavy {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  10% { transform: translateX(-8px) translateY(-2px); }
+  30% { transform: translateX(8px) translateY(2px); }
+  50% { transform: translateX(-6px) translateY(-1px); }
+  70% { transform: translateX(6px) translateY(1px); }
+  90% { transform: translateX(-3px); }
+}
+
+body.screen-shake {
+  animation: screen-shake 0.2s ease-in-out;
+}
+
+body.screen-shake-light {
+  animation: screen-shake-light 0.1s ease-in-out;
+}
+
+body.screen-shake-heavy {
+  animation: screen-shake-heavy 0.3s ease-in-out;
+}
+
+body.streak-break-flash::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(231, 76, 60, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+  animation: flash-out 0.3s ease-out forwards;
+}
+
+@keyframes flash-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ==================== Combo Display ==================== */
+
+.combo-display {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  pointer-events: none;
+}
+
+.combo-display.top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.combo-display.top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.combo-display.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.combo-display.bottom {
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.combo-display.compact {
+  padding: 0.5rem;
+}
+
+/* ==================== Streak Counter ==================== */
+
+.streak-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.streak-counter .count {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.combo-display.compact .streak-counter .count {
+  font-size: 2rem;
+}
+
+.streak-counter .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.streak-counter.level-up {
+  animation: combo-pulse 0.5s ease-out;
+}
+
+@keyframes combo-pulse {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.5); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ==================== Tier Name ==================== */
+
+.tier-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 10px currentColor;
+}
+
+.combo-display.compact .tier-name {
+  font-size: 0.9rem;
+}
+
+.tier-name.pop-in {
+  animation: tier-pop-in 0.3s ease-out;
+}
+
+@keyframes tier-pop-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==================== Combo Progress ==================== */
+
+.combo-progress {
+  width: 120px;
+  margin-top: 0.5rem;
+}
+
+.combo-progress .progress-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.combo-progress .progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease-out;
+}
+
+.combo-progress .progress-label {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+/* ==================== Score Multiplier ==================== */
+
+.score-multiplier {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+/* ==================== Broken Streak ==================== */
+
+.streak-broken {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #e74c3c;
+  animation: fade-out-up 1.5s ease-out forwards;
+}
+
+.streak-broken .broken-count {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.streak-broken .broken-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+/* ==================== Combo Inline ==================== */
+
+.combo-inline {
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+/* ==================== Combo Meter ==================== */
+
+.combo-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.meter-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.meter-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #888);
+}
+
+.meter-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.meter-best {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  margin-left: auto;
+}
+
+.meter-bar {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease-out, background-color 0.3s ease;
+}
+
+.tier-marker {
+  position: absolute;
+  top: -4px;
+  transform: translateX(-50%);
+}
+
+.tier-marker .marker-label {
+  font-size: 0.6rem;
+  color: var(--text-muted, #888);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.meter-tier-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ==================== Particle Canvas ==================== */
+
+.combo-particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ==================== Glow Overlay ==================== */
+
+.combo-glow-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  mix-blend-mode: overlay;
+}
+
+/* ==================== Achievement Toast ==================== */
+
+.achievement-toast {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  animation: toast-in 0.5s ease-out, toast-out 0.5s ease-in 3.5s forwards;
+}
+
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px);
+  }
+}
+
+.achievement-toast .toast-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffd700;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-toast .toast-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-toast .toast-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+}
+
+.achievement-toast .toast-description {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #aaa);
+  margin-top: 0.25rem;
+}
+
+.achievement-toast .toast-xp {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4ade80;
+}
+
+/* ==================== Fire Effect (High Combo) ==================== */
+
+@keyframes fire-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px #ff6b35) drop-shadow(0 0 20px #ff4500);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px #ff6b35) drop-shadow(0 0 30px #ff4500);
+  }
+}
+
+.on-fire {
+  animation: fire-glow 0.5s ease-in-out infinite;
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+  .combo-display {
+    padding: 0.75rem;
+  }
+
+  .streak-counter .count {
+    font-size: 2.5rem;
+  }
+
+  .tier-name {
+    font-size: 1rem;
+  }
+
+  .combo-progress {
+    width: 100px;
+  }
+}
+
+/* ==================== Achievement Notification ==================== */
+
+.achievement-notification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.98));
+  border: 2px solid;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: notification-slide-in 0.4s ease-out;
+  overflow: hidden;
+}
+
+.achievement-notification.exiting {
+  animation: notification-slide-out 0.3s ease-in forwards;
+}
+
+@keyframes notification-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes notification-slide-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.9);
+  }
+}
+
+.notification-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  animation: glow-pulse 1s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.notification-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tier-color, #ffd700);
+  margin-bottom: 0.25rem;
+}
+
+.notification-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.notification-description {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #aaa);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-reward {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: #4ade80;
+  margin-top: 0.35rem;
+}
+
+.notification-xp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.notification-xp .xp-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.notification-xp .xp-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted, #888);
+  text-transform: uppercase;
+}
+
+.notification-dismiss {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.notification-dismiss:hover {
+  opacity: 1;
+}
+
+/* Achievement Queue */
+.achievement-queue {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.queue-indicator {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+/* ==================== Achievement Card ==================== */
+
+.achievement-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.achievement-card:hover {
+  background: rgba(40, 40, 40, 0.95);
+  border-color: var(--tier-color, #888);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-card.unlocked {
+  border-color: var(--tier-color, #ffd700);
+}
+
+.achievement-card.locked {
+  opacity: 0.7;
+}
+
+.achievement-card.compact {
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.card-icon-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.card-icon {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.achievement-card.compact .card-icon {
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+}
+
+.achievement-card.locked .card-icon {
+  filter: grayscale(0.8);
+}
+
+.unlocked-check {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tier-color, #4ade80);
+  color: #000;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.15rem;
+}
+
+.achievement-card.compact .card-name {
+  font-size: 0.85rem;
+}
+
+.card-description {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #aaa);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Card Progress */
+.card-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.card-progress .progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.card-progress .progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.card-progress .progress-text {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  min-width: 32px;
+  text-align: right;
+}
+
+.card-unlock-date {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  margin-top: 0.25rem;
+}
+
+.card-tier {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.35rem;
+  border-radius: 3px;
+  color: #000;
+}
+
+.card-reward-indicator {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* ==================== Achievement Modal ==================== */
+
+.achievement-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002;
+  padding: 1rem;
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.achievement-modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(180deg, rgba(40, 40, 40, 0.98), rgba(25, 25, 25, 0.98));
+  border: 2px solid var(--tier-color, #888);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  animation: modal-pop-in 0.3s ease-out;
+}
+
+@keyframes modal-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--text-primary, #fff);
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-icon {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-tier {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.modal-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.modal-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #aaa);
+  margin: 0 0 1.5rem;
+}
+
+/* Modal Progress */
+.modal-progress {
+  margin-bottom: 1.5rem;
+}
+
+.modal-progress .progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.modal-progress .progress-bar.large {
+  height: 10px;
+  border-radius: 5px;
+}
+
+.modal-progress .progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.modal-progress .progress-detail {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  margin-top: 0.5rem;
+}
+
+.modal-unlock-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #4ade80;
+}
+
+.modal-unlock-info .unlock-check {
+  font-size: 1.25rem;
+}
+
+/* Modal Reward */
+.modal-reward {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.modal-reward.locked {
+  opacity: 0.5;
+}
+
+.modal-reward .reward-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #888);
+  margin-bottom: 0.5rem;
+}
+
+.modal-reward .reward-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.modal-reward .reward-type {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  text-transform: capitalize;
+}
+
+.modal-xp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 1.1rem;
+}
+
+.modal-xp .xp-icon {
+  color: #ffd700;
+}
+
+.modal-xp .xp-value {
+  font-weight: 700;
+  color: #4ade80;
+}
+
+/* ==================== Achievement Gallery ==================== */
+
+.achievement-gallery {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-primary, #121212);
+}
+
+.gallery-header {
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.gallery-title .title-icon {
+  font-size: 2rem;
+}
+
+.gallery-title h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.gallery-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  font-size: 1.75rem;
+  cursor: pointer;
+}
+
+.gallery-stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.stat-item .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stat-item .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+}
+
+/* Progress Ring */
+.progress-ring .ring-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.circular-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 3;
+}
+
+.circle {
+  fill: none;
+  stroke: #4ade80;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dasharray 0.5s ease;
+}
+
+.ring-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Gallery Tabs */
+.gallery-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-secondary, #aaa);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-button.active {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+.tab-button .tab-icon {
+  font-size: 1rem;
+}
+
+.tab-button .tab-count {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+/* Gallery Filters */
+.gallery-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #aaa);
+  cursor: pointer;
+}
+
+.filter-toggle input {
+  accent-color: #4ade80;
+}
+
+.filter-count {
+  font-size: 0.8rem;
+  color: var(--text-muted, #888);
+}
+
+/* Achievement Grid */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.no-achievements {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--text-muted, #888);
+}
+
+.no-achievements-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ==================== Achievement Widget ==================== */
+
+.achievement-widget {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.widget-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.widget-count {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+}
+
+.widget-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.widget-view-all {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 6px;
+  color: #4ade80;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.widget-view-all:hover {
+  background: rgba(74, 222, 128, 0.2);
+}
+
+.widget-xp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #4ade80;
+  font-weight: 600;
+}
+
+/* ==================== Recent Unlocks ==================== */
+
+.recent-unlocks {
+  padding: 0.75rem;
+}
+
+.recent-unlocks h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary, #aaa);
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.recent-item .recent-icon {
+  font-size: 1.1rem;
+}
+
+.recent-view-all {
+  background: none;
+  border: none;
+  color: #4ade80;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+.recent-view-all:hover {
+  text-decoration: underline;
+}
+
+/* ==================== Achievement Badge Display ==================== */
+
+.achievement-badge-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.achievement-badge-display.size-small {
+  padding: 0.15rem 0.35rem;
+}
+
+.achievement-badge-display.size-small .badge-icon {
+  font-size: 0.9rem;
+}
+
+.achievement-badge-display.size-medium .badge-icon {
+  font-size: 1.1rem;
+}
+
+.achievement-badge-display.size-large .badge-icon {
+  font-size: 1.5rem;
+}
+
+.achievement-badge-display.size-large {
+  padding: 0.5rem 0.75rem;
+}
+
+.badge-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ==================== Responsive Achievements ==================== */
+
+@media (max-width: 768px) {
+  .achievement-notification {
+    min-width: 280px;
+    padding: 0.75rem 1rem;
+  }
+
+  .notification-icon {
+    font-size: 2rem;
+  }
+
+  .achievement-queue {
+    top: 0.5rem;
+    right: 0.5rem;
+    left: 0.5rem;
+    align-items: stretch;
+  }
+
+  .gallery-header {
+    padding: 1rem;
+  }
+
+  .gallery-stats {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .gallery-tabs {
+    padding: 0.75rem;
+    gap: 0.35rem;
+  }
+
+  .tab-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .achievement-grid {
+    grid-template-columns: 1fr;
+  }
+}

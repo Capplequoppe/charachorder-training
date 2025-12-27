@@ -1,0 +1,605 @@
+/**
+ * Songs Mode Styles
+ *
+ * Styling for rhythm-based song gameplay components.
+ */
+
+/* ==================== Song Selector ==================== */
+
+.song-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.song-selector__header {
+  text-align: center;
+}
+
+.song-selector__title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #ffffff);
+  margin-bottom: 0.5rem;
+}
+
+.song-selector__subtitle {
+  color: var(--color-text-secondary, #888);
+  font-size: 0.9rem;
+}
+
+.song-selector__filters {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.song-selector__filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border, #333);
+  background: var(--color-bg-secondary, #1a1a2e);
+  color: var(--color-text-primary, #fff);
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.song-selector__filter-btn:hover {
+  background: var(--color-bg-tertiary, #2a2a4e);
+}
+
+.song-selector__filter-btn--active {
+  background: var(--color-primary, #4a90d9);
+  border-color: var(--color-primary, #4a90d9);
+}
+
+.song-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.song-card {
+  background: var(--color-bg-secondary, #1a1a2e);
+  border: 1px solid var(--color-border, #333);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.song-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary, #4a90d9);
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.2);
+}
+
+.song-card__title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #fff);
+  margin-bottom: 0.25rem;
+}
+
+.song-card__artist {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #888);
+  margin-bottom: 0.75rem;
+}
+
+.song-card__meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.song-card__bpm,
+.song-card__duration {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary, #666);
+}
+
+.song-card__difficulty {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.song-card__difficulty--beginner {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.song-card__difficulty--intermediate {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.song-card__difficulty--advanced {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+}
+
+.song-card__description {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #888);
+  line-height: 1.4;
+}
+
+/* ==================== Song Game ==================== */
+
+.song-game {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
+  background: var(--color-bg-primary, #0a0a1a);
+  position: relative;
+  overflow: hidden;
+}
+
+.song-game__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-bg-secondary, #1a1a2e);
+  border-bottom: 1px solid var(--color-border, #333);
+}
+
+.song-game__title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #fff);
+}
+
+.song-game__score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary, #4a90d9);
+}
+
+.song-game__combo {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #888);
+}
+
+.song-game__combo--active {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.song-game__controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.song-game__btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border, #333);
+  background: var(--color-bg-tertiary, #2a2a4e);
+  color: var(--color-text-primary, #fff);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.song-game__btn:hover {
+  background: var(--color-primary, #4a90d9);
+  border-color: var(--color-primary, #4a90d9);
+}
+
+/* ==================== Rhythm Display ==================== */
+
+.rhythm-display {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+}
+
+.rhythm-display__lane {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(
+    to right,
+    rgba(74, 144, 217, 0.1) 0%,
+    rgba(74, 144, 217, 0.2) 45%,
+    rgba(74, 144, 217, 0.3) 50%,
+    rgba(74, 144, 217, 0.2) 55%,
+    rgba(74, 144, 217, 0.1) 100%
+  );
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.rhythm-display__hit-zone {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 100%;
+  background: rgba(74, 144, 217, 0.15);
+  border-left: 2px solid var(--color-primary, #4a90d9);
+  border-right: 2px solid var(--color-primary, #4a90d9);
+}
+
+.rhythm-display__words-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-bg-secondary, #1a1a2e);
+  border: 2px solid var(--color-border, #333);
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #fff);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  min-width: 100px;
+  text-align: center;
+}
+
+.word-card--current {
+  background: var(--color-primary, #4a90d9);
+  border-color: var(--color-primary, #4a90d9);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(74, 144, 217, 0.5);
+}
+
+.word-card--typed {
+  opacity: 0.3;
+  transform: scale(0.9);
+}
+
+/* Root-based coloring */
+.word-card[data-root="0"] { border-color: #8b5cf6; } /* E - Purple */
+.word-card[data-root="3"] { border-color: #10b981; } /* G - Green */
+.word-card[data-root="5"] { border-color: #f59e0b; } /* A - Amber */
+.word-card[data-root="7"] { border-color: #ef4444; } /* B - Red */
+.word-card[data-root="10"] { border-color: #3b82f6; } /* D - Blue */
+
+/* ==================== Beat Indicator ==================== */
+
+.beat-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.beat-indicator__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-bg-tertiary, #2a2a4e);
+  border: 2px solid var(--color-border, #333);
+  transition: all 0.1s ease;
+}
+
+.beat-indicator__dot--active {
+  background: var(--color-primary, #4a90d9);
+  border-color: var(--color-primary, #4a90d9);
+  box-shadow: 0 0 10px rgba(74, 144, 217, 0.5);
+  transform: scale(1.2);
+}
+
+.beat-indicator__dot--downbeat {
+  width: 24px;
+  height: 24px;
+}
+
+/* ==================== Input Area ==================== */
+
+.song-game__input-area {
+  padding: 1.5rem;
+  background: var(--color-bg-secondary, #1a1a2e);
+  border-top: 1px solid var(--color-border, #333);
+}
+
+.song-game__input {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  background: var(--color-bg-primary, #0a0a1a);
+  border: 2px solid var(--color-border, #333);
+  border-radius: 0.5rem;
+  color: var(--color-text-primary, #fff);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.song-game__input:focus {
+  border-color: var(--color-primary, #4a90d9);
+}
+
+/* ==================== Timing Feedback ==================== */
+
+.timing-feedback {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.timing-feedback__text {
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  animation: timing-pop 0.5s ease-out forwards;
+}
+
+.timing-feedback__text--perfect {
+  color: #ffd700;
+}
+
+.timing-feedback__text--good {
+  color: #4caf50;
+}
+
+.timing-feedback__text--early {
+  color: #2196f3;
+}
+
+.timing-feedback__text--late {
+  color: #ff9800;
+}
+
+.timing-feedback__text--miss {
+  color: #f44336;
+}
+
+@keyframes timing-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) translateY(-30px);
+  }
+}
+
+/* ==================== Countdown ==================== */
+
+.song-game__countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  font-weight: bold;
+  color: var(--color-primary, #4a90d9);
+  text-shadow: 0 0 30px rgba(74, 144, 217, 0.5);
+  animation: countdown-pulse 1s ease-in-out;
+}
+
+@keyframes countdown-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* ==================== Song Results ==================== */
+
+.song-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 500px;
+  text-align: center;
+}
+
+.song-results__title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #fff);
+  margin-bottom: 0.5rem;
+}
+
+.song-results__song-name {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary, #888);
+  margin-bottom: 2rem;
+}
+
+.song-results__grade {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.song-results__grade--S { color: #ffd700; }
+.song-results__grade--A { color: #4caf50; }
+.song-results__grade--B { color: #8bc34a; }
+.song-results__grade--C { color: #ffc107; }
+.song-results__grade--D { color: #ff9800; }
+.song-results__grade--F { color: #f44336; }
+
+.song-results__score {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-primary, #4a90d9);
+  margin-bottom: 2rem;
+}
+
+.song-results__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.song-results__stat {
+  background: var(--color-bg-secondary, #1a1a2e);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.song-results__stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text-primary, #fff);
+}
+
+.song-results__stat-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #888);
+  text-transform: uppercase;
+}
+
+.song-results__accuracy-breakdown {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.song-results__accuracy-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.song-results__accuracy-count {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.song-results__accuracy-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.song-results__accuracy-item--perfect .song-results__accuracy-count,
+.song-results__accuracy-item--perfect .song-results__accuracy-label {
+  color: #ffd700;
+}
+
+.song-results__accuracy-item--good .song-results__accuracy-count,
+.song-results__accuracy-item--good .song-results__accuracy-label {
+  color: #4caf50;
+}
+
+.song-results__accuracy-item--early .song-results__accuracy-count,
+.song-results__accuracy-item--early .song-results__accuracy-label {
+  color: #2196f3;
+}
+
+.song-results__accuracy-item--late .song-results__accuracy-count,
+.song-results__accuracy-item--late .song-results__accuracy-label {
+  color: #ff9800;
+}
+
+.song-results__accuracy-item--miss .song-results__accuracy-count,
+.song-results__accuracy-item--miss .song-results__accuracy-label {
+  color: #f44336;
+}
+
+.song-results__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.song-results__btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.song-results__btn--primary {
+  background: var(--color-primary, #4a90d9);
+  border: none;
+  color: white;
+}
+
+.song-results__btn--primary:hover {
+  background: #3a7fc9;
+}
+
+.song-results__btn--secondary {
+  background: transparent;
+  border: 1px solid var(--color-border, #333);
+  color: var(--color-text-primary, #fff);
+}
+
+.song-results__btn--secondary:hover {
+  background: var(--color-bg-secondary, #1a1a2e);
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+  .song-selector__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rhythm-display {
+    padding: 1rem;
+  }
+
+  .word-card {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    min-width: 80px;
+  }
+
+  .song-results__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .song-results__grade {
+    font-size: 4rem;
+  }
+}
