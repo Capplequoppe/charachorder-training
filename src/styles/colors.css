@@ -1,0 +1,182 @@
+/**
+ * Research-Based Color System
+ *
+ * CSS variables for finger colors based on pitch-color psychology:
+ * - High pitch -> cool/bright colors (blues, greens)
+ * - Low pitch -> warm/dark colors (reds, oranges)
+ *
+ * Each finger has:
+ * - Base color (--finger-{id})
+ * - Directional variations (--finger-{id}-{direction})
+ */
+
+:root {
+  /* ==================== LEFT HAND ==================== */
+
+  /* Left Thumb Outer - Dark Red (E3, 164.81 Hz - Low, foundational) */
+  --finger-l-thumb-outer: #8B0000;
+  --finger-l-thumb-outer-up: #A52A2A;
+  --finger-l-thumb-outer-down: #5C0000;
+  --finger-l-thumb-outer-left: #6B0000;
+  --finger-l-thumb-outer-right: #AB0000;
+  --finger-l-thumb-outer-press: #8B0000;
+
+  /* Left Thumb Inner - Burnt Orange (A3, 220 Hz - Mid-low) */
+  --finger-l-thumb-inner: #C04000;
+  --finger-l-thumb-inner-up: #D4652F;
+  --finger-l-thumb-inner-down: #8B2E00;
+  --finger-l-thumb-inner-left: #9A4000;
+  --finger-l-thumb-inner-right: #E04800;
+  --finger-l-thumb-inner-press: #C04000;
+
+  /* Left Ring - Soft Amber (A4, 440 Hz - Mid-high) */
+  --finger-l-ring: #FFB347;
+  --finger-l-ring-up: #FFCC80;
+  --finger-l-ring-down: #CC8F39;
+  --finger-l-ring-left: #E0A040;
+  --finger-l-ring-right: #FFC060;
+  --finger-l-ring-press: #FFB347;
+
+  /* Left Index - Sky Blue (B4, 493.88 Hz - High, lead finger) */
+  --finger-l-index: #4DA6FF;
+  --finger-l-index-up: #80C1FF;
+  --finger-l-index-down: #1A7ACC;
+  --finger-l-index-left: #4090E0;
+  --finger-l-index-right: #60B8FF;
+  --finger-l-index-press: #4DA6FF;
+
+  /* Left Middle - Lavender Blue (D5, 587.33 Hz - Highest left, airy) */
+  --finger-l-middle: #7F7FFF;
+  --finger-l-middle-up: #A5A5FF;
+  --finger-l-middle-down: #5959CC;
+  --finger-l-middle-left: #6B6BE0;
+  --finger-l-middle-right: #9393FF;
+  --finger-l-middle-press: #7F7FFF;
+
+  /* Left Pinky - Gray (No sound) */
+  --finger-l-pinky: #666666;
+  --finger-l-pinky-up: #808080;
+  --finger-l-pinky-down: #4D4D4D;
+  --finger-l-pinky-left: #595959;
+  --finger-l-pinky-right: #737373;
+  --finger-l-pinky-press: #666666;
+
+  /* ==================== RIGHT HAND ==================== */
+
+  /* Right Thumb Inner - Deep Orange (G3, 196 Hz - Warm, resonant) */
+  --finger-r-thumb-inner: #FF8C00;
+  --finger-r-thumb-inner-up: #FFA333;
+  --finger-r-thumb-inner-down: #CC7000;
+  --finger-r-thumb-inner-left: #E07800;
+  --finger-r-thumb-inner-right: #FFA000;
+  --finger-r-thumb-inner-press: #FF8C00;
+
+  /* Right Thumb Outer - Gold (E4, 329.63 Hz - Middle bright) */
+  --finger-r-thumb-outer: #FFD700;
+  --finger-r-thumb-outer-up: #FFE44D;
+  --finger-r-thumb-outer-down: #CCAC00;
+  --finger-r-thumb-outer-left: #E0BE00;
+  --finger-r-thumb-outer-right: #FFEC00;
+  --finger-r-thumb-outer-press: #FFD700;
+
+  /* Right Index - Forest Green (B3, 246.94 Hz - Most frequent) */
+  --finger-r-index: #228B22;
+  --finger-r-index-up: #3AA53A;
+  --finger-r-index-down: #1A6B1A;
+  --finger-r-index-left: #1E7A1E;
+  --finger-r-index-right: #289C28;
+  --finger-r-index-press: #228B22;
+
+  /* Right Middle - Bright Lime (G4, 392 Hz - Mid-high) */
+  --finger-r-middle: #32CD32;
+  --finger-r-middle-up: #5FDF5F;
+  --finger-r-middle-down: #28A428;
+  --finger-r-middle-left: #2DB82D;
+  --finger-r-middle-right: #3DE23D;
+  --finger-r-middle-press: #32CD32;
+
+  /* Right Ring - Green Yellow (D4, 293.66 Hz - Middle, consonant) */
+  --finger-r-ring: #ADFF2F;
+  --finger-r-ring-up: #C4FF66;
+  --finger-r-ring-down: #8ACC26;
+  --finger-r-ring-left: #98E02A;
+  --finger-r-ring-right: #BFFF4D;
+  --finger-r-ring-press: #ADFF2F;
+
+  /* Right Pinky - Gray (No sound) */
+  --finger-r-pinky: #666666;
+  --finger-r-pinky-up: #808080;
+  --finger-r-pinky-down: #4D4D4D;
+  --finger-r-pinky-left: #595959;
+  --finger-r-pinky-right: #737373;
+  --finger-r-pinky-press: #666666;
+
+  /* ==================== SEMANTIC COLORS ==================== */
+
+  --color-success: #2ECC71;
+  --color-success-light: #58D68D;
+  --color-success-dark: #27AE60;
+
+  --color-error: #E74C3C;
+  --color-error-light: #EC7063;
+  --color-error-dark: #C0392B;
+
+  --color-warning: #F1C40F;
+  --color-warning-light: #F4D03F;
+  --color-warning-dark: #D4AC0D;
+
+  --color-info: #3498DB;
+  --color-info-light: #5DADE2;
+  --color-info-dark: #2980B9;
+
+  /* ==================== UI COLORS ==================== */
+
+  --color-background: #1a1a2e;
+  --color-background-light: #16213e;
+  --color-background-dark: #0f0f1a;
+
+  --color-surface: #252540;
+  --color-surface-light: #2d2d4a;
+  --color-surface-dark: #1d1d35;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b0b0c0;
+  --color-text-muted: #6b6b80;
+
+  --color-border: #3a3a5a;
+  --color-border-light: #4a4a6a;
+
+  /* ==================== MASTERY LEVELS ==================== */
+
+  --mastery-new: #6b6b80;
+  --mastery-learning: #F1C40F;
+  --mastery-reviewing: #3498DB;
+  --mastery-mastered: #2ECC71;
+}
+
+/* ==================== DARK MODE (default) ==================== */
+
+[data-theme="dark"] {
+  --color-background: #1a1a2e;
+  --color-surface: #252540;
+  --color-text-primary: #ffffff;
+}
+
+/* ==================== LIGHT MODE ==================== */
+
+[data-theme="light"] {
+  --color-background: #f5f5f5;
+  --color-background-light: #ffffff;
+  --color-background-dark: #e0e0e0;
+
+  --color-surface: #ffffff;
+  --color-surface-light: #fafafa;
+  --color-surface-dark: #f0f0f0;
+
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #4a4a5a;
+  --color-text-muted: #8a8a9a;
+
+  --color-border: #d0d0e0;
+  --color-border-light: #e0e0f0;
+}

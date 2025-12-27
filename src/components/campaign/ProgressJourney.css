@@ -1,0 +1,382 @@
+/**
+ * Progress Journey Component Styles
+ */
+
+.progress-journey {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.progress-journey__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progress-journey__back-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-secondary, #a0aec0);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.progress-journey__back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary, #e2e8f0);
+}
+
+.progress-journey__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary, #e2e8f0);
+  margin: 0;
+}
+
+/* Overall Stats Section */
+.progress-journey__overall {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.progress-journey__stat-bar {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+}
+
+.progress-journey__stat-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-journey__stat-fill.mastered {
+  background: linear-gradient(90deg, #48bb78, #38a169);
+}
+
+.progress-journey__stat-fill.familiar {
+  background: linear-gradient(90deg, #4a9eff, #3d8ce6);
+}
+
+.progress-journey__stat-fill.learning {
+  background: linear-gradient(90deg, #ed8936, #dd6b20);
+}
+
+.progress-journey__stat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #a0aec0);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-item.mastered .legend-dot {
+  background: #48bb78;
+}
+
+.legend-item.familiar .legend-dot {
+  background: #4a9eff;
+}
+
+.legend-item.learning .legend-dot {
+  background: #ed8936;
+}
+
+.legend-item.new .legend-dot {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Stages Section */
+.progress-journey__stages {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.progress-journey__stage {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.progress-journey__stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-journey__stage-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #e2e8f0);
+  margin: 0;
+}
+
+.progress-journey__stage-progress {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #a0aec0);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+}
+
+/* Finger Section */
+.progress-journey__finger-section {
+  margin-bottom: 1.5rem;
+}
+
+.progress-journey__finger-section:last-child {
+  margin-bottom: 0;
+}
+
+.progress-journey__finger-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.progress-journey__finger-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.progress-journey__finger-mnemonic {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #a0aec0);
+  font-style: italic;
+}
+
+/* Character Grid */
+.progress-journey__char-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+}
+
+.progress-journey__char-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.progress-journey__char-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.progress-journey__char-card.mastered {
+  border-color: rgba(72, 187, 120, 0.5);
+  background: rgba(72, 187, 120, 0.08);
+}
+
+.progress-journey__char-card.familiar {
+  border-color: rgba(74, 158, 255, 0.5);
+  background: rgba(74, 158, 255, 0.08);
+}
+
+.progress-journey__char-card.learning {
+  border-color: rgba(237, 137, 54, 0.5);
+  background: rgba(237, 137, 54, 0.08);
+}
+
+.progress-journey__char-card.new {
+  border-color: rgba(255, 255, 255, 0.1);
+  opacity: 0.5;
+}
+
+.progress-journey__char {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.progress-journey__direction {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #a0aec0);
+  margin-top: 0.25rem;
+}
+
+.progress-journey__mastery {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.progress-journey__mastery.mastered {
+  color: #48bb78;
+  background: rgba(72, 187, 120, 0.15);
+}
+
+.progress-journey__mastery.familiar {
+  color: #4a9eff;
+  background: rgba(74, 158, 255, 0.15);
+}
+
+.progress-journey__mastery.learning {
+  color: #ed8936;
+  background: rgba(237, 137, 54, 0.15);
+}
+
+.progress-journey__mastery.new {
+  color: var(--text-secondary, #a0aec0);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-journey__accuracy {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a0aec0);
+  margin-top: 0.25rem;
+}
+
+.progress-journey__stats {
+  font-size: 0.7rem;
+  color: var(--text-secondary, #a0aec0);
+  margin-top: 0.25rem;
+}
+
+/* Progress bar towards next level */
+.progress-journey__level-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-journey__level-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-journey__level-bar.learning {
+  background: linear-gradient(90deg, #ed8936, #f6ad55);
+}
+
+.progress-journey__level-bar.familiar {
+  background: linear-gradient(90deg, #4a9eff, #63b3ed);
+}
+
+.progress-journey__level-bar.mastered {
+  background: linear-gradient(90deg, #48bb78, #68d391);
+}
+
+.progress-journey__next-hint {
+  font-size: 0.6rem;
+  color: var(--text-muted, #718096);
+  margin-top: 0.25rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .progress-journey {
+    padding: 1rem;
+  }
+
+  .progress-journey__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-journey__stage-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .progress-journey__char-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .progress-journey__char-card {
+    padding: 0.5rem;
+  }
+
+  .progress-journey__char {
+    font-size: 1.5rem;
+  }
+}
+
+/* Demote button for mastered items */
+.progress-journey__demote-btn {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: var(--text-secondary, #a0aec0);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.progress-journey__demote-btn:hover {
+  background: rgba(237, 137, 54, 0.2);
+  border-color: rgba(237, 137, 54, 0.5);
+  color: #ed8936;
+}
+
+/* Review time indicator */
+.progress-journey__review-time {
+  font-size: 0.6rem;
+  color: var(--text-muted, #718096);
+  margin-top: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+.progress-journey__review-time.due {
+  color: #ed8936;
+  background: rgba(237, 137, 54, 0.15);
+  font-style: normal;
+  font-weight: 500;
+}

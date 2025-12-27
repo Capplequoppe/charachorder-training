@@ -1,0 +1,196 @@
+/**
+ * Direction Feedback Animations
+ *
+ * Subtle animations that reinforce which direction was pressed.
+ * The animations move in the direction of the key press.
+ */
+
+/* ==================== Direction Pulse Animations ==================== */
+
+@keyframes direction-up-pulse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes direction-down-pulse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes direction-left-pulse {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+}
+
+@keyframes direction-right-pulse {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes direction-press-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ==================== Animation Classes ==================== */
+
+.direction-up.active,
+.direction-up.animate {
+  animation: direction-up-pulse 0.3s ease-out;
+}
+
+.direction-down.active,
+.direction-down.animate {
+  animation: direction-down-pulse 0.3s ease-out;
+}
+
+.direction-left.active,
+.direction-left.animate {
+  animation: direction-left-pulse 0.3s ease-out;
+}
+
+.direction-right.active,
+.direction-right.animate {
+  animation: direction-right-pulse 0.3s ease-out;
+}
+
+.direction-press.active,
+.direction-press.animate {
+  animation: direction-press-pulse 0.3s ease-out;
+}
+
+/* ==================== Glow Effect for Active State ==================== */
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+  }
+}
+
+.direction-indicator.active,
+.direction-cell.active {
+  animation: glow-pulse 0.5s ease-in-out;
+}
+
+/* ==================== Finger Press Animation ==================== */
+
+@keyframes finger-press {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.colored-finger.pressed {
+  animation: finger-press 0.15s ease-out;
+}
+
+/* ==================== Success Animation ==================== */
+
+@keyframes success-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+}
+
+.success-animation {
+  animation: success-bounce 0.4s ease-out;
+}
+
+/* ==================== Error Animation ==================== */
+
+@keyframes error-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+.error-animation {
+  animation: error-shake 0.3s ease-out;
+}
+
+/* ==================== Transition Utilities ==================== */
+
+.direction-transition {
+  transition: all 0.15s ease-out;
+}
+
+.color-transition {
+  transition: background-color 0.15s ease-out,
+              border-color 0.15s ease-out,
+              color 0.15s ease-out;
+}
+
+.transform-transition {
+  transition: transform 0.15s ease-out;
+}
+
+/* ==================== Hover Effects ==================== */
+
+.direction-indicator:hover:not(.active),
+.direction-cell:hover:not(.active) {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.colored-finger:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== Focus Styles (Accessibility) ==================== */
+
+.direction-indicator:focus-visible,
+.direction-cell:focus-visible,
+.colored-finger:focus-visible {
+  outline: 2px solid var(--color-info, #3498DB);
+  outline-offset: 2px;
+}

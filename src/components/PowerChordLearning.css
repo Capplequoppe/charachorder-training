@@ -1,0 +1,666 @@
+/**
+ * Power Chord Learning Styles
+ */
+
+.power-chord-learning {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  color: #888;
+  margin: 0 0 24px 0;
+  font-size: 1rem;
+}
+
+/* ==================== Filter Tabs ==================== */
+
+.hand-filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 10px 20px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-tab:hover {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+.filter-tab.active {
+  background: #4a9eff;
+  border-color: #4a9eff;
+  color: #fff;
+}
+
+/* ==================== Quick Practice Buttons ==================== */
+
+.quick-practice-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.quick-practice-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #2a4a6a, #1a3a5a);
+  border: 1px solid #4a9eff;
+  border-radius: 8px;
+  color: #4a9eff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-practice-btn:hover {
+  background: linear-gradient(135deg, #3a5a7a, #2a4a6a);
+  transform: translateY(-2px);
+}
+
+/* ==================== Survival Mode Section ==================== */
+
+.survival-mode-section {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(245, 101, 101, 0.05);
+  border: 1px solid rgba(245, 101, 101, 0.2);
+  border-radius: 12px;
+}
+
+.survival-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f56565;
+  margin: 0 0 8px 0;
+}
+
+.survival-section-desc {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0 0 16px 0;
+}
+
+.survival-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.survival-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f56565, #c53030);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.survival-btn:hover {
+  background: linear-gradient(135deg, #e53e3e, #9b2c2c);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+}
+
+/* ==================== Power Chord Grid ==================== */
+
+.power-chord-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.power-chord-card {
+  padding: 16px;
+  background: #121212;
+  border: 2px solid #333;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.power-chord-card:hover {
+  background: #222;
+  border-color: #444;
+  transform: translateY(-2px);
+}
+
+.power-chord-card.selected {
+  border-color: #4a9eff;
+  box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+}
+
+.power-chord-card.mastered {
+  border-color: #2ecc71;
+}
+
+.power-chord-card.familiar {
+  border-color: #f1c40f;
+}
+
+.power-chord-card.learning {
+  border-color: #3498db;
+}
+
+.chord-chars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chord-char {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.chord-plus {
+  font-size: 1.25rem;
+  color: #666;
+}
+
+.chord-color-bar {
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+}
+
+.chord-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.chord-rank {
+  color: #666;
+}
+
+.mastery-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.mastery-badge.new {
+  background: #333;
+  color: #888;
+}
+
+.mastery-badge.learning {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.mastery-badge.familiar {
+  background: rgba(241, 196, 15, 0.2);
+  color: #f1c40f;
+}
+
+.mastery-badge.mastered {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.chord-stats {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* ==================== Chord Detail Panel ==================== */
+
+.chord-detail-panel {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  background: #121212;
+  border: 1px solid #333;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #333;
+}
+
+.detail-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid #444;
+  border-radius: 50%;
+  color: #888;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+.detail-content {
+  padding: 20px;
+}
+
+.detail-fingers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.detail-plus {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.detail-color-preview {
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.detail-hand-type {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.detail-words h4 {
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.word-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.word-chip {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.word-chip.more {
+  background: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.detail-actions .btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detail-actions .btn.secondary {
+  background: #333;
+  border: 1px solid #444;
+  color: #fff;
+}
+
+.detail-actions .btn.secondary:hover {
+  background: #444;
+}
+
+.detail-actions .btn.primary {
+  background: #4a9eff;
+  border: 1px solid #4a9eff;
+  color: #fff;
+}
+
+.detail-actions .btn.primary:hover {
+  background: #3d8ce6;
+}
+
+/* ==================== Practice Mode ==================== */
+
+.power-chord-practice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 32px;
+}
+
+.back-btn {
+  padding: 8px 16px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #aaa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: #444;
+  color: #fff;
+}
+
+.practice-progress {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.power-chord-practice h2 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 0 32px 0;
+}
+
+.practice-chord-display {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.practice-char {
+  font-size: 5rem;
+  font-weight: bold;
+  text-shadow: 0 4px 20px currentColor;
+}
+
+.practice-plus {
+  font-size: 2.5rem;
+  color: #666;
+}
+
+.practice-color-bar {
+  width: 200px;
+  height: 10px;
+  border-radius: 5px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px currentColor;
+}
+
+.practice-fingers {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.practice-dots {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.practice-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s;
+}
+
+.practice-dot.filled {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px currentColor;
+}
+
+.practice-count {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0 0 24px 0;
+}
+
+.power-chord-practice .chord-input {
+  width: 100%;
+  max-width: 350px;
+  padding: 16px 24px;
+  font-size: 1.25rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  outline: none;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+}
+
+.power-chord-practice .chord-input:focus {
+  border-color: #4a9eff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.practice-feedback {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.practice-feedback.correct {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.practice-feedback.incorrect {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.power-chord-practice.correct {
+  animation: successPulse 0.5s ease-out;
+}
+
+.power-chord-practice.incorrect {
+  animation: errorShake 0.3s ease-out;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.practice-hint {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+.practice-hint strong {
+  color: #fff;
+}
+
+.practice-hint.secondary {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 900px) {
+  .chord-detail-panel {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    top: auto;
+    transform: none;
+    width: auto;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .power-chord-learning {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .hand-filter-tabs {
+    flex-direction: column;
+  }
+
+  .filter-tab {
+    text-align: center;
+  }
+
+  .quick-practice-buttons {
+    flex-direction: column;
+  }
+
+  .quick-practice-btn {
+    text-align: center;
+  }
+
+  .power-chord-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .practice-char {
+    font-size: 3.5rem;
+  }
+
+  .practice-plus {
+    font-size: 2rem;
+  }
+}

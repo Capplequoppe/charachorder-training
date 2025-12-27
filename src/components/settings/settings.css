@@ -1,0 +1,533 @@
+/**
+ * Settings Component Styles
+ */
+
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.settings-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.75rem;
+  margin: 0 0 32px 0;
+  color: #fff;
+}
+
+.settings-icon {
+  font-size: 2rem;
+}
+
+.settings-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #888;
+  font-size: 1.125rem;
+}
+
+/* Sections */
+.settings-section {
+  background: #121212;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  margin: 0 0 20px 0;
+  color: #fff;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.section-icon {
+  font-size: 1.5rem;
+}
+
+/* Setting Items */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #222;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.setting-item.instrument-selection {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.setting-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.setting-name {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.setting-description {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #333;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.toggle-slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #666;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #4a9eff;
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(24px);
+  background-color: #fff;
+}
+
+.toggle-switch input:disabled + .toggle-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Volume Control */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.volume-icon {
+  font-size: 1.25rem;
+  color: #888;
+}
+
+.volume-slider {
+  width: 150px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #333;
+  border-radius: 3px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #4a9eff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #4a9eff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.volume-slider:disabled {
+  opacity: 0.5;
+}
+
+.preview-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #333;
+  border: 1px solid #444;
+  color: #4a9eff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-button:hover:not(:disabled) {
+  background: #444;
+  border-color: #4a9eff;
+}
+
+.preview-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Items Per Session Control */
+.items-per-session-control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.items-slider {
+  width: 120px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #333;
+  border-radius: 3px;
+  outline: none;
+}
+
+.items-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #4a9eff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.items-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.items-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #4a9eff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.items-count {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a9eff;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Instrument Grid */
+.instrument-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.instrument-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: #222;
+  border: 2px solid #333;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.instrument-card:hover:not(:disabled) {
+  background: #2a2a2a;
+  border-color: #444;
+  transform: translateY(-2px);
+}
+
+.instrument-card.selected {
+  background: #1a3a5c;
+  border-color: #4a9eff;
+}
+
+.instrument-card.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.instrument-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.instrument-icon {
+  font-size: 2rem;
+}
+
+.instrument-name {
+  font-size: 0.875rem;
+  color: #ccc;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.instrument-card.selected .instrument-name {
+  color: #fff;
+}
+
+.selected-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background: #4a9eff;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333;
+  border-top-color: #4a9eff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Info Box */
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #1a2a3a;
+  border: 1px solid #2a4a6a;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.info-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.info-text {
+  font-size: 0.875rem;
+  color: #8ab4f8;
+  line-height: 1.4;
+}
+
+/* Reset Button */
+.reset-button {
+  padding: 10px 24px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-button:hover {
+  background: #3a2020;
+  border-color: #ff6b6b;
+}
+
+/* Chapter Unlock Grid */
+.chapter-unlock-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.chapter-unlock-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.chapter-unlock-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chapter-unlock-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+  border-radius: 8px;
+}
+
+.chapter-unlock-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chapter-unlock-title {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.chapter-unlock-status {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.unlock-button {
+  padding: 8px 20px;
+  background: #4a9eff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.unlock-button:hover:not(:disabled) {
+  background: #3a8eef;
+  transform: translateY(-1px);
+}
+
+.unlock-button:disabled {
+  cursor: not-allowed;
+}
+
+.unlock-button.completed {
+  background: #2d5a2d;
+  color: #4ade80;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .settings-container {
+    padding: 16px;
+  }
+
+  .settings-title {
+    font-size: 1.5rem;
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .volume-control {
+    width: 100%;
+  }
+
+  .volume-slider {
+    flex: 1;
+  }
+
+  .instrument-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .instrument-card {
+    padding: 12px 8px;
+  }
+
+  .instrument-icon {
+    font-size: 1.5rem;
+  }
+
+  .instrument-name {
+    font-size: 0.75rem;
+  }
+
+  .chapter-unlock-item {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .chapter-unlock-info {
+    justify-content: flex-start;
+  }
+
+  .unlock-button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,96 @@
+/**
+ * Continue Button Styles
+ */
+
+.continue-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  margin-top: 2rem;
+  background: linear-gradient(180deg, transparent, rgba(72, 187, 120, 0.05));
+  border-top: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.continue-button-message {
+  font-size: 1.1rem;
+  color: #a0aec0;
+  margin: 0;
+  text-align: center;
+}
+
+.continue-button {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.continue-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+  background: linear-gradient(135deg, #68d391, #48bb78);
+}
+
+.continue-button:active {
+  transform: translateY(0);
+}
+
+.continue-button--final {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+  box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
+}
+
+.continue-button--final:hover {
+  box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
+  background: linear-gradient(135deg, #f6ad55, #ed8936);
+}
+
+.continue-button-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.continue-button-unlocks {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+}
+
+/* Animation to draw attention */
+@keyframes gentle-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(72, 187, 120, 0.5);
+  }
+}
+
+.continue-button {
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+.continue-button:hover {
+  animation: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .continue-button {
+    animation: none;
+    transition: none;
+  }
+
+  .continue-button:hover {
+    transform: none;
+  }
+}

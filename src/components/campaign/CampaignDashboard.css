@@ -1,0 +1,245 @@
+/**
+ * Campaign Dashboard Styles
+ */
+
+.campaign-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #121212;
+}
+
+/* Header */
+.campaign-dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.campaign-dashboard__title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.campaign-dashboard__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.campaign-dashboard__icon {
+  font-size: 1.75rem;
+}
+
+.campaign-dashboard__complete-badge {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #48bb78;
+  background: rgba(72, 187, 120, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.campaign-dashboard__mode-switch {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: #ed8936;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.campaign-dashboard__mode-switch:hover {
+  background: #dd6b20;
+}
+
+/* Settings button */
+.campaign-dashboard__settings-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.campaign-dashboard__settings-button:hover {
+  background: #444;
+  border-color: #555;
+}
+
+/* Settings panel */
+.campaign-dashboard__settings-panel {
+  padding: 1rem;
+}
+
+.campaign-dashboard__back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a9eff;
+  background: transparent;
+  border: 1px solid #4a9eff;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.campaign-dashboard__back-button:hover {
+  background: rgba(74, 158, 255, 0.1);
+}
+
+/* Layout */
+.campaign-dashboard__layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.campaign-dashboard__sidebar {
+  width: 320px;
+  min-width: 320px;
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+/* Main content */
+.campaign-dashboard__content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chapter header */
+.campaign-dashboard__chapter-header {
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.campaign-dashboard__chapter-number {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4a9eff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.campaign-dashboard__chapter-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.campaign-dashboard__chapter-description {
+  font-size: 0.9rem;
+  color: #a0aec0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.campaign-dashboard__revisiting-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ed8936;
+  background: rgba(237, 137, 54, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+/* Chapter content */
+.campaign-dashboard__chapter-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Welcome message */
+.campaign-dashboard__welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #a0aec0;
+}
+
+.campaign-dashboard__welcome h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+}
+
+.campaign-dashboard__welcome p {
+  margin: 0 0 0.5rem 0;
+}
+
+.campaign-dashboard__hint {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .campaign-dashboard__layout {
+    flex-direction: column;
+  }
+
+  .campaign-dashboard__sidebar {
+    width: 100%;
+    min-width: 100%;
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (max-width: 600px) {
+  .campaign-dashboard__header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .campaign-dashboard__title {
+    font-size: 1.25rem;
+  }
+
+  .campaign-dashboard__chapter-header {
+    padding: 1rem;
+  }
+
+  .campaign-dashboard__chapter-title {
+    font-size: 1.25rem;
+  }
+}
