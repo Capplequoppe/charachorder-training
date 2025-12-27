@@ -5,8 +5,9 @@
  * Displays mastery progress and available training options.
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ChapterMasteryProgress } from '../../campaign';
+import { useTips, TipTrigger } from '../../tips';
 import './training.css';
 
 /**
@@ -72,7 +73,21 @@ export function TrainingModeSelector({
   onBack,
   inCampaignMode = false,
 }: TrainingModeSelectorProps): React.ReactElement {
+  const { triggerTip } = useTips();
   const { itemsMastered, itemsFamiliar, totalItems, itemsLearned, itemsDueForReview, nextReviewDate, itemsReadyForBoss } = progress;
+
+  // Wrap mode selection to trigger tips
+  const handleModeSelect = useCallback((mode: TrainingMode) => {
+    // Trigger spaced repetition tip when user selects review mode
+    if (mode === 'review-due' || mode === 'review-all') {
+      triggerTip(TipTrigger.FIRST_REVIEW);
+    }
+    // Trigger boss intro tip when user selects boss mode
+    if (mode === 'boss') {
+      triggerTip(TipTrigger.BOSS_INTRO);
+    }
+    onSelectMode(mode);
+  }, [onSelectMode, triggerTip]);
   const masteryPercent = totalItems > 0 ? Math.round((itemsMastered / totalItems) * 100) : 0;
   const bossReadyPercent = totalItems > 0 ? Math.round((itemsReadyForBoss / totalItems) * 100) : 0;
   const allMastered = itemsMastered === totalItems;
@@ -139,7 +154,7 @@ export function TrainingModeSelector({
         {hasUnlearned && (
           <button
             className="mode-option learn"
-            onClick={() => onSelectMode('learn')}
+            onClick={() => handleModeSelect('learn')}
           >
             <span className="mode-icon">📚</span>
             <span className="mode-title">Learn More</span>
@@ -153,7 +168,7 @@ export function TrainingModeSelector({
         {(hasDueItems || hasScheduledReview) && (
           <button
             className={`mode-option review-due ${!hasDueItems ? 'scheduled' : ''}`}
-            onClick={() => hasDueItems && onSelectMode('review-due')}
+            onClick={() => hasDueItems && handleModeSelect('review-due')}
             disabled={!hasDueItems}
           >
             <span className="mode-icon">🔄</span>
@@ -171,7 +186,7 @@ export function TrainingModeSelector({
         {itemsLearned > 0 && (
           <button
             className="mode-option review-all"
-            onClick={() => onSelectMode('review-all')}
+            onClick={() => handleModeSelect('review-all')}
           >
             <span className="mode-icon">📝</span>
             <span className="mode-title">Review All</span>
@@ -184,7 +199,7 @@ export function TrainingModeSelector({
         {/* Boss Challenge - requires 75% mastered + rest familiar */}
         <button
           className={`mode-option boss ${!canChallengeBoss ? 'locked' : ''} ${bossDefeated ? 'defeated' : ''}`}
-          onClick={() => canChallengeBoss && onSelectMode('boss')}
+          onClick={() => canChallengeBoss && handleModeSelect('boss')}
           disabled={!canChallengeBoss}
         >
           <span className="mode-icon">{bossDefeated ? '🏆' : '👑'}</span>
@@ -203,7 +218,7 @@ export function TrainingModeSelector({
         {itemsMastered > 0 && (
           <button
             className="mode-option survival"
-            onClick={() => onSelectMode('survival')}
+            onClick={() => handleModeSelect('survival')}
           >
             <span className="mode-icon">⚔️</span>
             <span className="mode-title">Survival Mode</span>
@@ -217,7 +232,7 @@ export function TrainingModeSelector({
         {itemsLearned > 0 && (
           <button
             className="mode-option journey"
-            onClick={() => onSelectMode('journey')}
+            onClick={() => handleModeSelect('journey')}
           >
             <span className="mode-icon">🗺️</span>
             <span className="mode-title">Your Journey</span>

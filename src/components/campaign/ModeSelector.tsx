@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useTips, TipTrigger } from '../../tips';
 import './ModeSelector.css';
 
 interface ModeSelectorProps {
@@ -13,6 +14,16 @@ interface ModeSelectorProps {
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
+  const { triggerTip } = useTips();
+
+  const handleSelectCampaign = () => {
+    onSelectMode('campaign');
+    // Trigger introductory tip after a short delay to let the UI transition
+    setTimeout(() => {
+      triggerTip(TipTrigger.CAMPAIGN_START);
+    }, 300);
+  };
+
   return (
     <div className="mode-selector">
       <div className="mode-selector-header">
@@ -23,7 +34,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       <div className="mode-selector-cards">
         <button
           className="mode-card mode-card-campaign"
-          onClick={() => onSelectMode('campaign')}
+          onClick={handleSelectCampaign}
           aria-label="Start Campaign Mode - Guided learning journey"
         >
           <div className="mode-card-icon">🗺️</div>

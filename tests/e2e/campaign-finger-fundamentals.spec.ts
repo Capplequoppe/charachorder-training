@@ -11,6 +11,42 @@
 
 import { test, expect, Page } from '@playwright/test';
 
+/**
+ * Helper: Dismiss any visible tip modal
+ * Waits for the modal's event listeners to be registered (100ms delay in TipModal)
+ */
+async function dismissTipModal(page: Page) {
+  const tipModal = page.locator('.tip-modal-overlay');
+  if (await tipModal.isVisible({ timeout: 1000 }).catch(() => false)) {
+    // Wait for the modal's event listeners to be registered (TipModal has 100ms delay)
+    await page.waitForTimeout(200);
+    // Click the close button which is safest
+    const closeButton = page.locator('.tip-modal-close');
+    if (await closeButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await closeButton.click();
+      await page.waitForTimeout(300);
+    } else {
+      // Fallback to Escape key
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(300);
+    }
+  }
+}
+
+/**
+ * Helper: Dismiss all tip modals (loop until none remain)
+ */
+async function dismissAllTipModals(page: Page) {
+  for (let i = 0;i < 5;i++) {
+    await dismissTipModal(page);
+    // Check if modal is gone
+    const tipModal = page.locator('.tip-modal-overlay');
+    if (!(await tipModal.isVisible({ timeout: 300 }).catch(() => false))) {
+      break;
+    }
+  }
+}
+
 // Character mappings for Stage 1
 const LEFT_INDEX_CHARS = ['e', 'r'];
 const RIGHT_INDEX_CHARS = ['t', 'a'];
@@ -33,6 +69,9 @@ async function resetCampaign(page: Page) {
 async function startCampaignMode(page: Page) {
   // Click the Campaign Mode card
   await page.click('text=Campaign Mode');
+  await page.waitForTimeout(300);
+  // Dismiss any tip modals that appear
+  await dismissAllTipModals(page);
 }
 
 /**
@@ -41,21 +80,33 @@ async function startCampaignMode(page: Page) {
 async function startFingerFundamentals(page: Page) {
   // Click on Chapter 1 in the roadmap (should be auto-selected/unlocked)
   await page.click('text=Finger Fundamentals');
+  await page.waitForTimeout(300);
 
   // Click Learn More to start learning
   await page.click('text=Learn More');
+  await page.waitForTimeout(300);
+
+  // Dismiss any tip modals that appear
+  await dismissAllTipModals(page);
 }
 
 /**
  * Helper: Wait for the target character to be displayed and type it
+ * Checks for and dismisses any tip modals before typing
  */
 async function typeTargetChar(page: Page, expectedChar: string) {
+  // Check for any tip modal that might have appeared
+  await dismissAllTipModals(page);
+
   // Wait for the target char to appear in the prompt
   const targetCharLocator = page.locator('.finger-lesson__target-char');
   await expect(targetCharLocator).toContainText(expectedChar.toUpperCase(), { timeout: 5000 });
 
   // Small delay to ensure the component is ready for input
   await page.waitForTimeout(150);
+
+  // Check again right before typing (modal might have appeared during wait)
+  await dismissAllTipModals(page);
 
   // Type the character
   await page.keyboard.press(expectedChar);
@@ -67,54 +118,69 @@ async function typeTargetChar(page: Page, expectedChar: string) {
 /**
  * Helper: Read the current target character and type it
  * (used when we don't know the exact order of characters)
+ * Checks for and dismisses any tip modals before typing
  */
 async function typeCurrentTargetChar(page: Page) {
+  // Check for any tip modal that might have appeared
+  const tipModal = page.locator('.tip-modal-overlay');
+  if (await tipModal.isVisible({ timeout: 500 }).catch(() => false)) {
+    await dismissAllTipModals(page);
+  }
+
   const targetCharLocator = page.locator('.finger-lesson__target-char');
   await expect(targetCharLocator).toBeVisible({ timeout: 5000 });
+
+  // Click on the lesson container to ensure focus
+  await page.click('.finger-lesson').catch(() => { });
 
   // Get the current target character
   const charText = await targetCharLocator.textContent();
   const char = charText?.toLowerCase() || '';
 
   // Small delay to ensure the component is ready for input
-  await page.waitForTimeout(150);
+  await page.waitForTimeout(100);
 
   // Type the character
   await page.keyboard.press(char);
 
   // Wait for feedback to appear and clear
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(400);
 }
 
 /**
  * Helper: Complete a single finger lesson (intro → guided → quiz → complete)
- * Uses specific character order - use for tests that know the exact order
+ * Uses dynamic character detection since order may vary
  */
 async function completeFingerLesson(page: Page, fingerChars: string[]) {
+  await page.waitForTimeout(500);
+  // Dismiss any tip modals first
+  await dismissAllTipModals(page);
+
   // Wait for intro phase - "Start Practice" button should be visible
   await expect(page.locator('text=Start Practice')).toBeVisible({ timeout: 5000 });
 
   // Click Start Practice to begin guided phase
   await page.click('text=Start Practice');
+  await page.waitForTimeout(500);
+  // Dismiss any tip modals after clicking
+  await dismissAllTipModals(page);
 
   // Wait for guided phase to start
   await expect(page.locator('text=Guided Practice')).toBeVisible({ timeout: 5000 });
 
   // Guided phase: type each character GUIDED_CORRECT_PER_CHAR times
-  for (const char of fingerChars) {
-    for (let i = 0; i < GUIDED_CORRECT_PER_CHAR; i++) {
-      await typeTargetChar(page, char);
-    }
+  // Total attempts = charCount * GUIDED_CORRECT_PER_CHAR
+  const charCount = fingerChars.length;
+  for (let i = 0;i < charCount * GUIDED_CORRECT_PER_CHAR;i++) {
+    await typeCurrentTargetChar(page);
   }
 
   // Wait for quiz phase to start
   await expect(page.locator('.finger-lesson__phase-label:has-text("Quiz")')).toBeVisible({ timeout: 5000 });
 
   // Quiz phase: type each character QUIZ_CORRECT_PER_CHAR times
-  for (const char of fingerChars) {
-    for (let i = 0; i < QUIZ_CORRECT_PER_CHAR; i++) {
-      await typeTargetChar(page, char);
-    }
+  for (let i = 0;i < charCount * QUIZ_CORRECT_PER_CHAR;i++) {
+    await typeCurrentTargetChar(page);
   }
 
   // Should see completion screen with "Learned!" (not "Mastered!")
@@ -126,11 +192,17 @@ async function completeFingerLesson(page: Page, fingerChars: string[]) {
  * Use this when you don't know the exact character order
  */
 async function completeFingerLessonDynamic(page: Page, charCount: number) {
+  // Dismiss any tip modals first
+  await dismissAllTipModals(page);
+
   // Wait for intro phase - "Start Practice" button should be visible
   await expect(page.locator('text=Start Practice')).toBeVisible({ timeout: 5000 });
 
   // Click Start Practice to begin guided phase
   await page.click('text=Start Practice');
+
+  // Dismiss any tip modals after clicking
+  await dismissAllTipModals(page);
 
   // Wait for guided phase to start
   await expect(page.locator('text=Guided Practice')).toBeVisible({ timeout: 5000 });
@@ -227,7 +299,11 @@ test.describe('Campaign: Finger Fundamentals - Stage 1', () => {
   });
 
   test('should trigger Continue button when pressing Enter after finger is learned', async ({ page }) => {
+    await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
     await startCampaignMode(page);
+    await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
     await startFingerFundamentals(page);
 
     // Complete left index finger

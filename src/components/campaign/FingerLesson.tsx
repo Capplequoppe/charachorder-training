@@ -19,6 +19,7 @@ import {
 import { getFingerColor } from '../../data/static/colorConfig';
 import { getMnemonic } from '../../config/fingerMnemonics';
 import { useProgress, useAudio } from '../../hooks';
+import { useTips, TipTrigger } from '../../tips';
 import './FingerLesson.css';
 
 type LessonPhase = 'intro' | 'guided' | 'quiz' | 'complete';
@@ -51,6 +52,7 @@ export function FingerLesson({
 }: FingerLessonProps) {
   const progressService = useProgress();
   const { playFingerNote, playErrorSound } = useAudio();
+  const { triggerTip } = useTips();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [phase, setPhase] = useState<LessonPhase>('intro');
@@ -98,6 +100,24 @@ export function FingerLesson({
       if (DEBUG) console.log('[FingerLesson] Focused container for phase:', phase);
     }
   }, [phase]);
+
+  // Trigger educational tips at key moments
+  useEffect(() => {
+    if (phase === 'intro') {
+      // First finger lesson - explain multisensory learning
+      if (fingerId === 'l_index') {
+        setTimeout(() => triggerTip(TipTrigger.FIRST_FINGER_LESSON), 500);
+      }
+      // Second finger - explain color/note mapping system
+      if (fingerId === 'l_middle') {
+        setTimeout(() => triggerTip(TipTrigger.FINGER_INTRO), 500);
+      }
+    }
+    if (phase === 'guided' && fingerId === 'l_index') {
+      // First guided practice - explain directions
+      setTimeout(() => triggerTip(TipTrigger.DIRECTION_INTRO), 500);
+    }
+  }, [phase, fingerId, triggerTip]);
 
   // Window-level Enter key handler for intro phase
   // This ensures Enter works even when container isn't focused

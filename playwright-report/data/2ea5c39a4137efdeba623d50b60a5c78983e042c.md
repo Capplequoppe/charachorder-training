@@ -1,0 +1,103 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - heading "🗺️ Campaign Mode" [level=1] [ref=e6]:
+        - generic [ref=e7]: 🗺️
+        - text: Campaign Mode
+      - button "⚙️ Settings" [ref=e8] [cursor=pointer]
+    - generic [ref=e9]:
+      - complementary [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e13]: 0 of 5 Chapters Complete
+          - generic [ref=e15]:
+            - button "Finger Fundamentals - active" [ref=e17] [cursor=pointer]:
+              - generic [ref=e18]:
+                - generic [ref=e19]: "1"
+                - generic [ref=e20]: ⌨️
+              - heading "Finger Fundamentals" [level=3] [ref=e21]
+              - paragraph [ref=e22]: Learn the keyboard layout
+              - generic [ref=e23]: ▶
+            - img [ref=e25]
+            - generic [ref=e27]:
+              - button "Left Hand Power Chords - locked" [disabled] [ref=e28]:
+                - generic [ref=e29]:
+                  - generic [ref=e30]: 2a
+                  - generic [ref=e31]: 🔒
+                - heading "Left Hand Power Chords" [level=3] [ref=e32]
+                - paragraph [ref=e33]: 10 essential combinations
+              - button "Right Hand Power Chords - locked" [disabled] [ref=e34]:
+                - generic [ref=e35]:
+                  - generic [ref=e36]: 2b
+                  - generic [ref=e37]: 🔒
+                - heading "Right Hand Power Chords" [level=3] [ref=e38]
+                - paragraph [ref=e39]: 10 essential combinations
+            - img [ref=e41]
+            - button "Cross-Hand Power Chords - locked" [disabled] [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e46]: 2c
+                - generic [ref=e47]: 🔒
+              - heading "Cross-Hand Power Chords" [level=3] [ref=e48]
+              - paragraph [ref=e49]: 10 bilateral combinations
+            - img [ref=e51]
+            - button "Word Chords - locked" [disabled] [ref=e53]:
+              - generic [ref=e54]:
+                - generic [ref=e55]: "3"
+                - generic [ref=e56]: 🔒
+              - heading "Word Chords" [level=3] [ref=e57]
+              - paragraph [ref=e58]: Full word combinations
+      - main [ref=e59]:
+        - generic [ref=e60]:
+          - generic [ref=e61]: Chapter 1
+          - heading "⌨️ Finger Fundamentals" [level=2] [ref=e62]
+          - paragraph [ref=e63]: Master finger-to-key mappings with colors and sounds. Build muscle memory for each finger position and direction.
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic "Go to Index Fingers" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: "1"
+              - generic [ref=e69]: Index Fingers
+            - generic [ref=e70]:
+              - generic [ref=e71]: "2"
+              - generic [ref=e72]: Middle Fingers
+            - generic [ref=e73]:
+              - generic [ref=e74]: "3"
+              - generic [ref=e75]: Ring Fingers
+            - generic [ref=e76]:
+              - generic [ref=e77]: "4"
+              - generic [ref=e78]: Inner Thumbs
+            - generic [ref=e79]:
+              - generic [ref=e80]: "5"
+              - generic [ref=e81]: Outer Thumbs
+            - generic [ref=e82]:
+              - generic [ref=e83]: ★
+              - generic [ref=e84]: Review
+          - generic [active] [ref=e86]:
+            - generic [ref=e87]:
+              - button "← Back" [ref=e88] [cursor=pointer]
+              - generic [ref=e89]: Left Index
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: Guided Practice
+                - generic [ref=e94]: Character 1 of 2
+              - generic [ref=e95]:
+                - generic [ref=e96]: "Press:"
+                - generic [ref=e97]: E
+              - generic [ref=e98]:
+                - generic [ref=e99]: ↓
+                - generic [ref=e100]: Move Left Index down
+  - generic [ref=e105]:
+    - button "Close tip" [ref=e106] [cursor=pointer]: ×
+    - generic [ref=e107]:
+      - generic [ref=e108]: ✋
+      - heading "Five Directions Per Finger" [level=2] [ref=e109]
+    - paragraph [ref=e110]: "Each finger can move in five directions: Up, Down, Left, Right, and Press (straight down). This gives each finger access to five different characters. With 10 fingers and 5 directions each, you have 50 possible inputs - more than enough for the entire alphabet plus common punctuation!"
+    - generic [ref=e111]:
+      - generic [ref=e112]: "Key Points:"
+      - list [ref=e113]:
+        - listitem [ref=e114]: Up, Down, Left, Right, Press - five directions per finger
+        - listitem [ref=e115]: 10 fingers x 5 directions = 50 possible characters
+        - listitem [ref=e116]: Directions have subtle audio/visual variations to help distinguish them
+    - button "Got it!" [ref=e117] [cursor=pointer]
+```

@@ -1,0 +1,220 @@
+/**
+ * Tip Modal Styles
+ *
+ * Educational modal styling with blue accent color.
+ * Based on UnlockNotification.css pattern.
+ */
+
+.tip-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: tipFadeIn 0.3s ease;
+  padding: 1rem;
+}
+
+.tip-modal {
+  position: relative;
+  background: linear-gradient(180deg, #1a1a2a 0%, #1a2030 100%);
+  border: 2px solid #4299e1;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  animation: tipSlideUp 0.4s ease;
+  box-shadow:
+    0 0 60px rgba(66, 153, 225, 0.25),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.tip-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #718096;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.tip-modal-close:hover {
+  color: #a0aec0;
+}
+
+.tip-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.tip-modal-icon {
+  font-size: 3rem;
+  animation: tipPulse 2s ease-in-out infinite;
+}
+
+.tip-modal-title {
+  color: #4299e1;
+  font-size: 1.5rem;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(66, 153, 225, 0.4);
+}
+
+.tip-modal-content {
+  color: #e2e8f0;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+  text-align: left;
+}
+
+.tip-modal-keypoints {
+  background: rgba(66, 153, 225, 0.1);
+  border: 1px solid rgba(66, 153, 225, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.tip-modal-keypoints-label {
+  display: block;
+  color: #4299e1;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.tip-modal-keypoints-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tip-modal-keypoint {
+  position: relative;
+  color: #cbd5e0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tip-modal-keypoint:last-child {
+  margin-bottom: 0;
+}
+
+.tip-modal-keypoint::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: #4299e1;
+  border-radius: 50%;
+}
+
+.tip-modal-button {
+  padding: 0.875rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+}
+
+.tip-modal-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+  background: linear-gradient(135deg, #63b3ed, #4299e1);
+}
+
+.tip-modal-button:active {
+  transform: translateY(0);
+}
+
+/* Animations */
+@keyframes tipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tipSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tipPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tip-modal-overlay,
+  .tip-modal,
+  .tip-modal-icon {
+    animation: none;
+  }
+
+  .tip-modal-button:hover {
+    transform: none;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .tip-modal {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .tip-modal-title {
+    font-size: 1.25rem;
+  }
+
+  .tip-modal-content {
+    font-size: 0.95rem;
+  }
+
+  .tip-modal-keypoints {
+    padding: 0.875rem 1rem;
+  }
+
+  .tip-modal-keypoint {
+    font-size: 0.9rem;
+  }
+}

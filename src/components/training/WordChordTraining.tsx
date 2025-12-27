@@ -16,6 +16,7 @@ import {
   useAudio,
 } from '../../hooks';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
+import { useTips, TipTrigger } from '../../tips';
 import {
   getRepositories,
   getWordCategory,
@@ -68,6 +69,7 @@ export function WordChordTraining({
 }: WordChordTrainingProps): React.ReactElement {
   const audioService = useAudio();
   const campaign = useCampaign();
+  const { triggerTip } = useTips();
 
   const chapterId = ChapterId.WORD_CHORDS;
   const bossRequirements = BOSS_REQUIREMENTS[chapterId];
@@ -203,8 +205,10 @@ export function WordChordTraining({
     campaign.recordBossAttempt(chapterId, result.scorePercent);
     if (result.passed) {
       campaign.completeChapter(chapterId);
+      // Trigger dopamine reinforcement tip after first boss victory
+      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
     }
-  }, [campaign, chapterId]);
+  }, [campaign, chapterId, triggerTip]);
 
   // Back to mode select
   const backToModeSelect = useCallback(() => {

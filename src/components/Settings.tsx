@@ -12,6 +12,7 @@ import { getServices } from '../services/ServiceContainer';
 import { useCampaign } from '../campaign';
 import { CHAPTERS } from '../campaign/constants';
 import { ChapterId } from '../campaign/types';
+import { useTips } from '../tips';
 import './settings/settings.css';
 
 /**
@@ -88,6 +89,7 @@ export function Settings() {
   } = useSettings();
 
   const { campaignState, setMode, resetCampaign, unlockChapter, isChapterCompleted } = useCampaign();
+  const { tipsState, setTipsEnabled, resetTips } = useTips();
 
   const [isChangingInstrument, setIsChangingInstrument] = useState(false);
   const [previewPlaying, setPreviewPlaying] = useState(false);
@@ -327,6 +329,50 @@ export function Settings() {
             />
             <span className="items-count">{settings.training.itemsPerLearnSession}</span>
           </div>
+        </div>
+      </section>
+
+      {/* Educational Tips Section */}
+      <section className="settings-section">
+        <h3 className="section-title">
+          <span className="section-icon">💡</span>
+          Educational Tips
+        </h3>
+
+        <div className="setting-item">
+          <div className="setting-label">
+            <span className="setting-name">Show Learning Tips</span>
+            <span className="setting-description">
+              Display helpful explanations about learning techniques
+            </span>
+          </div>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={tipsState.tipsEnabled}
+              onChange={(e) => setTipsEnabled(e.target.checked)}
+            />
+            <span className="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div className="setting-item">
+          <div className="setting-label">
+            <span className="setting-name">Reset Tips</span>
+            <span className="setting-description">
+              Show all educational tips again from the beginning
+            </span>
+          </div>
+          <button className="reset-button" onClick={resetTips}>
+            Reset Tips
+          </button>
+        </div>
+
+        <div className="info-box">
+          <span className="info-icon">ℹ️</span>
+          <span className="info-text">
+            Tips explain the science behind your learning journey: chunking, spaced repetition, and more.
+          </span>
         </div>
       </section>
 

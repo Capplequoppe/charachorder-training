@@ -16,6 +16,7 @@ import {
   useAudio,
 } from '../../hooks';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
+import { useTips, TipTrigger } from '../../tips';
 import { getRepositories } from '../../data';
 import { ColoredFinger } from '../common/ColoredFinger';
 import { BilateralCue } from './BilateralCue';
@@ -64,6 +65,7 @@ export function IntraHandTraining({
 }: IntraHandTrainingProps): React.ReactElement {
   const audioService = useAudio();
   const campaign = useCampaign();
+  const { triggerTip } = useTips();
 
   const chapterId = hand === 'left' ? ChapterId.POWER_CHORDS_LEFT : ChapterId.POWER_CHORDS_RIGHT;
   const bossRequirements = BOSS_REQUIREMENTS[chapterId];
@@ -177,14 +179,15 @@ export function IntraHandTraining({
     const prevItemId = prevItemIdRef.current;
 
     // If this is a new item (not the first one) and we're in learn mode
-    if (prevItemId !== null && prevItemId !== currentItemId && session.isLearnMode && !session.isComplete) {
+    // Don't trigger if we're in mode-select (user just clicked "Back to Mode Selection")
+    if (prevItemId !== null && prevItemId !== currentItemId && session.isLearnMode && !session.isComplete && phaseControl.phase !== 'mode-select') {
       // Reset to intro for the new item
       setSyncSuccesses(0);
       phaseControl.goToIntro();
     }
 
     prevItemIdRef.current = currentItemId;
-  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl]);
+  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl, phaseControl.phase]);
 
   // Handle quiz countdown
   useEffect(() => {
@@ -196,6 +199,14 @@ export function IntraHandTraining({
 
     return () => clearTimeout(timer);
   }, [phaseControl.phase, quizCountdown]);
+
+  // Trigger chunking theory tip when entering power chord training
+  useEffect(() => {
+    // Only trigger on left hand (first power chord chapter) during intro
+    if (hand === 'left' && phaseControl.phase === 'intro') {
+      setTimeout(() => triggerTip(TipTrigger.POWER_CHORD_START), 500);
+    }
+  }, [hand, phaseControl.phase, triggerTip]);
 
   // Handle mode selection
   const handleModeSelect = useCallback((mode: SelectorTrainingMode) => {
@@ -232,8 +243,10 @@ export function IntraHandTraining({
     campaign.recordBossAttempt(chapterId, result.scorePercent);
     if (result.passed) {
       campaign.completeChapter(chapterId);
+      // Trigger dopamine reinforcement tip after first boss victory
+      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
     }
-  }, [campaign, chapterId]);
+  }, [campaign, chapterId, triggerTip]);
 
   // Back to mode select
   const backToModeSelect = useCallback(() => {

@@ -7,6 +7,42 @@
 import { test, expect, Page } from '@playwright/test';
 
 /**
+ * Helper: Dismiss any visible tip modal
+ * Waits for the modal's event listeners to be registered (100ms delay in TipModal)
+ */
+async function dismissTipModal(page: Page) {
+  const tipModal = page.locator('.tip-modal-overlay');
+  if (await tipModal.isVisible({ timeout: 1000 }).catch(() => false)) {
+    // Wait for the modal's event listeners to be registered (TipModal has 100ms delay)
+    await page.waitForTimeout(200);
+    // Click the close button which is safest
+    const closeButton = page.locator('.tip-modal-close');
+    if (await closeButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await closeButton.click();
+      await page.waitForTimeout(300);
+    } else {
+      // Fallback to Escape key
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(300);
+    }
+  }
+}
+
+/**
+ * Helper: Dismiss all tip modals (loop until none remain)
+ */
+async function dismissAllTipModals(page: Page) {
+  for (let i = 0;i < 5;i++) {
+    await dismissTipModal(page);
+    // Check if modal is gone
+    const tipModal = page.locator('.tip-modal-overlay');
+    if (!(await tipModal.isVisible({ timeout: 300 }).catch(() => false))) {
+      break;
+    }
+  }
+}
+
+/**
  * Helper: Clear localStorage to reset campaign state
  */
 async function resetCampaign(page: Page) {
@@ -48,6 +84,7 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // Start campaign
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals via Settings
     await unlockChapter(page, 'Finger Fundamentals');
@@ -69,6 +106,7 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // Start campaign
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals
     await unlockChapter(page, 'Finger Fundamentals');
@@ -80,6 +118,7 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // Click Learn More
     await page.click('text=Learn More');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Should be in intro phase showing "New Power Chord"
     await expect(page.locator('text=New Power Chord')).toBeVisible({ timeout: 5000 });
@@ -88,14 +127,15 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // The intro displays characters with + between them
     await expect(page.locator('.power-chord-display')).toBeVisible({ timeout: 5000 });
 
-    // Should have "Practice Timing" button (continue button)
-    await expect(page.locator('button:has-text("Practice Timing")')).toBeVisible({ timeout: 5000 });
+    // Should have "Start Practice" button (continue button)
+    await expect(page.locator('button:has-text("Start Practice")')).toBeVisible({ timeout: 5000 });
   });
 
-  test('should go to sync-practice when clicking Practice Timing', async ({ page }) => {
+  test('should go to sync-practice when clicking Start Practice', async ({ page }) => {
     // Start campaign
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals
     await unlockChapter(page, 'Finger Fundamentals');
@@ -105,14 +145,16 @@ test.describe('Power Chord Learning - Left Hand', () => {
     await page.waitForTimeout(500);
     await page.click('text=Learn More');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
-    // Click Practice Timing
-    await page.click('button:has-text("Practice Timing")');
+    // Click Start Practice
+    await page.click('button:has-text("Start Practice")');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Should be in sync-practice phase
-    await expect(page.locator('text=Timing Practice')).toBeVisible({ timeout: 5000 });
-    await expect(page.locator('text=Press both keys at exactly the same time')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Sync Practice')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Press both keys together')).toBeVisible({ timeout: 5000 });
 
     // Should show sync progress meter
     await expect(page.locator('.sync-meter')).toBeVisible({ timeout: 5000 });
@@ -123,20 +165,23 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // Start campaign
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals
     await unlockChapter(page, 'Finger Fundamentals');
 
-    // Navigate to Left Hand Power Chords > Learn More > Practice Timing
+    // Navigate to Left Hand Power Chords > Learn More > Start Practice
     await page.click('.chapter-card:has-text("Left Hand Power Chords")');
     await page.waitForTimeout(500);
     await page.click('text=Learn More');
     await page.waitForTimeout(500);
-    await page.click('button:has-text("Practice Timing")');
+    await dismissAllTipModals(page);
+    await page.click('button:has-text("Start Practice")');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Should be in sync-practice phase
-    await expect(page.locator('text=Timing Practice')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Sync Practice')).toBeVisible({ timeout: 5000 });
 
     // Click on the phase to focus input
     await page.click('.sync-practice-phase');
@@ -162,22 +207,27 @@ test.describe('Power Chord Learning - Left Hand', () => {
 
   test('should register chord input via text field (CharaChorder style)', async ({ page }) => {
     // Start campaign
+    await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals
     await unlockChapter(page, 'Finger Fundamentals');
 
-    // Navigate to Left Hand Power Chords > Learn More > Practice Timing
+    // Navigate to Left Hand Power Chords > Learn More > Start Practice
     await page.click('.chapter-card:has-text("Left Hand Power Chords")');
     await page.waitForTimeout(500);
     await page.click('text=Learn More');
     await page.waitForTimeout(500);
-    await page.click('button:has-text("Practice Timing")');
-    await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
+    await page.click('button:has-text("Start Practice")');
+    // await page.waitForTimeout(500);
+    // await dismissAllTipModals(page);
 
     // Should be in sync-practice phase
-    await expect(page.locator('text=Timing Practice')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Sync Practice')).toBeVisible({ timeout: 5000 });
 
     // Check what characters are displayed (to know what to type)
     const charLabels = await page.locator('.char-label').allTextContents();
@@ -205,6 +255,7 @@ test.describe('Power Chord Learning - Left Hand', () => {
     // Start campaign
     await page.click('text=Campaign Mode');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Unlock Finger Fundamentals
     await unlockChapter(page, 'Finger Fundamentals');
@@ -214,11 +265,13 @@ test.describe('Power Chord Learning - Left Hand', () => {
     await page.waitForTimeout(500);
     await page.click('text=Learn More');
     await page.waitForTimeout(500);
-    await page.click('button:has-text("Practice Timing")');
+    await dismissAllTipModals(page);
+    await page.click('button:has-text("Start Practice")');
     await page.waitForTimeout(500);
+    await dismissAllTipModals(page);
 
     // Should be in sync-practice phase
-    await expect(page.locator('text=Timing Practice')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Sync Practice')).toBeVisible({ timeout: 5000 });
 
     // Complete 3 sync successes by checking for progress increment each time
     for (let i = 1; i <= 3; i++) {

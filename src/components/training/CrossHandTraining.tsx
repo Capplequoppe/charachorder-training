@@ -16,6 +16,7 @@ import {
   useAudio,
 } from '../../hooks';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
+import { useTips, TipTrigger } from '../../tips';
 import { getRepositories, CROSS_HAND_TIMING_THRESHOLDS } from '../../data';
 import { ColoredFinger } from '../common/ColoredFinger';
 import { BilateralCue } from './BilateralCue';
@@ -65,6 +66,7 @@ export function CrossHandTraining({
 }: CrossHandTrainingProps): React.ReactElement {
   const audioService = useAudio();
   const campaign = useCampaign();
+  const { triggerTip } = useTips();
 
   const chapterId = ChapterId.POWER_CHORDS_CROSS;
   const bossRequirements = BOSS_REQUIREMENTS[chapterId];
@@ -179,14 +181,15 @@ export function CrossHandTraining({
     const prevItemId = prevItemIdRef.current;
 
     // If this is a new item (not the first one) and we're in learn mode
-    if (prevItemId !== null && prevItemId !== currentItemId && session.isLearnMode && !session.isComplete) {
+    // Don't trigger if we're in mode-select (user just clicked "Back to Mode Selection")
+    if (prevItemId !== null && prevItemId !== currentItemId && session.isLearnMode && !session.isComplete && phaseControl.phase !== 'mode-select') {
       // Reset to intro for the new item
       setSyncSuccesses(0);
       phaseControl.goToIntro();
     }
 
     prevItemIdRef.current = currentItemId;
-  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl]);
+  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl, phaseControl.phase]);
 
   // Handle quiz countdown
   useEffect(() => {
@@ -234,8 +237,10 @@ export function CrossHandTraining({
     campaign.recordBossAttempt(chapterId, result.scorePercent);
     if (result.passed) {
       campaign.completeChapter(chapterId);
+      // Trigger dopamine reinforcement tip after first boss victory
+      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
     }
-  }, [campaign, chapterId]);
+  }, [campaign, chapterId, triggerTip]);
 
   // Back to mode select
   const backToModeSelect = useCallback(() => {

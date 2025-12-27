@@ -541,6 +541,11 @@ export function useTrainingSession(options: UseTrainingSessionOptions): UseTrain
     setIsComplete(false);
     setResults(null);
     isProcessingRef.current = false;
+
+    // Always refresh items to pick up mastery level changes
+    // This ensures that items transitioned from NEW to LEARNING
+    // are excluded when selecting learn mode again
+    setRefreshCounter((c) => c + 1);
   }, [settings.training?.itemsPerLearnSession]);
 
   /**

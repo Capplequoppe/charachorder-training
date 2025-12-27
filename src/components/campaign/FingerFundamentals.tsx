@@ -18,6 +18,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { FingerId, MasteryLevel } from '../../domain';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
+import { useTips, TipTrigger } from '../../tips';
 import { getServiceRepositories } from '../../services';
 import { FingerLesson } from './FingerLesson';
 import { CharacterQuiz } from './CharacterQuiz';
@@ -108,6 +109,7 @@ export function FingerFundamentals({
   isRevisiting = false,
 }: FingerFundamentalsProps) {
   const campaign = useCampaign();
+  const { triggerTip } = useTips();
 
   // Chapter ID for finger fundamentals
   const chapterId = ChapterId.FINGER_FUNDAMENTALS;
@@ -329,8 +331,10 @@ export function FingerFundamentals({
     // If boss is defeated, auto-complete the chapter (boss defeat is the only requirement)
     if (result.passed) {
       campaign.completeChapter(chapterId);
+      // Trigger dopamine reinforcement tip after first boss victory
+      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
     }
-  }, [campaign, chapterId]);
+  }, [campaign, chapterId, triggerTip]);
 
   // Render mode select phase using TrainingModeSelector
   const renderModeSelectPhase = () => {

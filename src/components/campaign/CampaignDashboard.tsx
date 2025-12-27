@@ -19,12 +19,7 @@ import {
 } from '../../campaign';
 import './CampaignDashboard.css';
 
-interface CampaignDashboardProps {
-  /** Callback to switch to free play mode */
-  onSwitchToFreePlay: () => void;
-}
-
-export function CampaignDashboard({ onSwitchToFreePlay }: CampaignDashboardProps) {
+export function CampaignDashboard() {
   const {
     campaignState,
     setActiveChapter,
@@ -92,7 +87,7 @@ export function CampaignDashboard({ onSwitchToFreePlay }: CampaignDashboardProps
         return (
           <WordChordTraining
             onComplete={handleChapterComplete}
-            isRevisiting={isRevisiting}
+            {...campaignProps}
           />
         );
 

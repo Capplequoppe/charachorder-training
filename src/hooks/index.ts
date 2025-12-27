@@ -3,8 +3,6 @@
  *
  * React hooks for accessing application services and state.
  *
- * Note: Free Play only hooks have been moved to @/free-play/hooks
- *
  * Usage:
  * ```typescript
  * // In App.tsx or main component
