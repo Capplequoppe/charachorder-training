@@ -27,3 +27,6 @@ export type {
   ResultItem,
   ActionButton,
 } from './CompletePhaseRenderer';
+
+export { buildCompletePhaseProps } from './buildCompletePhaseProps';
+export type { BuildCompletePhasePropsConfig } from './buildCompletePhaseProps';

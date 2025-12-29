@@ -80,3 +80,24 @@ export type {
   QuizSessionResults,
   QuizFeedback,
 } from './useQuizSession';
+
+// Campaign progress hook
+export { useCampaignProgress } from './useCampaignProgress';
+export type {
+  UseCampaignProgressOptions,
+  UseCampaignProgressResult,
+} from './useCampaignProgress';
+
+// Quiz countdown hook
+export { useQuizCountdown } from './useQuizCountdown';
+export type {
+  UseQuizCountdownOptions,
+  UseQuizCountdownResult,
+} from './useQuizCountdown';
+
+// Training callbacks hook
+export { useTrainingCallbacks } from './useTrainingCallbacks';
+export type {
+  UseTrainingCallbacksOptions,
+  UseTrainingCallbacksResult,
+} from './useTrainingCallbacks';

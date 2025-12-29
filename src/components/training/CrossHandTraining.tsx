@@ -4,32 +4,33 @@
  * Training mode for 2-key power chords where keys are pressed by
  * different hands simultaneously. Requires bimanual coordination.
  *
- * Refactored to use shared hooks and phase renderers from Phase 3/4.
+ * Refactored to use shared hooks and phase renderers.
  */
 
-import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { Finger, MasteryLevel } from '../../domain';
 import {
   useTrainingSession,
   useTrainingPhase,
   useChordInput,
   useAudio,
+  useCampaignProgress,
+  useQuizCountdown,
+  useTrainingCallbacks,
 } from '../../hooks';
-import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
-import { useTips, TipTrigger } from '../../tips';
+import { ChapterId } from '../../campaign';
 import { getRepositories, CROSS_HAND_TIMING_THRESHOLDS } from '../../data';
 import { ColoredFinger } from '../common/ColoredFinger';
 import { BilateralCue } from './BilateralCue';
 import { PowerChordProgressJourney } from '../campaign/PowerChordProgressJourney';
-import { SurvivalGame, BossResult } from './SurvivalGame';
-import { TrainingModeSelector, TrainingMode as SelectorTrainingMode } from './TrainingModeSelector';
+import { SurvivalGame } from './SurvivalGame';
+import { TrainingModeSelector } from './TrainingModeSelector';
 import {
   IntroPhaseRenderer,
   PracticePhaseRenderer,
   QuizPhaseRenderer,
   CompletePhaseRenderer,
-  createQuizResults,
-  createPracticeResults,
+  buildCompletePhaseProps,
 } from './phases';
 import './training.css';
 
@@ -65,11 +66,8 @@ export function CrossHandTraining({
   isRevisiting = false,
 }: CrossHandTrainingProps): React.ReactElement {
   const audioService = useAudio();
-  const campaign = useCampaign();
-  const { triggerTip } = useTips();
 
   const chapterId = ChapterId.POWER_CHORDS_CROSS;
-  const bossRequirements = BOSS_REQUIREMENTS[chapterId];
 
   // Use shared training session hook
   const session = useTrainingSession({
@@ -94,11 +92,44 @@ export function CrossHandTraining({
     includeSyncPractice: true,
   });
 
-  // Sync practice state
-  const [syncSuccesses, setSyncSuccesses] = useState(0);
+  // Use campaign progress hook
+  const {
+    masteryProgress,
+    itemsRemainingToLearn,
+    bossDefeated,
+    bossBestScore,
+    refreshProgress,
+  } = useCampaignProgress({ chapterId, session });
 
-  // Quiz countdown state (null = no countdown, 0 = countdown finished)
-  const [quizCountdown, setQuizCountdown] = useState<number | null>(null);
+  // Use quiz countdown hook
+  const {
+    quizCountdown,
+    isCountdownComplete,
+    startCountdown,
+  } = useQuizCountdown({ phase: phaseControl.phase });
+
+  // Use training callbacks hook
+  const {
+    backToModeSelect,
+    handleBossComplete,
+    continueLearnMore,
+    handleModeSelect,
+    syncSuccesses,
+    setSyncSuccesses,
+    bossRequirements,
+    setOnStartQuizCountdown,
+  } = useTrainingCallbacks({
+    chapterId,
+    session,
+    phaseControl,
+    refreshProgress,
+    hasSyncPractice: true,
+  });
+
+  // Connect quiz countdown to callbacks
+  useEffect(() => {
+    setOnStartQuizCountdown(() => startCountdown(3));
+  }, [setOnStartQuizCountdown, startCountdown]);
 
   // Use shared input hook
   const input = useChordInput({
@@ -119,26 +150,15 @@ export function CrossHandTraining({
       }
     },
     onKeyPress: (char) => {
-      // Play audio feedback for each key pressed
       audioService.playCharacterNote(char);
     },
     enabled: phaseControl.phase === 'sync-practice' ||
              phaseControl.phase === 'practice' ||
-             (phaseControl.phase === 'quiz' && quizCountdown === 0),
+             (phaseControl.phase === 'quiz' && isCountdownComplete),
   });
 
   // Track previous item to detect when we move to a new item
   const prevItemIdRef = useRef<string | null>(null);
-
-  // Mastery progress for mode selector
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  const masteryProgress = useMemo(() => {
-    return campaign.getChapterMasteryProgress(chapterId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign, chapterId, refreshCounter]);
-
-  const bossDefeated = campaign.campaignState.chapters[chapterId]?.bossDefeated ?? false;
-  const bossBestScore = campaign.campaignState.chapters[chapterId]?.bossBestScore ?? 0;
 
   // Handle sync practice success
   const handleSyncSuccess = useCallback(() => {
@@ -152,10 +172,9 @@ export function CrossHandTraining({
       }
       return newCount;
     });
-  }, [phaseControl]);
+  }, [phaseControl, setSyncSuccesses]);
 
   // Reset sync state when phase changes TO sync-practice
-  // Note: We intentionally exclude `input` from deps to avoid reset on every keystroke
   useEffect(() => {
     if (phaseControl.phase === 'sync-practice') {
       setSyncSuccesses(0);
@@ -163,7 +182,7 @@ export function CrossHandTraining({
       input.startTiming();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phaseControl.phase]);
+  }, [phaseControl.phase, setSyncSuccesses]);
 
   // Transition to complete phase when session completes
   useEffect(() => {
@@ -173,83 +192,21 @@ export function CrossHandTraining({
   }, [session.isComplete, phaseControl.phase, phaseControl]);
 
   // Reset to intro phase when moving to a new item in learn mode
-  // This ensures each power chord gets the intro and sync-practice phases
   useEffect(() => {
     if (!session.currentItem) return;
 
     const currentItemId = session.currentItem.id;
     const prevItemId = prevItemIdRef.current;
 
-    // If this is a new item (not the first one) and we're in learn mode
-    // Don't trigger if we're in mode-select (user just clicked "Back to Mode Selection")
     if (prevItemId !== null && prevItemId !== currentItemId && session.isLearnMode && !session.isComplete && phaseControl.phase !== 'mode-select') {
-      // Reset to intro for the new item
       setSyncSuccesses(0);
       phaseControl.goToIntro();
     }
 
     prevItemIdRef.current = currentItemId;
-  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl, phaseControl.phase]);
+  }, [session.currentItem, session.isLearnMode, session.isComplete, phaseControl, phaseControl.phase, setSyncSuccesses]);
 
-  // Handle quiz countdown
-  useEffect(() => {
-    if (phaseControl.phase !== 'quiz' || quizCountdown === null || quizCountdown <= 0) return;
-
-    const timer = setTimeout(() => {
-      setQuizCountdown((prev) => (prev !== null ? prev - 1 : null));
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [phaseControl.phase, quizCountdown]);
-
-  // Handle mode selection
-  const handleModeSelect = useCallback((mode: SelectorTrainingMode) => {
-    setSyncSuccesses(0);
-
-    // Handle journey mode separately (not a session mode)
-    if (mode === 'journey') {
-      phaseControl.goToJourney();
-      return;
-    }
-
-    session.selectMode(mode);
-
-    switch (mode) {
-      case 'learn':
-        phaseControl.goToIntro();
-        break;
-      case 'review-due':
-      case 'review-all':
-        setQuizCountdown(3);
-        phaseControl.goToQuiz();
-        break;
-      case 'survival':
-        phaseControl.goToSurvival();
-        break;
-      case 'boss':
-        phaseControl.goToBoss();
-        break;
-    }
-  }, [session, phaseControl]);
-
-  // Handle boss completion
-  const handleBossComplete = useCallback((result: BossResult) => {
-    campaign.recordBossAttempt(chapterId, result.scorePercent);
-    if (result.passed) {
-      campaign.completeChapter(chapterId);
-      // Trigger dopamine reinforcement tip after first boss victory
-      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
-    }
-  }, [campaign, chapterId, triggerTip]);
-
-  // Back to mode select
-  const backToModeSelect = useCallback(() => {
-    setRefreshCounter(c => c + 1);
-    phaseControl.goToModeSelect();
-    session.restart();
-  }, [phaseControl, session]);
-
-  // Get current item as TrainableItem
+  // Get current item
   const currentItem = session.currentItem;
 
   // Extract left/right characters for cross-hand display
@@ -292,7 +249,6 @@ export function CrossHandTraining({
             layout="two-hands"
             producesWords={producesWords}
             onPlaySound={() => {
-              // Get original power chord for audio
               const { powerChords } = getRepositories();
               const pc = powerChords.getById(currentItem.id);
               if (pc) audioService.playPowerChord(pc);
@@ -421,46 +377,20 @@ export function CrossHandTraining({
         );
 
       case 'complete': {
-        const quizCorrect = session.quizResults.filter(r => r.correct).length;
-        const results = session.isQuizMode
-          ? createQuizResults(quizCorrect, session.quizResults.length)
-          : createPracticeResults(
-              session.sessionProgress.completedItems,
-              session.sessionProgress.totalAttempts > 0
-                ? session.sessionProgress.correctAttempts / session.sessionProgress.totalAttempts
-                : 0,
-            );
+        const completeProps = buildCompletePhaseProps({
+          session,
+          phaseControl,
+          itemsRemainingToLearn,
+          inCampaignMode,
+          isRevisiting,
+          practiceCompleteTitle: 'Cross-Hand Training Complete!',
+          campaignContinueMessage: 'Cross-hand power chords practiced! Challenge the boss to complete the chapter.',
+          backToModeSelect,
+          continueLearnMore,
+          startQuizCountdown: () => startCountdown(3),
+        });
 
-        const actions = [
-          // Always show return button
-          { label: 'Back to Mode Selection', onClick: backToModeSelect, variant: 'secondary' as const },
-          // Only show Practice Again and Quick Quiz when not in quiz mode
-          ...(!session.isQuizMode ? [
-            { label: 'Practice Again', onClick: () => {
-              session.restart();
-              phaseControl.goToPractice();
-            }, variant: 'secondary' as const },
-            { label: 'Quick Quiz', onClick: () => {
-              session.selectMode('review-all');
-              setQuizCountdown(3);
-              phaseControl.goToQuiz();
-            }, variant: 'secondary' as const },
-          ] : []),
-        ];
-
-        return (
-          <CompletePhaseRenderer
-            title={session.isQuizMode ? 'Quiz Complete!' : 'Cross-Hand Training Complete!'}
-            isQuizMode={session.isQuizMode}
-            results={results}
-            actions={actions}
-            campaignContinue={inCampaignMode && !isRevisiting && !session.isQuizMode ? {
-              message: 'Cross-hand power chords practiced! Challenge the boss to complete the chapter.',
-              buttonText: 'Continue',
-              onContinue: backToModeSelect,
-            } : undefined}
-          />
-        );
+        return <CompletePhaseRenderer {...completeProps} />;
       }
 
       case 'survival':

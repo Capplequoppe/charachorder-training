@@ -15,7 +15,7 @@
  * 8. Chapter Complete
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { FingerId, MasteryLevel } from '../../domain';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
 import { useTips, TipTrigger } from '../../tips';
@@ -336,6 +336,27 @@ export function FingerFundamentals({
     }
   }, [campaign, chapterId, triggerTip]);
 
+  // Handle Enter key in stage-complete phase to continue learning more
+  useEffect(() => {
+    if (phase !== 'stage-complete' || !inCampaignMode) return;
+
+    const isLastStage = currentStageIndex === LEARNING_STAGES.length - 1;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (isLastStage) {
+          backToModeSelect();
+        } else {
+          goToNextStage();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [phase, inCampaignMode, currentStageIndex, backToModeSelect, goToNextStage]);
+
   // Render mode select phase using TrainingModeSelector
   const renderModeSelectPhase = () => {
     return (
@@ -505,24 +526,58 @@ export function FingerFundamentals({
         </div>
 
         <div className="finger-fundamentals__stage-actions">
-          <button
-            className="finger-fundamentals__practice-btn"
-            onClick={practiceCurrentStage}
-          >
-            Practice More
-          </button>
-          <button
-            className="finger-fundamentals__quiz-btn"
-            onClick={retryStageQuiz}
-          >
-            Quiz Again
-          </button>
-          <button
-            className="finger-fundamentals__next-btn"
-            onClick={goToNextStage}
-          >
-            {isLastStage ? 'Final Review' : `Continue to Stage ${currentStageIndex + 2}`} →
-          </button>
+          {/* In campaign mode, show back to mode selection first */}
+          {inCampaignMode && (
+            <button
+              className="finger-fundamentals__practice-btn"
+              onClick={backToModeSelect}
+            >
+              Back to Mode Selection
+            </button>
+          )}
+          {!inCampaignMode && (
+            <>
+              <button
+                className="finger-fundamentals__practice-btn"
+                onClick={practiceCurrentStage}
+              >
+                Practice More
+              </button>
+              <button
+                className="finger-fundamentals__quiz-btn"
+                onClick={retryStageQuiz}
+              >
+                Quiz Again
+              </button>
+            </>
+          )}
+          {/* Continue learning more - only show if not the last stage */}
+          {!isLastStage && (
+            <button
+              className="finger-fundamentals__next-btn"
+              onClick={goToNextStage}
+            >
+              Continue Learning More →
+            </button>
+          )}
+          {/* For last stage in campaign mode, go back to mode select */}
+          {isLastStage && inCampaignMode && (
+            <button
+              className="finger-fundamentals__next-btn"
+              onClick={backToModeSelect}
+            >
+              Continue →
+            </button>
+          )}
+          {/* For last stage outside campaign mode, go to final review */}
+          {isLastStage && !inCampaignMode && (
+            <button
+              className="finger-fundamentals__next-btn"
+              onClick={goToNextStage}
+            >
+              Final Review →
+            </button>
+          )}
         </div>
 
         {/* Previous stages for review */}
@@ -702,7 +757,14 @@ export function FingerFundamentals({
         {phase === 'stage-quiz' && (
           <CharacterQuiz
             fingers={currentStage.fingers}
-            onComplete={isRevisiting || inCampaignMode ? backToModeSelect : handleStageQuizComplete}
+            onComplete={
+              // In campaign learn mode, go to stage-complete to offer "continue learning more"
+              inCampaignMode && currentMode === 'learn'
+                ? handleStageQuizComplete
+                : isRevisiting || inCampaignMode
+                  ? backToModeSelect
+                  : handleStageQuizComplete
+            }
             onBack={inCampaignMode ? backToModeSelect : () => setPhase('welcome')}
             title={`Stage ${currentStageIndex + 1} Quiz`}
             subtitle={`Test your knowledge of ${currentStage.name.toLowerCase()}`}
