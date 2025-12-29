@@ -80,3 +80,12 @@ export type {
   QuizSessionResults,
   QuizFeedback,
 } from './useQuizSession';
+
+// Quiz mode hook (for QuizMode component)
+export { useQuizMode, calculateScore, selectWeightedWords, getDifficultyColor, DIFFICULTY_SETTINGS } from './useQuizMode';
+export type {
+  Difficulty,
+  DifficultySettings,
+  QuizResult as QuizModeResult,
+  UseQuizModeResult,
+} from './useQuizMode';

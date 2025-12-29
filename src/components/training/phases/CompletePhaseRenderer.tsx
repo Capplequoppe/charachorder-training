@@ -7,7 +7,7 @@
  * @module components/training/phases
  */
 
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { ContinueButton } from '../../campaign/ContinueButton';
 
 /**
@@ -48,6 +48,11 @@ export interface CompletePhaseRendererProps {
     buttonText: string;
     onContinue: () => void;
   };
+  /** Continue learning more config (optional, for learn mode with remaining items) */
+  continueLearnMore?: {
+    itemsRemaining: number;
+    onContinue: () => void;
+  };
   /** Custom content to render (e.g., chapter progress) */
   customContent?: React.ReactNode;
 }
@@ -62,8 +67,27 @@ export function CompletePhaseRenderer({
   actions,
   itemsMastered,
   campaignContinue,
+  continueLearnMore,
   customContent,
 }: CompletePhaseRendererProps): React.ReactElement {
+  // Handle Enter key press to continue learning more
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && continueLearnMore) {
+        e.preventDefault();
+        continueLearnMore.onContinue();
+      }
+    },
+    [continueLearnMore]
+  );
+
+  useEffect(() => {
+    if (continueLearnMore) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [continueLearnMore, handleKeyDown]);
+
   return (
     <div className="training-phase complete-phase">
       <h2>{title}</h2>
@@ -110,6 +134,22 @@ export function CompletePhaseRenderer({
           </button>
         ))}
       </div>
+
+      {/* Continue learning more button */}
+      {continueLearnMore && (
+        <div className="continue-learn-more">
+          <p className="continue-learn-more-message">
+            {continueLearnMore.itemsRemaining} more item{continueLearnMore.itemsRemaining !== 1 ? 's' : ''} available to learn
+          </p>
+          <button
+            className="btn primary continue-learn-more-btn"
+            onClick={continueLearnMore.onContinue}
+          >
+            Continue Learning More
+          </button>
+          <p className="continue-learn-more-hint">Press Enter to continue</p>
+        </div>
+      )}
 
       {/* Campaign continue button */}
       {campaignContinue && (
