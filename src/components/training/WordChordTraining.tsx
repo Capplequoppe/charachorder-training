@@ -4,34 +4,35 @@
  * Training mode focused on chords that produce complete English words,
  * with semantic reinforcement and resolution sounds.
  *
- * Refactored to use shared hooks and phase renderers from Phase 3/4.
+ * Refactored to use shared hooks and phase renderers.
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { MasteryLevel } from '../../domain';
 import {
   useTrainingSession,
   useTrainingPhase,
   useChordInput,
   useAudio,
+  useCampaignProgress,
+  useQuizCountdown,
+  useTrainingCallbacks,
 } from '../../hooks';
-import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../../campaign';
-import { useTips, TipTrigger } from '../../tips';
+import { ChapterId } from '../../campaign';
 import {
   getRepositories,
   getWordCategory,
   getCategoryDefinition,
 } from '../../data';
 import { WordLegoVisualization } from './LegoVisualization';
-import { SurvivalGame, BossResult } from './SurvivalGame';
-import { TrainingModeSelector, TrainingMode as SelectorTrainingMode } from './TrainingModeSelector';
+import { SurvivalGame } from './SurvivalGame';
+import { TrainingModeSelector } from './TrainingModeSelector';
 import {
   IntroPhaseRenderer,
   PracticePhaseRenderer,
   QuizPhaseRenderer,
   CompletePhaseRenderer,
-  createQuizResults,
-  createPracticeResults,
+  buildCompletePhaseProps,
 } from './phases';
 import './training.css';
 
@@ -68,11 +69,8 @@ export function WordChordTraining({
   inCampaignMode = false,
 }: WordChordTrainingProps): React.ReactElement {
   const audioService = useAudio();
-  const campaign = useCampaign();
-  const { triggerTip } = useTips();
 
   const chapterId = ChapterId.WORD_CHORDS;
-  const bossRequirements = BOSS_REQUIREMENTS[chapterId];
 
   // Use shared training session hook
   const session = useTrainingSession({
@@ -104,8 +102,42 @@ export function WordChordTraining({
     includeSyncPractice: false, // Words don't have sync practice
   });
 
-  // Quiz countdown state (null = no countdown, 0 = countdown finished)
-  const [quizCountdown, setQuizCountdown] = useState<number | null>(null);
+  // Use campaign progress hook
+  const {
+    masteryProgress,
+    itemsRemainingToLearn,
+    bossDefeated,
+    bossBestScore,
+    refreshProgress,
+  } = useCampaignProgress({ chapterId, session });
+
+  // Use quiz countdown hook
+  const {
+    quizCountdown,
+    isCountdownComplete,
+    startCountdown,
+  } = useQuizCountdown({ phase: phaseControl.phase });
+
+  // Use training callbacks hook (no sync practice for words)
+  const {
+    backToModeSelect,
+    handleBossComplete,
+    continueLearnMore,
+    handleModeSelect,
+    bossRequirements,
+    setOnStartQuizCountdown,
+  } = useTrainingCallbacks({
+    chapterId,
+    session,
+    phaseControl,
+    refreshProgress,
+    hasSyncPractice: false,
+  });
+
+  // Connect quiz countdown to callbacks
+  useEffect(() => {
+    setOnStartQuizCountdown(() => startCountdown(3));
+  }, [setOnStartQuizCountdown, startCountdown]);
 
   // Track if letters have been revealed for current quiz item (stays true until next item)
   const [quizLettersRevealed, setQuizLettersRevealed] = useState(false);
@@ -133,21 +165,10 @@ export function WordChordTraining({
       session.handleIncorrect(responseTimeMs);
     },
     onKeyPress: (char) => {
-      // Play audio feedback for each key pressed
       audioService.playCharacterNote(char);
     },
-    enabled: phaseControl.phase === 'practice' || (phaseControl.phase === 'quiz' && quizCountdown === 0),
+    enabled: phaseControl.phase === 'practice' || (phaseControl.phase === 'quiz' && isCountdownComplete),
   });
-
-  // Mastery progress for mode selector
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  const masteryProgress = useMemo(() => {
-    return campaign.getChapterMasteryProgress(chapterId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign, chapterId, refreshCounter]);
-
-  const bossDefeated = campaign.campaignState.chapters[chapterId]?.bossDefeated ?? false;
-  const bossBestScore = campaign.campaignState.chapters[chapterId]?.bossBestScore ?? 0;
 
   // Transition to complete phase when session completes
   useEffect(() => {
@@ -156,66 +177,10 @@ export function WordChordTraining({
     }
   }, [session.isComplete, phaseControl.phase, phaseControl]);
 
-  // Handle quiz countdown
-  useEffect(() => {
-    if (phaseControl.phase !== 'quiz' || quizCountdown === null || quizCountdown <= 0) return;
-
-    const timer = setTimeout(() => {
-      setQuizCountdown((prev) => (prev !== null ? prev - 1 : null));
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [phaseControl.phase, quizCountdown]);
-
   // Reset quiz letters revealed state when moving to a new item
   useEffect(() => {
     setQuizLettersRevealed(false);
   }, [session.currentItem?.id]);
-
-  // Handle mode selection
-  const handleModeSelect = useCallback((mode: SelectorTrainingMode) => {
-    // Handle journey mode separately (not a session mode)
-    if (mode === 'journey') {
-      phaseControl.goToJourney();
-      return;
-    }
-
-    session.selectMode(mode);
-
-    switch (mode) {
-      case 'learn':
-        phaseControl.goToIntro();
-        break;
-      case 'review-due':
-      case 'review-all':
-        setQuizCountdown(3);
-        phaseControl.goToQuiz();
-        break;
-      case 'survival':
-        phaseControl.goToSurvival();
-        break;
-      case 'boss':
-        phaseControl.goToBoss();
-        break;
-    }
-  }, [session, phaseControl]);
-
-  // Handle boss completion
-  const handleBossComplete = useCallback((result: BossResult) => {
-    campaign.recordBossAttempt(chapterId, result.scorePercent);
-    if (result.passed) {
-      campaign.completeChapter(chapterId);
-      // Trigger dopamine reinforcement tip after first boss victory
-      setTimeout(() => triggerTip(TipTrigger.BOSS_VICTORY), 1000);
-    }
-  }, [campaign, chapterId, triggerTip]);
-
-  // Back to mode select
-  const backToModeSelect = useCallback(() => {
-    setRefreshCounter(c => c + 1);
-    phaseControl.goToModeSelect();
-    session.restart();
-  }, [phaseControl, session]);
 
   // Get current item
   const currentItem = session.currentItem;
@@ -334,46 +299,20 @@ export function WordChordTraining({
         );
 
       case 'complete': {
-        const quizCorrect = session.quizResults.filter(r => r.correct).length;
-        const results = session.isQuizMode
-          ? createQuizResults(quizCorrect, session.quizResults.length)
-          : createPracticeResults(
-              session.sessionProgress.completedItems,
-              session.sessionProgress.totalAttempts > 0
-                ? session.sessionProgress.correctAttempts / session.sessionProgress.totalAttempts
-                : 0,
-            );
+        const completeProps = buildCompletePhaseProps({
+          session,
+          phaseControl,
+          itemsRemainingToLearn,
+          inCampaignMode,
+          isRevisiting,
+          practiceCompleteTitle: 'Training Complete!',
+          campaignContinueMessage: 'Word chords practiced! Challenge the boss to complete the chapter.',
+          backToModeSelect,
+          continueLearnMore,
+          startQuizCountdown: () => startCountdown(3),
+        });
 
-        const actions = [
-          // Always show return button
-          { label: 'Back to Mode Selection', onClick: backToModeSelect, variant: 'secondary' as const },
-          // Only show Practice Again and Quick Quiz when not in quiz mode
-          ...(!session.isQuizMode ? [
-            { label: 'Practice Again', onClick: () => {
-              session.restart();
-              phaseControl.goToPractice();
-            }, variant: 'secondary' as const },
-            { label: 'Quick Quiz', onClick: () => {
-              session.selectMode('review-all');
-              setQuizCountdown(3);
-              phaseControl.goToQuiz();
-            }, variant: 'secondary' as const },
-          ] : []),
-        ];
-
-        return (
-          <CompletePhaseRenderer
-            title={session.isQuizMode ? 'Quiz Complete!' : 'Training Complete!'}
-            isQuizMode={session.isQuizMode}
-            results={results}
-            actions={actions}
-            campaignContinue={inCampaignMode && !isRevisiting && !session.isQuizMode ? {
-              message: 'Word chords practiced! Challenge the boss to complete the chapter.',
-              buttonText: 'Continue',
-              onContinue: backToModeSelect,
-            } : undefined}
-          />
-        );
+        return <CompletePhaseRenderer {...completeProps} />;
       }
 
       case 'survival':

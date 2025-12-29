@@ -7,7 +7,7 @@
  * @module components/training/phases
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ContinueButton } from '../../campaign/ContinueButton';
 
 /**
@@ -48,6 +48,11 @@ export interface CompletePhaseRendererProps {
     buttonText: string;
     onContinue: () => void;
   };
+  /** Continue learning more config (optional, shown when more items available in learn mode) */
+  continueLearnMore?: {
+    itemsRemaining: number;
+    onContinue: () => void;
+  };
   /** Custom content to render (e.g., chapter progress) */
   customContent?: React.ReactNode;
 }
@@ -62,8 +67,26 @@ export function CompletePhaseRenderer({
   actions,
   itemsMastered,
   campaignContinue,
+  continueLearnMore,
   customContent,
 }: CompletePhaseRendererProps): React.ReactElement {
+  // Handle Enter key to continue learning more (when available and no campaignContinue)
+  // Note: ContinueButton already handles Enter key internally, so we only handle it
+  // when continueLearnMore is shown but campaignContinue is not
+  useEffect(() => {
+    if (!continueLearnMore || campaignContinue) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        continueLearnMore.onContinue();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [continueLearnMore, campaignContinue]);
+
   return (
     <div className="training-phase complete-phase">
       <h2>{title}</h2>
@@ -110,6 +133,21 @@ export function CompletePhaseRenderer({
           </button>
         ))}
       </div>
+
+      {/* Continue learning more button (when more items available in learn mode) */}
+      {continueLearnMore && (
+        <div className="continue-learn-more">
+          <p className="continue-learn-more-message">
+            {continueLearnMore.itemsRemaining} more item{continueLearnMore.itemsRemaining !== 1 ? 's' : ''} to learn
+          </p>
+          <button
+            className="btn primary continue-learn-more-btn"
+            onClick={continueLearnMore.onContinue}
+          >
+            Continue Learning More
+          </button>
+        </div>
+      )}
 
       {/* Campaign continue button */}
       {campaignContinue && (
