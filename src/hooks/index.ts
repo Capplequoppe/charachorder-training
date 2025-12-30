@@ -81,11 +81,23 @@ export type {
   QuizFeedback,
 } from './useQuizSession';
 
-// Quiz mode hook (for QuizMode component)
-export { useQuizMode, calculateScore, selectWeightedWords, getDifficultyColor, DIFFICULTY_SETTINGS } from './useQuizMode';
+// Campaign progress hook
+export { useCampaignProgress } from './useCampaignProgress';
 export type {
-  Difficulty,
-  DifficultySettings,
-  QuizResult as QuizModeResult,
-  UseQuizModeResult,
-} from './useQuizMode';
+  UseCampaignProgressOptions,
+  UseCampaignProgressResult,
+} from './useCampaignProgress';
+
+// Quiz countdown hook
+export { useQuizCountdown } from './useQuizCountdown';
+export type {
+  UseQuizCountdownOptions,
+  UseQuizCountdownResult,
+} from './useQuizCountdown';
+
+// Training callbacks hook
+export { useTrainingCallbacks } from './useTrainingCallbacks';
+export type {
+  UseTrainingCallbacksOptions,
+  UseTrainingCallbacksResult,
+} from './useTrainingCallbacks';

@@ -7,7 +7,7 @@
  * @module components/training/phases
  */
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { ContinueButton } from '../../campaign/ContinueButton';
 
 /**
@@ -48,7 +48,7 @@ export interface CompletePhaseRendererProps {
     buttonText: string;
     onContinue: () => void;
   };
-  /** Continue learning more config (optional, for learn mode with remaining items) */
+  /** Continue learning more config (optional, shown when more items available in learn mode) */
   continueLearnMore?: {
     itemsRemaining: number;
     onContinue: () => void;
@@ -70,23 +70,22 @@ export function CompletePhaseRenderer({
   continueLearnMore,
   customContent,
 }: CompletePhaseRendererProps): React.ReactElement {
-  // Handle Enter key press to continue learning more
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && continueLearnMore) {
+  // Handle Enter key to continue learning more (when available and no campaignContinue)
+  // Note: ContinueButton already handles Enter key internally, so we only handle it
+  // when continueLearnMore is shown but campaignContinue is not
+  useEffect(() => {
+    if (!continueLearnMore || campaignContinue) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
         e.preventDefault();
         continueLearnMore.onContinue();
       }
-    },
-    [continueLearnMore]
-  );
+    };
 
-  useEffect(() => {
-    if (continueLearnMore) {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [continueLearnMore, handleKeyDown]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [continueLearnMore, campaignContinue]);
 
   return (
     <div className="training-phase complete-phase">
@@ -135,11 +134,11 @@ export function CompletePhaseRenderer({
         ))}
       </div>
 
-      {/* Continue learning more button */}
+      {/* Continue learning more button (when more items available in learn mode) */}
       {continueLearnMore && (
         <div className="continue-learn-more">
           <p className="continue-learn-more-message">
-            {continueLearnMore.itemsRemaining} more item{continueLearnMore.itemsRemaining !== 1 ? 's' : ''} available to learn
+            {continueLearnMore.itemsRemaining} more item{continueLearnMore.itemsRemaining !== 1 ? 's' : ''} to learn
           </p>
           <button
             className="btn primary continue-learn-more-btn"
@@ -147,7 +146,6 @@ export function CompletePhaseRenderer({
           >
             Continue Learning More
           </button>
-          <p className="continue-learn-more-hint">Press Enter to continue</p>
         </div>
       )}
 

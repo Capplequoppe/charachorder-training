@@ -400,6 +400,26 @@
   min-width: 140px;
 }
 
+/* Continue Learning More */
+.continue-learn-more {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: rgba(74, 158, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(74, 158, 255, 0.3);
+  text-align: center;
+}
+
+.continue-learn-more-message {
+  color: var(--text-secondary, #aaa);
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.continue-learn-more-btn {
+  min-width: 200px;
+}
+
 /* ==================== Chapter Progress Section ==================== */
 
 .chapter-progress-section {
