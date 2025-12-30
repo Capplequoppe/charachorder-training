@@ -12,8 +12,9 @@ import { useCallback, useState } from 'react';
 import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../campaign';
 import { useTips, TipTrigger } from '../tips';
 import type { UseTrainingSessionResult } from './useTrainingSession';
-import type { UseTrainingPhaseResult, TrainingMode } from './useTrainingPhase';
+import type { UseTrainingPhaseResult } from './useTrainingPhase';
 import type { BossResult } from '../components/training/SurvivalGame';
+import { TrainingMode } from '@/components/training';
 
 /**
  * Options for useTrainingCallbacks hook.

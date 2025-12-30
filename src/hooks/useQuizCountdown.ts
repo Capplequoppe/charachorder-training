@@ -7,8 +7,9 @@
  * @module hooks
  */
 
+import { TrainingPhase } from '@/domain';
 import { useState, useEffect, useCallback } from 'react';
-import type { TrainingPhase } from './useTrainingPhase';
+
 
 /**
  * Options for useQuizCountdown hook.
