@@ -101,3 +101,36 @@ export type {
   UseTrainingCallbacksOptions,
   UseTrainingCallbacksResult,
 } from './useTrainingCallbacks';
+
+// Finger Fundamentals hook
+export { useFingerFundamentals, findNextStageToLearn, getLearnedFingers } from './useFingerFundamentals';
+export type {
+  ChapterPhase,
+  UseFingerFundamentalsOptions,
+  UseFingerFundamentalsResult,
+} from './useFingerFundamentals';
+
+// Survival Game hook
+export {
+  useSurvivalGame,
+  shuffleArray,
+  toHighScoreCategory,
+  generateChallenges,
+  DIFFICULTY_SETTINGS,
+  BOSS_LIVES,
+} from './useSurvivalGame';
+export type {
+  SurvivalPhase,
+  SurvivalDifficulty,
+  SurvivalItemType,
+  CharacterChallenge,
+  FingerChallenge,
+  PowerChordChallenge,
+  WordChallenge,
+  SurvivalChallenge,
+  DifficultySettings,
+  BossModeConfig,
+  BossResult,
+  UseSurvivalGameOptions,
+  UseSurvivalGameResult,
+} from './useSurvivalGame';

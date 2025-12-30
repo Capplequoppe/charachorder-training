@@ -1,13 +1,17 @@
 /**
  * Components Layer
  *
- * React components for the CharaChorder  Trainer application.
+ * React components for the CharaChorder Trainer application.
+ *
+ * Structure:
+ * - ui/: Reusable UI components (atoms, molecules, organisms)
+ * - features/: Domain-specific feature components
  *
  * @module components
  */
 
-// Common UI components
-export * from './common';
+// UI components (atomic design)
+export * from './ui';
 
-// Quiz components
-export * from './quiz';
+// Feature components (bounded contexts)
+export * from './features';
