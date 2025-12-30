@@ -318,10 +318,11 @@ test.describe('Power Chord Session Refresh', () => {
     // Complete 5 power chords
     await completeFivePowerChords(page);
 
-    // On complete screen, click "Continue" (the campaign continue button)
+    // On complete screen, click "Continue →" (the campaign continue button)
     // This should be visible since we're in campaign mode
+    // Note: Must use exact text to avoid clicking "Continue Learning More" button
     await expect(page.locator('text=Challenge the boss to complete the chapter')).toBeVisible({ timeout: 5000 });
-    await page.click('button:has-text("Continue")');
+    await page.click('button:has-text("Continue →")');
     await page.waitForTimeout(500);
 
     // Should be back on mode selector
