@@ -6,7 +6,9 @@
 
 import { CampaignProvider, useCampaign } from './campaign';
 import { TipsProvider, useTips, TipModal } from './tips';
-import { ModeSelector, CampaignDashboard, UnlockNotification } from './components/campaign';
+import { ModeSelector } from './components/ui/organisms/ModeSelector';
+import { CampaignDashboard } from './components/features/campaign/CampaignDashboard';
+import { UnlockNotification } from './components/ui/molecules/UnlockNotification';
 import './App.css';
 
 /**

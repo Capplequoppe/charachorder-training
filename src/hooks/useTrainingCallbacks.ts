@@ -13,8 +13,8 @@ import { useCampaign, ChapterId, BOSS_REQUIREMENTS } from '../campaign';
 import { useTips, TipTrigger } from '../tips';
 import type { UseTrainingSessionResult } from './useTrainingSession';
 import type { UseTrainingPhaseResult } from './useTrainingPhase';
-import type { BossResult } from '../components/training/SurvivalGame';
-import { TrainingMode } from '@/components/training';
+import type { BossResult } from '../components/features/training/SurvivalGame';
+import type { TrainingMode } from '../components/ui/organisms/TrainingModeSelector';
 
 /**
  * Options for useTrainingCallbacks hook.
