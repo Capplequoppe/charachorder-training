@@ -5,7 +5,7 @@
  * and renders the active chapter's content.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ChapterRoadmap } from '../../ui/organisms/ChapterRoadmap';
 import { FingerFundamentals } from './FingerFundamentals';
 import { IntraHandTraining } from '../training/IntraHandTraining';
@@ -29,8 +29,16 @@ export function CampaignDashboard() {
   } = useCampaign();
 
   const [showSettings, setShowSettings] = useState(false);
+  // Counter to force chapter component remount when re-selecting the same chapter
+  const [chapterSelectionKey, setChapterSelectionKey] = useState(0);
 
   const { activeChapterId, chapters } = campaignState;
+
+  // Handle chapter selection - always increment key to force remount to mode-select
+  const handleSelectChapter = useCallback((chapterId: ChapterId) => {
+    setActiveChapter(chapterId);
+    setChapterSelectionKey(prev => prev + 1);
+  }, [setActiveChapter]);
 
   // Get active chapter definition
   const activeChapter = activeChapterId
@@ -70,22 +78,26 @@ export function CampaignDashboard() {
       isRevisiting,
     };
 
+    // Use chapterSelectionKey in the key to force remount when chapter is re-selected
+    const componentKey = `${activeChapterId}-${chapterSelectionKey}`;
+
     switch (activeChapterId) {
       case ChapterId.FINGER_FUNDAMENTALS:
-        return <FingerFundamentals {...campaignProps} />;
+        return <FingerFundamentals key={componentKey} {...campaignProps} />;
 
       case ChapterId.POWER_CHORDS_LEFT:
-        return <IntraHandTraining hand="left" {...campaignProps} />;
+        return <IntraHandTraining key={componentKey} hand="left" {...campaignProps} />;
 
       case ChapterId.POWER_CHORDS_RIGHT:
-        return <IntraHandTraining hand="right" {...campaignProps} />;
+        return <IntraHandTraining key={componentKey} hand="right" {...campaignProps} />;
 
       case ChapterId.POWER_CHORDS_CROSS:
-        return <CrossHandTraining onComplete={() => {}} {...campaignProps} />;
+        return <CrossHandTraining key={componentKey} onComplete={() => {}} {...campaignProps} />;
 
       case ChapterId.WORD_CHORDS:
         return (
           <WordChordTraining
+            key={componentKey}
             onComplete={handleChapterComplete}
             {...campaignProps}
           />
@@ -130,7 +142,7 @@ export function CampaignDashboard() {
           <ChapterRoadmap
             chapterStatuses={chapters}
             activeChapterId={activeChapterId}
-            onSelectChapter={setActiveChapter}
+            onSelectChapter={handleSelectChapter}
           />
         </aside>
 
