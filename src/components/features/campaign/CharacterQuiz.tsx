@@ -673,6 +673,20 @@ export function CharacterQuiz({
           const fingerColor = FINGER_COLORS[currentItem.fingerId];
           return (
             <div className="character-quiz__answer-reveal">
+              <button
+                className="character-quiz__continue-btn"
+                onClick={() => {
+                  setFeedback(null);
+                  if (currentIndex < totalQuestions - 1) {
+                    setCurrentIndex(currentIndex + 1);
+                  } else {
+                    setShowResults(true);
+                  }
+                }}
+              >
+                Continue (Enter)
+              </button>
+
               <div className="character-quiz__answer-header">
                 <span className="character-quiz__answer-label">The answer was:</span>
               </div>
@@ -694,20 +708,6 @@ export function CharacterQuiz({
                   </div>
                 )}
               </div>
-
-              <button
-                className="character-quiz__continue-btn"
-                onClick={() => {
-                  setFeedback(null);
-                  if (currentIndex < totalQuestions - 1) {
-                    setCurrentIndex(currentIndex + 1);
-                  } else {
-                    setShowResults(true);
-                  }
-                }}
-              >
-                Continue (Enter)
-              </button>
             </div>
           );
         })()}
