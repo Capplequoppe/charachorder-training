@@ -399,6 +399,28 @@
   border-color: #ff6b6b;
 }
 
+.reset-button--danger {
+  background: #e53e3e;
+  border-color: #e53e3e;
+  color: #fff;
+}
+
+.reset-button--danger:hover {
+  background: #c53030;
+  border-color: #c53030;
+}
+
+.reset-button--secondary {
+  background: #555;
+  border-color: #666;
+  color: #fff;
+}
+
+.reset-button--secondary:hover {
+  background: #666;
+  border-color: #777;
+}
+
 /* Chapter Unlock Grid */
 .chapter-unlock-grid {
   display: flex;

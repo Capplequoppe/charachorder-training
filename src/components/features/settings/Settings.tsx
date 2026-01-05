@@ -407,28 +407,25 @@ export function Settings() {
             </div>
             {!showResetConfirm ? (
               <button
-                className="reset-button"
+                className="reset-button reset-button--danger"
                 onClick={() => setShowResetConfirm(true)}
-                style={{ background: '#e53e3e' }}
               >
                 Reset Progress
               </button>
             ) : (
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button
-                  className="reset-button"
+                  className="reset-button reset-button--danger"
                   onClick={() => {
                     resetCampaign();
                     setShowResetConfirm(false);
                   }}
-                  style={{ background: '#e53e3e' }}
                 >
                   Confirm
                 </button>
                 <button
-                  className="reset-button"
+                  className="reset-button reset-button--secondary"
                   onClick={() => setShowResetConfirm(false)}
-                  style={{ background: '#666' }}
                 >
                   Cancel
                 </button>
