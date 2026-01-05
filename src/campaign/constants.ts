@@ -35,7 +35,7 @@ export const CHAPTERS: ChapterDefinition[] = [
     subtitle: '10 essential combinations',
     description:
       'Learn 2-key combinations using only your left hand. Master common digraphs like ER, OR, and OU that appear in thousands of words.',
-    icon: '🤚',
+    icon: '✋',
     componentKey: 'intraHandLeft',
     unlocksFeatures: [],
     requires: [ChapterId.FINGER_FUNDAMENTALS],
@@ -47,7 +47,7 @@ export const CHAPTERS: ChapterDefinition[] = [
     subtitle: '10 essential combinations',
     description:
       'Learn 2-key combinations using only your right hand. Master common digraphs like TH, ST, and AN that form the backbone of English.',
-    icon: '✋',
+    icon: '🤚',
     componentKey: 'intraHandRight',
     unlocksFeatures: [],
     requires: [ChapterId.FINGER_FUNDAMENTALS],

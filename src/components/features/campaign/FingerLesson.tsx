@@ -280,7 +280,7 @@ export function FingerLesson({
           style={{ backgroundColor: fingerColor }}
         >
           <span className="finger-lesson__finger-icon">
-            {fingerId.startsWith('l_') ? '🤚' : '✋'}
+            {fingerId.startsWith('l_') ? '✋' : '🤚'}
           </span>
         </div>
         <h2 className="finger-lesson__finger-name">{fingerName}</h2>
