@@ -10,3 +10,5 @@ export { ColorDefinition } from './ColorDefinition';
 export { NoteDefinition } from './NoteDefinition';
 
 export type { AudioVariation } from './NoteDefinition';
+
+export { CharacterMapping } from './CharacterMapping';

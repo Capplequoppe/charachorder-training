@@ -32,3 +32,10 @@ export {
   getAchievementRepository,
   resetAchievementRepository,
 } from './AchievementRepository';
+
+export type { ILayoutRepository } from './LayoutRepository';
+export {
+  LayoutRepository,
+  getLayoutRepository,
+  resetLayoutRepository,
+} from './LayoutRepository';

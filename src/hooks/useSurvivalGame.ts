@@ -22,8 +22,8 @@ import {
   getHighScoreService,
   type HighScoreCategory,
 } from '../services';
-import { getCharsForFinger, getConfigForChar } from '../config/fingerMapping';
 import { getFingerColor } from '../data/static/colorConfig';
+import { getLayoutService } from '../services/LayoutService';
 
 // ============================================================================
 // Types
@@ -181,6 +181,7 @@ export function generateChallenges(
   bossMode?: BossModeConfig
 ): SurvivalChallenge[] {
   const { powerChords, words, progress } = getServiceRepositories();
+  const layoutService = getLayoutService();
 
   const filterByMastery = <T extends SurvivalChallenge>(
     challenges: T[],
@@ -239,7 +240,7 @@ export function generateChallenges(
     case 'fingers': {
       const fingerChallenges: FingerChallenge[] = [];
       for (const fingerId of ALL_FINGER_IDS) {
-        const chars = getCharsForFinger(fingerId);
+        const chars = layoutService.getEffectiveCharsForFinger(fingerId);
         if (chars.length > 0) {
           for (let i = 0; i < 3; i++) {
             fingerChallenges.push({
@@ -266,9 +267,9 @@ export function generateChallenges(
     case 'characters': {
       let charChallenges: CharacterChallenge[] = [];
       for (const fingerId of ALL_FINGER_IDS) {
-        const chars = getCharsForFinger(fingerId);
+        const chars = layoutService.getEffectiveCharsForFinger(fingerId);
         for (const char of chars) {
-          const config = getConfigForChar(char);
+          const config = layoutService.getEffectiveConfigForChar(char);
           const color = config ? getFingerColor(config.fingerId, config.direction) : '#888';
           charChallenges.push({
             type: 'character',

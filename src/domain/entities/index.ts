@@ -35,3 +35,5 @@ export type {
   TrainableItemType,
   DisplayCharacter,
 } from './TrainableItem';
+
+export { LayoutProfile } from './LayoutProfile';

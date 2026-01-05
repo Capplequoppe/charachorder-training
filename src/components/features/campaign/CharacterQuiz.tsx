@@ -13,8 +13,6 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Direction, FingerId } from '../../../domain';
 import {
-  ALL_CHARACTERS,
-  getConfigForChar,
   getFingerName,
   getDirectionSymbol,
   FINGER_COLORS,
@@ -22,6 +20,7 @@ import {
 import { getMnemonic } from '../../../config/fingerMnemonics';
 import { getFingerColor } from '../../../data/static/colorConfig';
 import { useProgress, useAudio } from '../../../hooks';
+import { useLayoutContext } from '../../../hooks/LayoutContext';
 import { getHighScoreService } from '../../../services';
 import './CharacterQuiz.css';
 
@@ -91,6 +90,7 @@ export function CharacterQuiz({
   const progressService = useProgress();
   const highScoreService = getHighScoreService();
   const { playFingerNote, playErrorSound } = useAudio();
+  const { getAllCharacters, getConfigForChar } = useLayoutContext();
 
   // Mode selection state
   const [showSelector, setShowSelector] = useState(showModeSelector && !initialMode);
@@ -134,7 +134,7 @@ export function CharacterQuiz({
     }
 
     // Otherwise, use all characters (filtered by fingers if provided)
-    for (const char of ALL_CHARACTERS) {
+    for (const char of getAllCharacters()) {
       const config = getConfigForChar(char);
       if (config) {
         // Filter by fingers if provided
@@ -150,7 +150,7 @@ export function CharacterQuiz({
       }
     }
     return chars;
-  }, [fingers, characters]);
+  }, [fingers, characters, getAllCharacters, getConfigForChar]);
 
   // Generate quiz items for standard mode
   const quizItems = useMemo<QuizItem[]>(() => {

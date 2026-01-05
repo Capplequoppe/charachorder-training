@@ -10,12 +10,14 @@ import {
   WordRepository,
   ProgressRepository,
   ExtensionRepository,
+  LayoutRepository,
   IFingerRepository,
   ICharacterRepository,
   IPowerChordRepository,
   IWordRepository,
   IProgressRepository,
   IExtensionRepository,
+  ILayoutRepository,
 } from './repositories';
 
 /**
@@ -28,6 +30,7 @@ export interface Repositories {
   words: IWordRepository;
   progress: IProgressRepository;
   extensions: IExtensionRepository;
+  layouts: ILayoutRepository;
 }
 
 /**
@@ -50,6 +53,7 @@ export function createRepositories(): Repositories {
     words: new WordRepository(characterRepo),
     progress: new ProgressRepository(),
     extensions: new ExtensionRepository(powerChordRepo),
+    layouts: new LayoutRepository(),
   };
 }
 
