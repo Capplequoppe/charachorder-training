@@ -344,6 +344,12 @@
   color: #888;
 }
 
+.mapping-row__badge--empty {
+  background: #1a1a1a;
+  color: #555;
+  border: 1px dashed #333;
+}
+
 .mapping-row__reset-btn {
   padding: 4px 8px;
   background: transparent;

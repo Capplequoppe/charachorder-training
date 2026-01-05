@@ -188,16 +188,25 @@ export function LayoutMappingTable({
   const renderMappingRow = (fingerId: FingerId, direction: Direction) => {
     const key = `${fingerId}:${direction}`;
     const defaultChar = getDefaultChar(fingerId, direction);
-
-    // Skip if there's no default char for this direction
-    if (defaultChar === null) {
-      return null;
-    }
-
     const currentChar = getEffectiveChar(fingerId, direction);
     const isCustom = isCustomMapping(fingerId, direction);
+    const hasDefault = defaultChar !== null;
     const error = errors[key];
     const dirConfig = DIRECTION_CONFIG[direction];
+
+    // Determine badge text and style
+    let badgeText: string;
+    let badgeClass: string;
+    if (isCustom) {
+      badgeText = 'Custom';
+      badgeClass = 'mapping-row__badge--custom';
+    } else if (hasDefault) {
+      badgeText = 'Default';
+      badgeClass = 'mapping-row__badge--default';
+    } else {
+      badgeText = 'Empty';
+      badgeClass = 'mapping-row__badge--empty';
+    }
 
     return (
       <div key={key} className="mapping-row">
@@ -213,21 +222,20 @@ export function LayoutMappingTable({
             onChange={(e) => handleCharChange(fingerId, direction, e.target.value)}
             maxLength={1}
             disabled={readOnly}
-            title={error || (isCustom ? 'Custom mapping' : 'Default mapping')}
+            placeholder={hasDefault ? '' : '—'}
+            title={error || (isCustom ? 'Custom mapping' : hasDefault ? 'Default mapping' : 'No default mapping')}
           />
-          <span
-            className={`mapping-row__badge ${isCustom ? 'mapping-row__badge--custom' : 'mapping-row__badge--default'}`}
-          >
-            {isCustom ? 'Custom' : 'Default'}
+          <span className={`mapping-row__badge ${badgeClass}`}>
+            {badgeText}
           </span>
           {isCustom && !readOnly && (
             <button
               type="button"
               className="mapping-row__reset-btn"
               onClick={() => handleReset(fingerId, direction)}
-              title="Reset to default"
+              title={hasDefault ? 'Reset to default' : 'Clear mapping'}
             >
-              Reset
+              {hasDefault ? 'Reset' : 'Clear'}
             </button>
           )}
         </div>
@@ -239,11 +247,7 @@ export function LayoutMappingTable({
   const renderFingerGroup = (fingerId: FingerId) => {
     const fingerName = FINGER_NAMES[fingerId];
     const fingerColor = FINGER_COLORS[fingerId];
-    const rows = DIRECTION_ORDER.map((dir) => renderMappingRow(fingerId, dir)).filter(Boolean);
-
-    if (rows.length === 0) {
-      return null;
-    }
+    const rows = DIRECTION_ORDER.map((dir) => renderMappingRow(fingerId, dir));
 
     return (
       <div key={fingerId} className="mapping-table__finger-group">
