@@ -13,6 +13,7 @@ import { useCampaign } from '../../../campaign';
 import { CHAPTERS } from '../../../campaign/constants';
 import { ChapterId } from '../../../campaign/types';
 import { useTips } from '../../../tips';
+import { LayoutSettingsSection } from './LayoutSettingsSection';
 import './settings.css';
 
 /**
@@ -301,6 +302,9 @@ export function Settings() {
           </label>
         </div>
       </section>
+
+      {/* Keyboard Layout Section */}
+      <LayoutSettingsSection />
 
       {/* Training Section */}
       <section className="settings-section">

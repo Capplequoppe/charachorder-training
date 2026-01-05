@@ -12,6 +12,7 @@ export const STORAGE_KEYS = {
   WORD_PROGRESS: 'cc_progress_words',
   STATS: 'cc_stats',
   SETTINGS: 'cc_settings',
+  LAYOUTS: 'cc_layouts',
 } as const;
 
 /**

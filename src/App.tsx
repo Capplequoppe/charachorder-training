@@ -6,6 +6,7 @@
 
 import { CampaignProvider, useCampaign } from './campaign';
 import { TipsProvider, useTips, TipModal } from './tips';
+import { LayoutProvider } from './hooks/LayoutContext';
 import { ModeSelector } from './components/ui/organisms/ModeSelector';
 import { CampaignDashboard } from './components/features/campaign/CampaignDashboard';
 import { UnlockNotification } from './components/ui/molecules/UnlockNotification';
@@ -16,11 +17,13 @@ import './App.css';
  */
 function App() {
   return (
-    <CampaignProvider>
-      <TipsProvider>
-        <AppContent />
-      </TipsProvider>
-    </CampaignProvider>
+    <LayoutProvider>
+      <CampaignProvider>
+        <TipsProvider>
+          <AppContent />
+        </TipsProvider>
+      </CampaignProvider>
+    </LayoutProvider>
   );
 }
 

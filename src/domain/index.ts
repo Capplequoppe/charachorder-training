@@ -33,6 +33,7 @@ export {
   Finger,
   Character,
   PowerChord,
+  LayoutProfile,
   LEFT_FINGER_IDS,
   RIGHT_FINGER_IDS,
   ALL_FINGER_IDS,
@@ -58,6 +59,7 @@ export type {
 export {
   ColorDefinition,
   NoteDefinition,
+  CharacterMapping,
 } from './valueObjects';
 
 export type { AudioVariation } from './valueObjects';
