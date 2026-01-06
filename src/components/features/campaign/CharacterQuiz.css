@@ -11,6 +11,11 @@
   position: relative;
 }
 
+/* Add top padding when back button is present to prevent overlap */
+.character-quiz:has(.character-quiz__back-btn) {
+  padding-top: 4rem;
+}
+
 .character-quiz__back-btn {
   position: absolute;
   top: 1rem;

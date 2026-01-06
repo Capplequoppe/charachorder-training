@@ -16,6 +16,20 @@
   min-height: 400px;
 }
 
+/* Add top padding when back button is present to prevent overlap */
+.intra-hand-training:has(.back-to-select-btn),
+.cross-hand-training:has(.back-to-select-btn) {
+  padding-top: 4rem;
+}
+
+/* Responsive: Stack header below back button on narrow screens */
+@media (max-width: 600px) {
+  .intra-hand-training:has(.back-to-select-btn) .training-header,
+  .cross-hand-training:has(.back-to-select-btn) .training-header {
+    margin-top: 0.5rem;
+  }
+}
+
 .training-header {
   display: flex;
   justify-content: space-between;
