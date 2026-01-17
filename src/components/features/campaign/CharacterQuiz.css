@@ -315,6 +315,19 @@
   text-shadow: 0 0 40px currentColor;
 }
 
+.character-quiz__target-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 12rem;
+}
+
+.character-quiz__answer-char-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .character-quiz__hint {
   padding: 0.75rem 1.5rem;
   background: rgba(245, 101, 101, 0.1);

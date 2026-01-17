@@ -2213,6 +2213,13 @@
   text-shadow: 0 0 30px currentColor;
 }
 
+.character-display-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10rem;
+}
+
 .finger-indicator-large {
   transform: scale(1.5);
   margin: 1rem 0;

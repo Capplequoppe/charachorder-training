@@ -22,6 +22,7 @@ import { getFingerColor } from '../../../data/static/colorConfig';
 import { useProgress, useAudio, useKeyboardNavigation } from '../../../hooks';
 import { useLayoutContext } from '../../../hooks/LayoutContext';
 import { getHighScoreService } from '../../../services';
+import { CharacterWithReference } from '../../ui/atoms/CharacterWithReference';
 import './CharacterQuiz.css';
 
 /**
@@ -716,12 +717,13 @@ export function CharacterQuiz({
 
         <div className="character-quiz__prompt">
           <span className="character-quiz__instruction">Type this character:</span>
-          <span
-            className="character-quiz__target"
-            style={{ color: currentItem.color }}
-          >
-            {currentItem.char.toUpperCase()}
-          </span>
+          <div className="character-quiz__target-wrapper">
+            <CharacterWithReference
+              char={currentItem.char}
+              color={currentItem.color}
+              showLabel={true}
+            />
+          </div>
         </div>
 
         {/* Show detailed answer after incorrect (standard mode only) */}
@@ -748,8 +750,13 @@ export function CharacterQuiz({
                 <span className="character-quiz__answer-label">The answer was:</span>
               </div>
 
-              <div className="character-quiz__answer-char" style={{ color: currentItem.color }}>
-                {currentItem.char.toUpperCase()}
+              <div className="character-quiz__answer-char-wrapper">
+                <CharacterWithReference
+                  char={currentItem.char}
+                  color={currentItem.color}
+                  showLabel={true}
+                  fontSize={5}
+                />
               </div>
 
               <div className="character-quiz__answer-details">

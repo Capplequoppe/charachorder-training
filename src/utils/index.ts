@@ -23,3 +23,11 @@ export type {
   ChordUsageResult,
   KeystrokeEvent,
 } from './chordDetection';
+
+export {
+  needsVisualReference,
+  getCharacterName,
+  getCharacterDisplayInfo,
+  CHARACTERS_NEEDING_REFERENCE,
+  CHARACTER_NAMES,
+} from './characterDisplay';

@@ -12,6 +12,7 @@ import { MasteryLevel } from '../../../domain';
 import { getHighScoreService } from '../../../services';
 import { FINGER_NAMES, FINGER_COLORS } from '../../../config/fingerMapping';
 import { ColoredFinger } from '../../ui/atoms/ColoredFinger';
+import { CharacterWithReference } from '../../ui/atoms/CharacterWithReference';
 import {
   useSurvivalGame,
   DIFFICULTY_SETTINGS,
@@ -357,9 +358,14 @@ function CharacterDisplay({ challenge }: CharacterDisplayProps) {
   return (
     <div className="character-challenge-display survival-target">
       <p className="character-prompt">Press:</p>
-      <h1 className="character-display" style={{ color: challenge.color }}>
-        {challenge.char.toUpperCase()}
-      </h1>
+      <div className="character-display-wrapper">
+        <CharacterWithReference
+          char={challenge.char}
+          color={challenge.color}
+          showLabel={true}
+          fontSize={6}
+        />
+      </div>
     </div>
   );
 }
