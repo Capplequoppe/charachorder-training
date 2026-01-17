@@ -134,3 +134,23 @@ export type {
   UseSurvivalGameOptions,
   UseSurvivalGameResult,
 } from './useSurvivalGame';
+
+// Keyboard Navigation
+export {
+  KeyboardNavigationProvider,
+  useKeyboardNavigationContext,
+} from './KeyboardNavigationContext';
+export type {
+  FocusAreaLayout,
+  FocusableItem,
+  FocusArea,
+  KeyboardNavigationContextValue,
+} from './KeyboardNavigationContext';
+
+export { useKeyboardNavigation } from './useKeyboardNavigation';
+export type {
+  NavigationItem,
+  UseKeyboardNavigationOptions,
+  ItemProps,
+  UseKeyboardNavigationResult,
+} from './useKeyboardNavigation';

@@ -1,0 +1,100 @@
+/**
+ * Keyboard Focus Indicator Styles
+ *
+ * Provides visual feedback for keyboard navigation.
+ * Focus indicators appear only when using keyboard navigation,
+ * not on mouse clicks.
+ */
+
+/* Base keyboard focus class - adds positioning context */
+.keyboard-focus {
+  position: relative;
+}
+
+/* Focus indicator using pseudo-element */
+.keyboard-focus[data-keyboard-focus="true"]::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--color-info, #3498DB);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 10;
+  animation: keyboard-focus-pulse 1.5s ease-in-out infinite;
+}
+
+/* Pulse animation for focus ring */
+@keyframes keyboard-focus-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+  }
+}
+
+/* Variant for card-style elements with rounded corners */
+.keyboard-focus--card[data-keyboard-focus="true"]::before {
+  border-radius: 12px;
+}
+
+/* Variant for button-style elements */
+.keyboard-focus--button[data-keyboard-focus="true"]::before {
+  border-radius: 8px;
+}
+
+/* Variant for small elements */
+.keyboard-focus--small[data-keyboard-focus="true"]::before {
+  inset: -2px;
+  border-width: 1.5px;
+}
+
+/* Variant for inline elements */
+.keyboard-focus--inline[data-keyboard-focus="true"]::before {
+  inset: -2px -4px;
+  border-radius: 4px;
+}
+
+/* Suppress browser focus outline when using keyboard navigation */
+.keyboard-navigation-active *:focus {
+  outline: none;
+}
+
+/* Keep focus-visible for accessibility when not using our navigation system */
+.keyboard-navigation-active *:focus-visible {
+  outline: none;
+}
+
+/* Ensure focus indicator is above other content */
+.keyboard-focus[data-keyboard-focus="true"] {
+  z-index: 1;
+}
+
+/* Screen reader only text utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .keyboard-focus[data-keyboard-focus="true"]::before {
+    border-width: 3px;
+    border-color: var(--color-text-primary, #ffffff);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-focus[data-keyboard-focus="true"]::before {
+    animation: none;
+  }
+}

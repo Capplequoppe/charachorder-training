@@ -17,6 +17,7 @@ import {
   useCampaignProgress,
   useQuizCountdown,
   useTrainingCallbacks,
+  useKeyboardNavigation,
 } from '../../../hooks';
 import { ChapterId } from '../../../campaign';
 import {
@@ -138,6 +139,17 @@ export function WordChordTraining({
   useEffect(() => {
     setOnStartQuizCountdown(() => startCountdown(3));
   }, [setOnStartQuizCountdown, startCountdown]);
+
+  // Keyboard navigation for ESC to go back during training phases
+  useKeyboardNavigation({
+    areaId: 'word-chord-training',
+    layout: 'vertical',
+    items: [], // No focusable items, just ESC handling
+    enabled: phaseControl.phase === 'intro' ||
+             phaseControl.phase === 'practice' ||
+             phaseControl.phase === 'quiz',
+    onEscape: backToModeSelect,
+  });
 
   // Track if letters have been revealed for current quiz item (stays true until next item)
   const [quizLettersRevealed, setQuizLettersRevealed] = useState(false);

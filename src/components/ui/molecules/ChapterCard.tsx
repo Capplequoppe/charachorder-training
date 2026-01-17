@@ -23,6 +23,10 @@ interface ChapterCardProps {
     current: number;
     total: number;
   };
+  /** Keyboard navigation focus indicator */
+  'data-keyboard-focus'?: boolean;
+  /** Additional class name from keyboard navigation */
+  keyboardClassName?: string;
 }
 
 /**
@@ -46,17 +50,26 @@ export function ChapterCard({
   isActive,
   onClick,
   progress,
+  'data-keyboard-focus': isKeyboardFocused,
+  keyboardClassName,
 }: ChapterCardProps) {
   const state = getChapterState(status, isActive);
   const isClickable = status.isUnlocked;
 
+  const classNames = [
+    'chapter-card',
+    `chapter-card--${state}`,
+    keyboardClassName,
+  ].filter(Boolean).join(' ');
+
   return (
     <button
-      className={`chapter-card chapter-card--${state}`}
+      className={classNames}
       onClick={isClickable ? onClick : undefined}
       disabled={!isClickable}
       aria-label={`${chapter.title} - ${state}`}
       aria-current={isActive ? 'step' : undefined}
+      data-keyboard-focus={isKeyboardFocused}
     >
       <div className="chapter-card__header">
         <span className="chapter-card__number">{chapter.number}</span>

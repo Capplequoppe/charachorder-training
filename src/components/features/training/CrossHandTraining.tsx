@@ -17,6 +17,7 @@ import {
   useCampaignProgress,
   useQuizCountdown,
   useTrainingCallbacks,
+  useKeyboardNavigation,
 } from '../../../hooks';
 import { ChapterId } from '../../../campaign';
 import { getRepositories, CROSS_HAND_TIMING_THRESHOLDS } from '../../../data';
@@ -130,6 +131,17 @@ export function CrossHandTraining({
   useEffect(() => {
     setOnStartQuizCountdown(() => startCountdown(3));
   }, [setOnStartQuizCountdown, startCountdown]);
+
+  // Keyboard navigation for ESC to go back during training phases
+  useKeyboardNavigation({
+    areaId: 'cross-hand-training',
+    layout: 'vertical',
+    items: [], // No focusable items, just ESC handling
+    enabled: phaseControl.phase === 'sync-practice' ||
+             phaseControl.phase === 'practice' ||
+             phaseControl.phase === 'quiz',
+    onEscape: backToModeSelect,
+  });
 
   // Use shared input hook
   const input = useChordInput({

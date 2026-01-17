@@ -19,7 +19,7 @@ import {
 } from '../../../config/fingerMapping';
 import { getMnemonic } from '../../../config/fingerMnemonics';
 import { getFingerColor } from '../../../data/static/colorConfig';
-import { useProgress, useAudio } from '../../../hooks';
+import { useProgress, useAudio, useKeyboardNavigation } from '../../../hooks';
 import { useLayoutContext } from '../../../hooks/LayoutContext';
 import { getHighScoreService } from '../../../services';
 import './CharacterQuiz.css';
@@ -97,6 +97,34 @@ export function CharacterQuiz({
   const [selectedMode, setSelectedMode] = useState<QuizMode>(initialMode ?? 'standard');
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>(initialDifficulty);
 
+  // Keyboard navigation for mode selector
+  const modeItems = useMemo(() => [
+    { id: 'standard', onActivate: () => setSelectedMode('standard') },
+    { id: 'endless', onActivate: () => setSelectedMode('endless') },
+  ], []);
+
+  const difficultyItems = useMemo(() => {
+    return (Object.keys(DIFFICULTY_CONFIG) as DifficultyLevel[]).map((level) => ({
+      id: level,
+      onActivate: () => setSelectedDifficulty(level),
+    }));
+  }, []);
+
+  const { getItemProps: getModeItemProps } = useKeyboardNavigation({
+    areaId: 'quiz-mode-selector',
+    layout: 'horizontal',
+    items: modeItems,
+    enabled: showSelector,
+    onEscape: onBack,
+  });
+
+  const { getItemProps: getDifficultyItemProps } = useKeyboardNavigation({
+    areaId: 'quiz-difficulty-selector',
+    layout: 'horizontal',
+    items: difficultyItems,
+    enabled: showSelector && selectedMode === 'endless',
+  });
+
   // Quiz state
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -112,6 +140,26 @@ export function CharacterQuiz({
   // Timer ref for endless mode
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Abort handler for ESC during quiz
+  const handleQuizEscape = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (countdownRef.current) clearInterval(countdownRef.current);
+    if (onBack) {
+      onBack();
+    } else {
+      onComplete();
+    }
+  }, [onBack, onComplete]);
+
+  // Keyboard navigation for quiz phase (handles ESC to abort)
+  useKeyboardNavigation({
+    areaId: 'quiz-active',
+    layout: 'vertical',
+    items: [], // No focusable items, just ESC handling
+    enabled: !showSelector && !showResults,
+    onEscape: handleQuizEscape,
+  });
 
   // All available characters (filtered by characters or fingers if provided)
   const allChars = useMemo<QuizItem[]>(() => {
@@ -538,11 +586,14 @@ export function CharacterQuiz({
     <div className="character-quiz__selector">
       <h2 className="character-quiz__selector-title">Choose Quiz Mode</h2>
 
-      <div className="character-quiz__mode-cards">
+      <div className="character-quiz__mode-cards" role="listbox" aria-label="Quiz mode">
         {/* Standard Mode */}
         <div
-          className={`character-quiz__mode-card ${selectedMode === 'standard' ? 'selected' : ''}`}
-          onClick={() => setSelectedMode('standard')}
+          className={`character-quiz__mode-card ${selectedMode === 'standard' ? 'selected' : ''} ${getModeItemProps('standard', 'keyboard-focus--card').className}`}
+          onClick={getModeItemProps('standard').onClick}
+          data-keyboard-focus={getModeItemProps('standard')['data-keyboard-focus']}
+          role="option"
+          aria-selected={selectedMode === 'standard'}
         >
           <span className="character-quiz__mode-icon">📝</span>
           <h3 className="character-quiz__mode-name">Standard Quiz</h3>
@@ -553,8 +604,11 @@ export function CharacterQuiz({
 
         {/* Endless Mode */}
         <div
-          className={`character-quiz__mode-card ${selectedMode === 'endless' ? 'selected' : ''}`}
-          onClick={() => setSelectedMode('endless')}
+          className={`character-quiz__mode-card ${selectedMode === 'endless' ? 'selected' : ''} ${getModeItemProps('endless', 'keyboard-focus--card').className}`}
+          onClick={getModeItemProps('endless').onClick}
+          data-keyboard-focus={getModeItemProps('endless')['data-keyboard-focus']}
+          role="option"
+          aria-selected={selectedMode === 'endless'}
         >
           <span className="character-quiz__mode-icon">⚡</span>
           <h3 className="character-quiz__mode-name">Endless Mode</h3>
@@ -568,15 +622,18 @@ export function CharacterQuiz({
       {selectedMode === 'endless' && (
         <div className="character-quiz__difficulty">
           <h3 className="character-quiz__difficulty-title">Select Difficulty</h3>
-          <div className="character-quiz__difficulty-options">
+          <div className="character-quiz__difficulty-options" role="listbox" aria-label="Difficulty level">
             {(Object.keys(DIFFICULTY_CONFIG) as DifficultyLevel[]).map((level) => {
               const config = DIFFICULTY_CONFIG[level];
               const highScore = highScores[level];
+              const difficultyProps = getDifficultyItemProps(level, 'keyboard-focus--button');
               return (
                 <button
                   key={level}
-                  className={`character-quiz__difficulty-btn ${selectedDifficulty === level ? 'selected' : ''}`}
-                  onClick={() => setSelectedDifficulty(level)}
+                  className={`character-quiz__difficulty-btn ${selectedDifficulty === level ? 'selected' : ''} ${difficultyProps.className}`}
+                  onClick={difficultyProps.onClick}
+                  data-keyboard-focus={difficultyProps['data-keyboard-focus']}
+                  aria-selected={selectedDifficulty === level}
                 >
                   <span className="character-quiz__difficulty-label">{config.label}</span>
                   <span className="character-quiz__difficulty-time">{config.description}</span>

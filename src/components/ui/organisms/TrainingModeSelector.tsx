@@ -5,9 +5,10 @@
  * Displays mastery progress and available training options.
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ChapterMasteryProgress } from '../../../campaign';
 import { useTips, TipTrigger } from '../../../tips';
+import { useKeyboardNavigation, useKeyboardNavigationContext } from '../../../hooks';
 import '../../features/training/training.css';
 
 /**
@@ -74,7 +75,15 @@ export function TrainingModeSelector({
   inCampaignMode = false,
 }: TrainingModeSelectorProps): React.ReactElement {
   const { triggerTip } = useTips();
+  const { setActiveArea } = useKeyboardNavigationContext();
   const { itemsMastered, itemsFamiliar, totalItems, itemsLearned, itemsDueForReview, nextReviewDate, itemsReadyForBoss } = progress;
+
+  // Handle ESC key to go back and move focus to sidebar
+  const handleEscape = useCallback(() => {
+    onBack?.();
+    // Move focus back to the chapter selection sidebar
+    setActiveArea('campaign-sidebar');
+  }, [onBack, setActiveArea]);
 
   // Wrap mode selection to trigger tips
   const handleModeSelect = useCallback((mode: TrainingMode) => {
@@ -100,6 +109,68 @@ export function TrainingModeSelector({
 
   // Determine if chapter is ready for completion (boss defeated is enough)
   const readyForCompletion = bossDefeated;
+
+  // Build navigation items for keyboard navigation
+  const navigationItems = useMemo(() => {
+    const items: Array<{ id: TrainingMode; onActivate: () => void; disabled?: boolean }> = [];
+
+    // Learn More
+    if (hasUnlearned) {
+      items.push({ id: 'learn', onActivate: () => handleModeSelect('learn') });
+    }
+
+    // Review Due
+    if (hasDueItems || hasScheduledReview) {
+      items.push({
+        id: 'review-due',
+        onActivate: () => hasDueItems && handleModeSelect('review-due'),
+        disabled: !hasDueItems,
+      });
+    }
+
+    // Review All
+    if (itemsLearned > 0) {
+      items.push({ id: 'review-all', onActivate: () => handleModeSelect('review-all') });
+    }
+
+    // Boss Challenge
+    items.push({
+      id: 'boss',
+      onActivate: () => canChallengeBoss && handleModeSelect('boss'),
+      disabled: !canChallengeBoss,
+    });
+
+    // Survival Mode
+    if (itemsMastered > 0) {
+      items.push({ id: 'survival', onActivate: () => handleModeSelect('survival') });
+    }
+
+    // Journey
+    if (itemsLearned > 0) {
+      items.push({ id: 'journey', onActivate: () => handleModeSelect('journey') });
+    }
+
+    return items;
+  }, [hasUnlearned, hasDueItems, hasScheduledReview, itemsLearned, itemsMastered, canChallengeBoss, handleModeSelect]);
+
+  // Keyboard navigation hook
+  const { getItemProps } = useKeyboardNavigation({
+    areaId: 'campaign-content',
+    layout: 'vertical',
+    items: navigationItems,
+    leftArea: 'campaign-sidebar',
+    onEscape: handleEscape,
+  });
+
+  // Helper to get button props with keyboard navigation
+  const getModeButtonProps = (modeId: TrainingMode, baseClassName: string) => {
+    const itemProps = getItemProps(modeId, 'keyboard-focus--button');
+    return {
+      className: `${baseClassName} ${itemProps.className}`,
+      onClick: itemProps.onClick,
+      'data-keyboard-focus': itemProps['data-keyboard-focus'],
+    };
+  };
 
   return (
     <div className="training-mode-selector">
@@ -149,12 +220,11 @@ export function TrainingModeSelector({
       )}
 
       {/* Training Mode Options */}
-      <div className="training-mode-options">
+      <div className="training-mode-options" role="listbox" aria-label="Training modes">
         {/* Learn More - only if there are unmastered items */}
         {hasUnlearned && (
           <button
-            className="mode-option learn"
-            onClick={() => handleModeSelect('learn')}
+            {...getModeButtonProps('learn', 'mode-option learn')}
           >
             <span className="mode-icon">📚</span>
             <span className="mode-title">Learn More</span>
@@ -167,8 +237,7 @@ export function TrainingModeSelector({
         {/* Review Due - show items due, or next review time if none due */}
         {(hasDueItems || hasScheduledReview) && (
           <button
-            className={`mode-option review-due ${!hasDueItems ? 'scheduled' : ''}`}
-            onClick={() => hasDueItems && handleModeSelect('review-due')}
+            {...getModeButtonProps('review-due', `mode-option review-due ${!hasDueItems ? 'scheduled' : ''}`)}
             disabled={!hasDueItems}
           >
             <span className="mode-icon">🔄</span>
@@ -185,8 +254,7 @@ export function TrainingModeSelector({
         {/* Review All - only if there are learned items */}
         {itemsLearned > 0 && (
           <button
-            className="mode-option review-all"
-            onClick={() => handleModeSelect('review-all')}
+            {...getModeButtonProps('review-all', 'mode-option review-all')}
           >
             <span className="mode-icon">📝</span>
             <span className="mode-title">Review All</span>
@@ -198,8 +266,7 @@ export function TrainingModeSelector({
 
         {/* Boss Challenge - requires 75% mastered + rest familiar */}
         <button
-          className={`mode-option boss ${!canChallengeBoss ? 'locked' : ''} ${bossDefeated ? 'defeated' : ''}`}
-          onClick={() => canChallengeBoss && handleModeSelect('boss')}
+          {...getModeButtonProps('boss', `mode-option boss ${!canChallengeBoss ? 'locked' : ''} ${bossDefeated ? 'defeated' : ''}`)}
           disabled={!canChallengeBoss}
         >
           <span className="mode-icon">{bossDefeated ? '🏆' : '👑'}</span>
@@ -217,8 +284,7 @@ export function TrainingModeSelector({
         {/* Survival Mode - only if there are mastered items */}
         {itemsMastered > 0 && (
           <button
-            className="mode-option survival"
-            onClick={() => handleModeSelect('survival')}
+            {...getModeButtonProps('survival', 'mode-option survival')}
           >
             <span className="mode-icon">⚔️</span>
             <span className="mode-title">Survival Mode</span>
@@ -231,8 +297,7 @@ export function TrainingModeSelector({
         {/* Journey - View learning progress */}
         {itemsLearned > 0 && (
           <button
-            className="mode-option journey"
-            onClick={() => handleModeSelect('journey')}
+            {...getModeButtonProps('journey', 'mode-option journey')}
           >
             <span className="mode-icon">🗺️</span>
             <span className="mode-title">Your Journey</span>

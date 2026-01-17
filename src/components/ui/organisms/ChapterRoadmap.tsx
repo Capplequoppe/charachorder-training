@@ -5,7 +5,7 @@
  * the progression path and dependencies.
  */
 
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { ChapterCard } from '../molecules/ChapterCard';
 import {
   ChapterId,
@@ -13,6 +13,7 @@ import {
   type ChapterDefinition,
   type ChapterStatus,
 } from '../../../campaign';
+import { useKeyboardNavigation, useKeyboardNavigationContext } from '../../../hooks';
 import './ChapterRoadmap.css';
 
 interface ChapterRoadmapProps {
@@ -36,6 +37,7 @@ export function ChapterRoadmap({
   activeChapterId,
   onSelectChapter,
 }: ChapterRoadmapProps) {
+  const { setActiveArea } = useKeyboardNavigationContext();
   const completedCount = countCompleted(chapterStatuses);
   const totalCount = CHAPTERS.length;
 
@@ -46,15 +48,60 @@ export function ChapterRoadmap({
   const chapter2c = CHAPTERS.find((c) => c.id === ChapterId.POWER_CHORDS_CROSS)!;
   const chapter3 = CHAPTERS.find((c) => c.id === ChapterId.WORD_CHORDS)!;
 
-  const renderChapterCard = (chapter: ChapterDefinition) => (
-    <ChapterCard
-      key={chapter.id}
-      chapter={chapter}
-      status={chapterStatuses[chapter.id]}
-      isActive={activeChapterId === chapter.id}
-      onClick={() => onSelectChapter(chapter.id)}
-    />
-  );
+  // Chapter order for keyboard navigation (vertical list)
+  const chapterOrder = [
+    ChapterId.FINGER_FUNDAMENTALS,
+    ChapterId.POWER_CHORDS_LEFT,
+    ChapterId.POWER_CHORDS_RIGHT,
+    ChapterId.POWER_CHORDS_CROSS,
+    ChapterId.WORD_CHORDS,
+  ];
+
+  // Handle chapter selection with focus transfer
+  const handleChapterSelect = useCallback((chapterId: ChapterId) => {
+    onSelectChapter(chapterId);
+    // Move focus to the content area after selecting a chapter
+    // Use a small delay to ensure the content area is registered
+    setTimeout(() => {
+      setActiveArea('campaign-content');
+    }, 50);
+  }, [onSelectChapter, setActiveArea]);
+
+  // Create navigation items for keyboard navigation
+  const navigationItems = useMemo(() => {
+    return chapterOrder.map((chapterId) => ({
+      id: chapterId,
+      onActivate: () => {
+        if (chapterStatuses[chapterId].isUnlocked) {
+          handleChapterSelect(chapterId);
+        }
+      },
+      disabled: !chapterStatuses[chapterId].isUnlocked,
+    }));
+  }, [chapterStatuses, handleChapterSelect]);
+
+  // Keyboard navigation hook
+  const { getItemProps, focusedItemId } = useKeyboardNavigation({
+    areaId: 'campaign-sidebar',
+    layout: 'vertical',
+    items: navigationItems,
+    rightArea: 'campaign-content',
+  });
+
+  const renderChapterCard = (chapter: ChapterDefinition) => {
+    const itemProps = getItemProps(chapter.id, 'keyboard-focus--card');
+    return (
+      <ChapterCard
+        key={chapter.id}
+        chapter={chapter}
+        status={chapterStatuses[chapter.id]}
+        isActive={activeChapterId === chapter.id}
+        onClick={itemProps.onClick}
+        data-keyboard-focus={itemProps['data-keyboard-focus']}
+        keyboardClassName={itemProps.className}
+      />
+    );
+  };
 
   // Determine line states based on completion
   const line1State = chapterStatuses[ChapterId.FINGER_FUNDAMENTALS].isCompleted

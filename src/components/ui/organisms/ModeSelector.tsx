@@ -5,8 +5,9 @@
  * allowing them to choose between Campaign Mode and Free Play.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTips, TipTrigger } from '../../../tips';
+import { useKeyboardNavigation } from '../../../hooks';
 import './ModeSelector.css';
 
 interface ModeSelectorProps {
@@ -24,6 +25,19 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
     }, 300);
   };
 
+  // Navigation items for keyboard navigation
+  const navigationItems = useMemo(() => [
+    { id: 'campaign', onActivate: handleSelectCampaign },
+    // { id: 'freeplay', onActivate: () => onSelectMode('freeplay') }, // Future
+  ], []);
+
+  // Keyboard navigation hook
+  const { getItemProps } = useKeyboardNavigation({
+    areaId: 'mode-selector',
+    layout: 'horizontal',
+    items: navigationItems,
+  });
+
   return (
     <div className="mode-selector">
       <div className="mode-selector-header">
@@ -31,10 +45,11 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         <p className="mode-selector-subtitle">Choose your learning path</p>
       </div>
 
-      <div className="mode-selector-cards">
+      <div className="mode-selector-cards" role="listbox" aria-label="Mode selection">
         <button
-          className="mode-card mode-card-campaign"
-          onClick={handleSelectCampaign}
+          className={`mode-card mode-card-campaign ${getItemProps('campaign', 'keyboard-focus--card').className}`}
+          onClick={getItemProps('campaign').onClick}
+          data-keyboard-focus={getItemProps('campaign')['data-keyboard-focus']}
           aria-label="Start Campaign Mode - Guided learning journey"
         >
           <div className="mode-card-icon">🗺️</div>

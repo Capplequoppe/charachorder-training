@@ -7,10 +7,11 @@
  * @module components/training/phases
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { TrainableItem, FingerId } from '../../../../domain';
 import { Finger } from '../../../../domain';
 import { ColoredFinger } from '../../../ui/atoms/ColoredFinger';
+import { useKeyboardNavigation } from '../../../../hooks';
 
 /**
  * Layout variant for the intro phase.
@@ -81,7 +82,21 @@ export function IntroPhaseRenderer({
     ? item.fingerIds.find(f => !Finger.isLeftHandId(f))
     : null;
 
-  // Handle Enter key to continue
+  // Navigation items for keyboard navigation (two buttons)
+  const navigationItems = useMemo(() => [
+    { id: 'play-sound', onActivate: onPlaySound },
+    { id: 'continue', onActivate: onContinue },
+  ], [onPlaySound, onContinue]);
+
+  // Keyboard navigation hook for action buttons
+  const { getItemProps } = useKeyboardNavigation({
+    areaId: 'intro-actions',
+    layout: 'horizontal',
+    items: navigationItems,
+    onEscape: onBack,
+  });
+
+  // Handle Enter key to continue (preserve existing behavior as shortcut)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -209,11 +224,19 @@ export function IntroPhaseRenderer({
       {customContent}
 
       {/* Action buttons */}
-      <div className="action-buttons">
-        <button className="btn secondary" onClick={onPlaySound}>
+      <div className="action-buttons" role="group" aria-label="Actions">
+        <button
+          className={`btn secondary ${getItemProps('play-sound', 'keyboard-focus--button').className}`}
+          onClick={getItemProps('play-sound').onClick}
+          data-keyboard-focus={getItemProps('play-sound')['data-keyboard-focus']}
+        >
           Play Sound
         </button>
-        <button className="btn primary" onClick={onContinue}>
+        <button
+          className={`btn primary ${getItemProps('continue', 'keyboard-focus--button').className}`}
+          onClick={getItemProps('continue').onClick}
+          data-keyboard-focus={getItemProps('continue')['data-keyboard-focus']}
+        >
           {continueButtonLabel}
         </button>
       </div>
