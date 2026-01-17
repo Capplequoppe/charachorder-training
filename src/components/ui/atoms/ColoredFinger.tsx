@@ -143,10 +143,16 @@ function getShortLabel(fingerId: FingerId): string {
       return `${hand}M`;
     case 'index':
       return `${hand}I`;
-    case 'thumb_inner':
+    case 'thumb_first':
       return `${hand}T1`;
-    case 'thumb_outer':
+    case 'thumb_second':
       return `${hand}T2`;
+    case 'thumb_third':
+      return `${hand}T3`;
+    case 'arrow':
+      return `${hand}Ar`;
+    case 'trackball':
+      return `${hand}Tr`;
     default:
       return fingerId.substring(0, 3).toUpperCase();
   }

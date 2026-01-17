@@ -67,7 +67,19 @@ export interface FingerColorConfig {
 export const FINGER_COLORS: Record<FingerId, FingerColorConfig> = {
   // ==================== LEFT HAND ====================
 
-  l_thumb_outer: {
+  l_thumb_first: {
+    base: '#C04000',
+    name: 'Burnt Orange',
+    variations: {
+      [Direction.UP]: '#D4652F',
+      [Direction.DOWN]: '#8B2E00',
+      [Direction.LEFT]: '#9A4000',
+      [Direction.RIGHT]: '#E04800',
+      [Direction.PRESS]: '#C04000',
+    },
+  },
+
+  l_thumb_second: {
     base: '#8B0000',
     name: 'Dark Red',
     variations: {
@@ -79,15 +91,39 @@ export const FINGER_COLORS: Record<FingerId, FingerColorConfig> = {
     },
   },
 
-  l_thumb_inner: {
-    base: '#C04000',
-    name: 'Burnt Orange',
+  l_thumb_third: {
+    base: '#B03060',
+    name: 'Maroon',
     variations: {
-      [Direction.UP]: '#D4652F',
-      [Direction.DOWN]: '#8B2E00',
-      [Direction.LEFT]: '#9A4000',
-      [Direction.RIGHT]: '#E04800',
-      [Direction.PRESS]: '#C04000',
+      [Direction.UP]: '#C85078',
+      [Direction.DOWN]: '#802040',
+      [Direction.LEFT]: '#982850',
+      [Direction.RIGHT]: '#C83870',
+      [Direction.PRESS]: '#B03060',
+    },
+  },
+
+  l_arrow: {
+    base: '#9370DB',
+    name: 'Medium Purple',
+    variations: {
+      [Direction.UP]: '#B08AEB',
+      [Direction.DOWN]: '#7350BB',
+      [Direction.LEFT]: '#8060CB',
+      [Direction.RIGHT]: '#A680EB',
+      [Direction.PRESS]: '#9370DB',
+    },
+  },
+
+  l_trackball: {
+    base: '#6A5ACD',
+    name: 'Slate Blue',
+    variations: {
+      [Direction.UP]: '#8A7AED',
+      [Direction.DOWN]: '#4A3AAD',
+      [Direction.LEFT]: '#5A4ABD',
+      [Direction.RIGHT]: '#7A6ADD',
+      [Direction.PRESS]: '#6A5ACD',
     },
   },
 
@@ -141,7 +177,7 @@ export const FINGER_COLORS: Record<FingerId, FingerColorConfig> = {
 
   // ==================== RIGHT HAND ====================
 
-  r_thumb_inner: {
+  r_thumb_first: {
     base: '#FF8C00',
     name: 'Deep Orange',
     variations: {
@@ -153,7 +189,7 @@ export const FINGER_COLORS: Record<FingerId, FingerColorConfig> = {
     },
   },
 
-  r_thumb_outer: {
+  r_thumb_second: {
     base: '#FFD700',
     name: 'Gold',
     variations: {
@@ -162,6 +198,42 @@ export const FINGER_COLORS: Record<FingerId, FingerColorConfig> = {
       [Direction.LEFT]: '#E0BE00',
       [Direction.RIGHT]: '#FFEC00',
       [Direction.PRESS]: '#FFD700',
+    },
+  },
+
+  r_thumb_third: {
+    base: '#FFA07A',
+    name: 'Light Salmon',
+    variations: {
+      [Direction.UP]: '#FFB899',
+      [Direction.DOWN]: '#E0805A',
+      [Direction.LEFT]: '#E8906A',
+      [Direction.RIGHT]: '#FFB08A',
+      [Direction.PRESS]: '#FFA07A',
+    },
+  },
+
+  r_arrow: {
+    base: '#20B2AA',
+    name: 'Light Sea Green',
+    variations: {
+      [Direction.UP]: '#40D2CA',
+      [Direction.DOWN]: '#10928A',
+      [Direction.LEFT]: '#18A29A',
+      [Direction.RIGHT]: '#28C2BA',
+      [Direction.PRESS]: '#20B2AA',
+    },
+  },
+
+  r_trackball: {
+    base: '#008B8B',
+    name: 'Dark Cyan',
+    variations: {
+      [Direction.UP]: '#20ABAB',
+      [Direction.DOWN]: '#006B6B',
+      [Direction.LEFT]: '#007B7B',
+      [Direction.RIGHT]: '#009B9B',
+      [Direction.PRESS]: '#008B8B',
     },
   },
 

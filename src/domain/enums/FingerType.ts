@@ -1,14 +1,18 @@
 /**
- * Represents the type/position of a finger on the hand.
- * CharaChorder uses all fingers including two thumb positions.
+ * Represents the type/position of a finger or key on the hand.
+ * CharaChorder uses all fingers including three thumb positions,
+ * plus dedicated arrow and trackball keys.
  */
 export enum FingerType {
   PINKY = 'pinky',
   RING = 'ring',
   MIDDLE = 'middle',
   INDEX = 'index',
-  THUMB_INNER = 'thumb_inner',
-  THUMB_OUTER = 'thumb_outer',
+  THUMB_FIRST = 'thumb_first',
+  THUMB_SECOND = 'thumb_second',
+  THUMB_THIRD = 'thumb_third',
+  ARROW = 'arrow',
+  TRACKBALL = 'trackball',
 }
 
 /**
@@ -19,8 +23,11 @@ export const FINGER_TYPES_IN_ORDER: FingerType[] = [
   FingerType.RING,
   FingerType.MIDDLE,
   FingerType.INDEX,
-  FingerType.THUMB_INNER,
-  FingerType.THUMB_OUTER,
+  FingerType.THUMB_FIRST,
+  FingerType.THUMB_SECOND,
+  FingerType.THUMB_THIRD,
+  FingerType.ARROW,
+  FingerType.TRACKBALL,
 ];
 
 /**
@@ -31,6 +38,9 @@ export const FINGER_TYPE_DISPLAY_NAMES: Record<FingerType, string> = {
   [FingerType.RING]: 'Ring',
   [FingerType.MIDDLE]: 'Middle',
   [FingerType.INDEX]: 'Index',
-  [FingerType.THUMB_INNER]: 'Thumb (Inner)',
-  [FingerType.THUMB_OUTER]: 'Thumb (Outer)',
+  [FingerType.THUMB_FIRST]: 'Thumb 1',
+  [FingerType.THUMB_SECOND]: 'Thumb 2',
+  [FingerType.THUMB_THIRD]: 'Thumb 3',
+  [FingerType.ARROW]: 'Arrow Keys',
+  [FingerType.TRACKBALL]: 'Trackball',
 };

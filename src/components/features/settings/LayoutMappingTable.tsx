@@ -44,11 +44,12 @@ const DIRECTION_ORDER: Direction[] = [
 ];
 
 /**
- * Filters fingers that have printable characters.
+ * Gets all finger/key IDs for custom mapping.
+ * All keys can be customized, even if they don't have default characters.
  */
-function getFingersWithChars(fingerIds: FingerId[]): FingerId[] {
-  // Pinky fingers don't have printable characters
-  return fingerIds.filter((id) => !id.includes('pinky'));
+function getAllMappableKeys(fingerIds: FingerId[]): FingerId[] {
+  // All keys are now mappable - pinkies, third thumbs, arrow keys, trackball
+  return fingerIds;
 }
 
 /**
@@ -269,7 +270,7 @@ export function LayoutMappingTable({
     fingerIds: FingerId[],
     icon: string
   ) => {
-    const fingersWithChars = getFingersWithChars(fingerIds);
+    const mappableKeys = getAllMappableKeys(fingerIds);
 
     return (
       <div className="mapping-table__hand">
@@ -279,7 +280,7 @@ export function LayoutMappingTable({
             {hand === 'left' ? 'Left Hand' : 'Right Hand'}
           </h4>
         </div>
-        {fingersWithChars.map(renderFingerGroup)}
+        {mappableKeys.map(renderFingerGroup)}
       </div>
     );
   };

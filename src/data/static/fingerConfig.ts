@@ -44,9 +44,9 @@ export const FINGER_CONFIG: Record<FingerId, Finger> = {
     displayName: 'Left Pinky',
     shortName: 'L.Pinky',
     color: colorFromConfig('l_pinky'),
-    note: undefined, // Pinky has no characters, no note needed
+    note: undefined, // Pinky has modifiers by default, no note needed
     visualPosition: { x: 5, y: 30 },
-    hasCharacters: false,
+    hasCharacters: false, // No characters by default, but can be mapped
   }),
 
   l_ring: Finger.create({
@@ -85,54 +85,126 @@ export const FINGER_CONFIG: Record<FingerId, Finger> = {
     hasCharacters: true,
   }),
 
-  l_thumb_inner: Finger.create({
-    id: 'l_thumb_inner',
+  l_thumb_first: Finger.create({
+    id: 'l_thumb_first',
     hand: Hand.LEFT,
-    type: FingerType.THUMB_INNER,
-    displayName: 'Left Thumb (Inner)',
+    type: FingerType.THUMB_FIRST,
+    displayName: 'Left Thumb 1',
     shortName: 'L.Thumb1',
-    color: colorFromConfig('l_thumb_inner'),
+    color: colorFromConfig('l_thumb_first'),
     note: NoteDefinition.create('A3', 220.0, -0.5), // 4th/5th with common partners
     visualPosition: { x: 35, y: 55 },
     hasCharacters: true,
   }),
 
-  l_thumb_outer: Finger.create({
-    id: 'l_thumb_outer',
+  l_thumb_second: Finger.create({
+    id: 'l_thumb_second',
     hand: Hand.LEFT,
-    type: FingerType.THUMB_OUTER,
-    displayName: 'Left Thumb (Outer)',
+    type: FingerType.THUMB_SECOND,
+    displayName: 'Left Thumb 2',
     shortName: 'L.Thumb2',
-    color: colorFromConfig('l_thumb_outer'),
+    color: colorFromConfig('l_thumb_second'),
     note: NoteDefinition.create('E3', 164.81, -0.6), // Root, foundational
     visualPosition: { x: 42, y: 65 },
     hasCharacters: true,
   }),
 
+  l_thumb_third: Finger.create({
+    id: 'l_thumb_third',
+    hand: Hand.LEFT,
+    type: FingerType.THUMB_THIRD,
+    displayName: 'Left Thumb 3',
+    shortName: 'L.Thumb3',
+    color: colorFromConfig('l_thumb_third'),
+    note: undefined, // Third thumb has modifiers by default
+    visualPosition: { x: 48, y: 72 },
+    hasCharacters: false, // No characters by default, but can be mapped
+  }),
+
+  l_arrow: Finger.create({
+    id: 'l_arrow',
+    hand: Hand.LEFT,
+    type: FingerType.ARROW,
+    displayName: 'Left Arrow Keys',
+    shortName: 'L.Arrow',
+    color: colorFromConfig('l_arrow'),
+    note: undefined, // Arrow keys have navigation by default
+    visualPosition: { x: 15, y: 75 },
+    hasCharacters: false, // No characters by default, but can be mapped
+  }),
+
+  l_trackball: Finger.create({
+    id: 'l_trackball',
+    hand: Hand.LEFT,
+    type: FingerType.TRACKBALL,
+    displayName: 'Left Trackball',
+    shortName: 'L.Track',
+    color: colorFromConfig('l_trackball'),
+    note: undefined, // Trackball has navigation by default
+    visualPosition: { x: 25, y: 80 },
+    hasCharacters: false, // No characters by default, but can be mapped
+  }),
+
   // ==================== RIGHT HAND ====================
 
-  r_thumb_outer: Finger.create({
-    id: 'r_thumb_outer',
+  r_thumb_second: Finger.create({
+    id: 'r_thumb_second',
     hand: Hand.RIGHT,
-    type: FingerType.THUMB_OUTER,
-    displayName: 'Right Thumb (Outer)',
+    type: FingerType.THUMB_SECOND,
+    displayName: 'Right Thumb 2',
     shortName: 'R.Thumb2',
-    color: colorFromConfig('r_thumb_outer'),
+    color: colorFromConfig('r_thumb_second'),
     note: NoteDefinition.create('E4', 329.63, 0.2), // Middle bright
     visualPosition: { x: 58, y: 65 },
     hasCharacters: true,
   }),
 
-  r_thumb_inner: Finger.create({
-    id: 'r_thumb_inner',
+  r_thumb_first: Finger.create({
+    id: 'r_thumb_first',
     hand: Hand.RIGHT,
-    type: FingerType.THUMB_INNER,
-    displayName: 'Right Thumb (Inner)',
+    type: FingerType.THUMB_FIRST,
+    displayName: 'Right Thumb 1',
     shortName: 'R.Thumb1',
-    color: colorFromConfig('r_thumb_inner'),
+    color: colorFromConfig('r_thumb_first'),
     note: NoteDefinition.create('G3', 196.0, 0.3), // Warm, resonant
     visualPosition: { x: 65, y: 55 },
     hasCharacters: true,
+  }),
+
+  r_thumb_third: Finger.create({
+    id: 'r_thumb_third',
+    hand: Hand.RIGHT,
+    type: FingerType.THUMB_THIRD,
+    displayName: 'Right Thumb 3',
+    shortName: 'R.Thumb3',
+    color: colorFromConfig('r_thumb_third'),
+    note: undefined, // Third thumb has modifiers by default
+    visualPosition: { x: 52, y: 72 },
+    hasCharacters: false, // No characters by default, but can be mapped
+  }),
+
+  r_arrow: Finger.create({
+    id: 'r_arrow',
+    hand: Hand.RIGHT,
+    type: FingerType.ARROW,
+    displayName: 'Right Arrow Keys',
+    shortName: 'R.Arrow',
+    color: colorFromConfig('r_arrow'),
+    note: undefined, // Arrow keys have navigation by default
+    visualPosition: { x: 85, y: 75 },
+    hasCharacters: false, // No characters by default, but can be mapped
+  }),
+
+  r_trackball: Finger.create({
+    id: 'r_trackball',
+    hand: Hand.RIGHT,
+    type: FingerType.TRACKBALL,
+    displayName: 'Right Trackball',
+    shortName: 'R.Track',
+    color: colorFromConfig('r_trackball'),
+    note: undefined, // Trackball has navigation by default
+    visualPosition: { x: 75, y: 80 },
+    hasCharacters: false, // No characters by default, but can be mapped
   }),
 
   r_index: Finger.create({
@@ -178,9 +250,9 @@ export const FINGER_CONFIG: Record<FingerId, Finger> = {
     displayName: 'Right Pinky',
     shortName: 'R.Pinky',
     color: colorFromConfig('r_pinky'),
-    note: undefined, // Pinky has no characters, no note needed
+    note: undefined, // Pinky has modifiers by default, no note needed
     visualPosition: { x: 95, y: 30 },
-    hasCharacters: false,
+    hasCharacters: false, // No characters by default, but can be mapped
   }),
 };
 
@@ -192,10 +264,16 @@ export const FINGERS_IN_ORDER: FingerId[] = [
   'l_ring',
   'l_middle',
   'l_index',
-  'l_thumb_inner',
-  'l_thumb_outer',
-  'r_thumb_outer',
-  'r_thumb_inner',
+  'l_thumb_first',
+  'l_thumb_second',
+  'l_thumb_third',
+  'l_arrow',
+  'l_trackball',
+  'r_trackball',
+  'r_arrow',
+  'r_thumb_third',
+  'r_thumb_second',
+  'r_thumb_first',
   'r_index',
   'r_middle',
   'r_ring',

@@ -48,9 +48,9 @@ export function FingerIndicator({ activeFingers, pressedFingers = [], size = 'me
           padding: '8px',
         }}
       >
-        {/* Left hand */}
+        {/* Left hand - first 9 fingers */}
         <div style={{ display: 'flex', gap: gap, marginRight: gap * 2 }}>
-          {FINGERS_IN_ORDER.slice(0, 6).map((finger) => {
+          {FINGERS_IN_ORDER.slice(0, 9).map((finger) => {
             const isActive = activeFingersSet.has(finger);
             const isPressed = pressedFingersSet.has(finger);
             return (
@@ -83,9 +83,9 @@ export function FingerIndicator({ activeFingers, pressedFingers = [], size = 'me
           }}
         />
 
-        {/* Right hand */}
+        {/* Right hand - remaining fingers */}
         <div style={{ display: 'flex', gap: gap, marginLeft: gap * 2 }}>
-          {FINGERS_IN_ORDER.slice(6).map((finger) => {
+          {FINGERS_IN_ORDER.slice(9).map((finger) => {
             const isActive = activeFingersSet.has(finger);
             const isPressed = pressedFingersSet.has(finger);
             return (
@@ -126,20 +126,26 @@ export function HandVisualization({ activeFingers, pressedFingers = [], hand }: 
 
   const fingerPositions = hand === 'left'
     ? [
-        { finger: Finger.L_PINKY, x: 15, y: 30 },
-        { finger: Finger.L_RING, x: 30, y: 15 },
-        { finger: Finger.L_MIDDLE, x: 45, y: 10 },
-        { finger: Finger.L_INDEX, x: 60, y: 20 },
-        { finger: Finger.L_THUMB_INNER, x: 70, y: 55 },
-        { finger: Finger.L_THUMB_OUTER, x: 80, y: 70 },
+        { finger: Finger.L_PINKY, x: 10, y: 30 },
+        { finger: Finger.L_RING, x: 22, y: 15 },
+        { finger: Finger.L_MIDDLE, x: 34, y: 10 },
+        { finger: Finger.L_INDEX, x: 46, y: 20 },
+        { finger: Finger.L_THUMB_FIRST, x: 55, y: 50 },
+        { finger: Finger.L_THUMB_SECOND, x: 65, y: 62 },
+        { finger: Finger.L_THUMB_THIRD, x: 75, y: 72 },
+        { finger: Finger.L_ARROW, x: 85, y: 80 },
+        { finger: Finger.L_TRACKBALL, x: 92, y: 85 },
       ]
     : [
-        { finger: Finger.R_THUMB_OUTER, x: 20, y: 70 },
-        { finger: Finger.R_THUMB_INNER, x: 30, y: 55 },
-        { finger: Finger.R_INDEX, x: 40, y: 20 },
-        { finger: Finger.R_MIDDLE, x: 55, y: 10 },
-        { finger: Finger.R_RING, x: 70, y: 15 },
-        { finger: Finger.R_PINKY, x: 85, y: 30 },
+        { finger: Finger.R_TRACKBALL, x: 8, y: 85 },
+        { finger: Finger.R_ARROW, x: 15, y: 80 },
+        { finger: Finger.R_THUMB_THIRD, x: 25, y: 72 },
+        { finger: Finger.R_THUMB_SECOND, x: 35, y: 62 },
+        { finger: Finger.R_THUMB_FIRST, x: 45, y: 50 },
+        { finger: Finger.R_INDEX, x: 54, y: 20 },
+        { finger: Finger.R_MIDDLE, x: 66, y: 10 },
+        { finger: Finger.R_RING, x: 78, y: 15 },
+        { finger: Finger.R_PINKY, x: 90, y: 30 },
       ];
 
   return (

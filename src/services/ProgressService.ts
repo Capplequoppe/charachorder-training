@@ -11,12 +11,10 @@ import {
   LearningProgress,
   LearningItemType,
   MasteryLevel,
-  DirectionProgress as DomainDirectionProgress,
-  ALL_DIRECTIONS,
 } from '../domain';
-import { IProgressRepository, ICharacterRepository, ProgressStats } from '../data/repositories';
+import { IProgressRepository, ICharacterRepository } from '../data/repositories';
 import { LearningStage, LearningService, QualityRating } from './LearningService';
-import { getExpectedTime, getConfidenceLevelFromMetrics } from '../data/static/learningConfig';
+import { getConfidenceLevelFromMetrics } from '../data/static/learningConfig';
 
 /**
  * Overall progress summary.

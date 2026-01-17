@@ -16,7 +16,7 @@ import { Finger as FingerEntity } from '../../../domain';
 import { ContinueButton } from '../../ui/molecules/ContinueButton';
 
 type Hand = 'left' | 'right';
-type FingerType = 'pinky' | 'ring' | 'middle' | 'index' | 'thumbInner' | 'thumbOuter';
+type FingerType = 'pinky' | 'ring' | 'middle' | 'index' | 'thumbFirst' | 'thumbSecond' | 'thumbThird' | 'arrow' | 'trackball';
 type Direction = 'up' | 'down' | 'left' | 'right';
 
 /**
@@ -217,16 +217,19 @@ export function CharacterLearning({
   // Track engagement for campaign mode
   const hasEngaged = fingersExplored.size >= 3 || keysPressed.size >= 5;
 
-  const leftHandFingers = FINGERS_IN_ORDER.slice(0, 6);
-  const rightHandFingers = FINGERS_IN_ORDER.slice(6);
+  const leftHandFingers = FINGERS_IN_ORDER.slice(0, 9);
+  const rightHandFingers = FINGERS_IN_ORDER.slice(9);
 
   const getFingerType = (finger: Finger): FingerType => {
     if (finger.includes('pinky')) return 'pinky';
     if (finger.includes('ring')) return 'ring';
     if (finger.includes('middle')) return 'middle';
     if (finger.includes('index')) return 'index';
-    if (finger.includes('thumb_inner')) return 'thumbInner';
-    return 'thumbOuter';
+    if (finger.includes('thumb_first')) return 'thumbFirst';
+    if (finger.includes('thumb_second')) return 'thumbSecond';
+    if (finger.includes('thumb_third')) return 'thumbThird';
+    if (finger.includes('arrow')) return 'arrow';
+    return 'trackball';
   };
 
   const getHand = (finger: Finger): Hand => {

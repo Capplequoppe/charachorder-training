@@ -13,7 +13,6 @@ import {
   FingerId,
   Direction,
   LayoutProfile,
-  CharacterMapping,
 } from '../domain';
 import {
   ILayoutRepository,
@@ -21,7 +20,6 @@ import {
 } from '../data/repositories/LayoutRepository';
 import {
   CharacterConfigEntry,
-  CHARACTER_CONFIG,
   CHAR_TO_CONFIG,
   FINGER_DIRECTION_TO_CHAR,
 } from '../data/static/characterConfig';

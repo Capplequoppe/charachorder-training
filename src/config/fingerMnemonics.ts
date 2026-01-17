@@ -45,20 +45,38 @@ export const FINGER_MNEMONICS: Record<FingerId, FingerMnemonic> = {
   l_pinky: {
     fingerId: 'l_pinky',
     phrase: 'Modifier key',
-    explanation: 'The pinky handles modifier keys (Shift, Alt, Layer)',
+    explanation: 'The pinky handles modifier keys (Shift, Alt, Layer) - can be customized',
     highlightedChars: [],
   },
-  l_thumb_inner: {
-    fingerId: 'l_thumb_inner',
+  l_thumb_first: {
+    fingerId: 'l_thumb_first',
     phrase: 'MiCK V',
     explanation: 'Think "Mick V" (like a name) - types M, C, K, and V',
     highlightedChars: ['m', 'c', 'k', 'v'],
   },
-  l_thumb_outer: {
-    fingerId: 'l_thumb_outer',
+  l_thumb_second: {
+    fingerId: 'l_thumb_second',
     phrase: 'ZaG W',
     explanation: 'Zigzag with W - types Z, G, and W',
     highlightedChars: ['z', 'g', 'w'],
+  },
+  l_thumb_third: {
+    fingerId: 'l_thumb_third',
+    phrase: 'Modifier key',
+    explanation: 'The third thumb key handles modifier keys (Shift, Ctrl, etc.) - can be customized',
+    highlightedChars: [],
+  },
+  l_arrow: {
+    fingerId: 'l_arrow',
+    phrase: 'Arrow keys',
+    explanation: 'The arrow key cluster for navigation - can be customized',
+    highlightedChars: [],
+  },
+  l_trackball: {
+    fingerId: 'l_trackball',
+    phrase: 'Trackball',
+    explanation: 'The trackball/mouse controls - can be customized',
+    highlightedChars: [],
   },
 
   // ==================== RIGHT HAND ====================
@@ -83,20 +101,38 @@ export const FINGER_MNEMONICS: Record<FingerId, FingerMnemonic> = {
   r_pinky: {
     fingerId: 'r_pinky',
     phrase: 'Modifier key',
-    explanation: 'The pinky handles modifier keys (Shift, Alt, Layer)',
+    explanation: 'The pinky handles modifier keys (Shift, Alt, Layer) - can be customized',
     highlightedChars: [],
   },
-  r_thumb_inner: {
-    fingerId: 'r_thumb_inner',
+  r_thumb_first: {
+    fingerId: 'r_thumb_first',
     phrase: 'HoPeD F',
     explanation: 'I HoPeD For this - types H, P, D, and F',
     highlightedChars: ['h', 'p', 'd', 'f'],
   },
-  r_thumb_outer: {
-    fingerId: 'r_thumb_outer',
+  r_thumb_second: {
+    fingerId: 'r_thumb_second',
     phrase: 'BoX Q',
     explanation: 'Put it in a BoX, Q! - types B, X, and Q',
     highlightedChars: ['b', 'x', 'q'],
+  },
+  r_thumb_third: {
+    fingerId: 'r_thumb_third',
+    phrase: 'Modifier key',
+    explanation: 'The third thumb key handles modifier keys (Shift, Ctrl, etc.) - can be customized',
+    highlightedChars: [],
+  },
+  r_arrow: {
+    fingerId: 'r_arrow',
+    phrase: 'Arrow keys',
+    explanation: 'The arrow key cluster for navigation - can be customized',
+    highlightedChars: [],
+  },
+  r_trackball: {
+    fingerId: 'r_trackball',
+    phrase: 'Trackball',
+    explanation: 'The trackball/mouse controls - can be customized',
+    highlightedChars: [],
   },
 };
 
@@ -132,15 +168,15 @@ export const LEARNING_STAGES: LearningStage[] = [
   },
   {
     id: 'stage-4',
-    name: 'Inner Thumbs',
+    name: 'First Thumbs',
     description: 'More letters: M, C, K, V, H, P, D, F',
-    fingers: ['l_thumb_inner', 'r_thumb_inner'],
+    fingers: ['l_thumb_first', 'r_thumb_first'],
   },
   {
     id: 'stage-5',
-    name: 'Outer Thumbs',
+    name: 'Second Thumbs',
     description: 'Remaining letters: Z, G, W, B, X, Q',
-    fingers: ['l_thumb_outer', 'r_thumb_outer'],
+    fingers: ['l_thumb_second', 'r_thumb_second'],
   },
 ];
 

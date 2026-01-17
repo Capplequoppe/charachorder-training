@@ -66,15 +66,21 @@ export const Finger = {
   L_MIDDLE: 'l_middle' as const,
   L_RING: 'l_ring' as const,
   L_PINKY: 'l_pinky' as const,
-  L_THUMB_INNER: 'l_thumb_inner' as const,
-  L_THUMB_OUTER: 'l_thumb_outer' as const,
+  L_THUMB_FIRST: 'l_thumb_first' as const,
+  L_THUMB_SECOND: 'l_thumb_second' as const,
+  L_THUMB_THIRD: 'l_thumb_third' as const,
+  L_ARROW: 'l_arrow' as const,
+  L_TRACKBALL: 'l_trackball' as const,
   // Right hand
   R_INDEX: 'r_index' as const,
   R_MIDDLE: 'r_middle' as const,
   R_RING: 'r_ring' as const,
   R_PINKY: 'r_pinky' as const,
-  R_THUMB_INNER: 'r_thumb_inner' as const,
-  R_THUMB_OUTER: 'r_thumb_outer' as const,
+  R_THUMB_FIRST: 'r_thumb_first' as const,
+  R_THUMB_SECOND: 'r_thumb_second' as const,
+  R_THUMB_THIRD: 'r_thumb_third' as const,
+  R_ARROW: 'r_arrow' as const,
+  R_TRACKBALL: 'r_trackball' as const,
 } as const;
 
 /**
@@ -201,8 +207,11 @@ export interface HandMapping {
   middle: FingerKeys;
   ring: FingerKeys;
   pinky: FingerKeys;
-  thumbInner: FingerKeys;
-  thumbOuter: FingerKeys;
+  thumbFirst: FingerKeys;
+  thumbSecond: FingerKeys;
+  thumbThird: FingerKeys;
+  arrow: FingerKeys;
+  trackball: FingerKeys;
 }
 
 export interface KeyMapping {
@@ -241,17 +250,35 @@ export const KEY_MAPPING: KeyMapping = {
       left: { key: 'Layer2', char: null },
       right: { key: 'Shift', char: null },
     },
-    thumbInner: {
+    thumbFirst: {
       up: { key: 'v', char: 'v' },
       down: { key: 'c', char: 'c' },
       left: { key: 'm', char: 'm' },
       right: { key: 'k', char: 'k' },
     },
-    thumbOuter: {
+    thumbSecond: {
       up: { key: null, char: null },
       down: { key: 'z', char: 'z' },
       left: { key: 'g', char: 'g' },
       right: { key: 'w', char: 'w' },
+    },
+    thumbThird: {
+      up: { key: 'Shift', char: null },
+      down: { key: 'Ctrl', char: null },
+      left: { key: 'GUI', char: null },
+      right: { key: 'Alt', char: null },
+    },
+    arrow: {
+      up: { key: 'Up', char: null },
+      down: { key: 'Down', char: null },
+      left: { key: 'Left', char: null },
+      right: { key: 'Right', char: null },
+    },
+    trackball: {
+      up: { key: 'Scroll Up', char: null },
+      down: { key: 'Scroll Down', char: null },
+      left: { key: 'Scroll Left', char: null },
+      right: { key: 'Scroll Right', char: null },
     },
   },
   // Right hand
@@ -280,17 +307,35 @@ export const KEY_MAPPING: KeyMapping = {
       left: { key: 'Shift', char: null },
       right: { key: 'Layer2', char: null },
     },
-    thumbInner: {
+    thumbFirst: {
       up: { key: 'p', char: 'p' },
       down: { key: 'd', char: 'd' },
       left: { key: 'f', char: 'f' },
       right: { key: 'h', char: 'h' },
     },
-    thumbOuter: {
+    thumbSecond: {
       up: { key: 'x', char: 'x' },
       down: { key: 'q', char: 'q' },
       left: { key: 'b', char: 'b' },
       right: { key: 'DUP', char: null },
+    },
+    thumbThird: {
+      up: { key: 'Shift', char: null },
+      down: { key: 'Ctrl', char: null },
+      left: { key: 'Alt', char: null },
+      right: { key: 'GUI', char: null },
+    },
+    arrow: {
+      up: { key: 'Up', char: null },
+      down: { key: 'Down', char: null },
+      left: { key: 'Left', char: null },
+      right: { key: 'Right', char: null },
+    },
+    trackball: {
+      up: { key: 'Scroll Up', char: null },
+      down: { key: 'Scroll Down', char: null },
+      left: { key: 'Scroll Left', char: null },
+      right: { key: 'Scroll Right', char: null },
     },
   },
 };

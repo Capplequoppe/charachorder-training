@@ -4,23 +4,32 @@ import { ColorDefinition } from '../valueObjects/ColorDefinition';
 import { NoteDefinition } from '../valueObjects/NoteDefinition';
 
 /**
- * Unique identifier for each finger.
+ * Unique identifier for each finger/key position.
  * Format: {hand}_{fingerType}
  * Note: 'middle' is called 'long' in some CharaChorder documentation.
+ *
+ * Thumb keys: Each thumb has 3 physical switches (first, second, third).
+ * Arrow/Trackball: Each hand has dedicated navigation keys.
  */
 export type FingerId =
   | 'l_pinky'
   | 'l_ring'
   | 'l_middle'
   | 'l_index'
-  | 'l_thumb_inner'
-  | 'l_thumb_outer'
+  | 'l_thumb_first'
+  | 'l_thumb_second'
+  | 'l_thumb_third'
+  | 'l_arrow'
+  | 'l_trackball'
   | 'r_pinky'
   | 'r_ring'
   | 'r_middle'
   | 'r_index'
-  | 'r_thumb_inner'
-  | 'r_thumb_outer';
+  | 'r_thumb_first'
+  | 'r_thumb_second'
+  | 'r_thumb_third'
+  | 'r_arrow'
+  | 'r_trackball';
 
 /**
  * All finger IDs for the left hand.
@@ -30,8 +39,11 @@ export const LEFT_FINGER_IDS: FingerId[] = [
   'l_ring',
   'l_middle',
   'l_index',
-  'l_thumb_inner',
-  'l_thumb_outer',
+  'l_thumb_first',
+  'l_thumb_second',
+  'l_thumb_third',
+  'l_arrow',
+  'l_trackball',
 ];
 
 /**
@@ -42,8 +54,11 @@ export const RIGHT_FINGER_IDS: FingerId[] = [
   'r_ring',
   'r_middle',
   'r_index',
-  'r_thumb_inner',
-  'r_thumb_outer',
+  'r_thumb_first',
+  'r_thumb_second',
+  'r_thumb_third',
+  'r_arrow',
+  'r_trackball',
 ];
 
 /**
@@ -165,8 +180,11 @@ export class Finger {
       [FingerType.RING]: 'ring',
       [FingerType.MIDDLE]: 'middle',
       [FingerType.INDEX]: 'index',
-      [FingerType.THUMB_INNER]: 'thumb_inner',
-      [FingerType.THUMB_OUTER]: 'thumb_outer',
+      [FingerType.THUMB_FIRST]: 'thumb_first',
+      [FingerType.THUMB_SECOND]: 'thumb_second',
+      [FingerType.THUMB_THIRD]: 'thumb_third',
+      [FingerType.ARROW]: 'arrow',
+      [FingerType.TRACKBALL]: 'trackball',
     };
     return `${handPrefix}_${typeMap[type]}` as FingerId;
   }
@@ -185,8 +203,11 @@ export class Finger {
       ring: FingerType.RING,
       middle: FingerType.MIDDLE,
       index: FingerType.INDEX,
-      thumb_inner: FingerType.THUMB_INNER,
-      thumb_outer: FingerType.THUMB_OUTER,
+      thumb_first: FingerType.THUMB_FIRST,
+      thumb_second: FingerType.THUMB_SECOND,
+      thumb_third: FingerType.THUMB_THIRD,
+      arrow: FingerType.ARROW,
+      trackball: FingerType.TRACKBALL,
     };
 
     return { hand, type: typeMap[typeString] };
@@ -232,7 +253,11 @@ export class Finger {
    * Returns true if this is a thumb.
    */
   get isThumb(): boolean {
-    return this.type === FingerType.THUMB_INNER || this.type === FingerType.THUMB_OUTER;
+    return (
+      this.type === FingerType.THUMB_FIRST ||
+      this.type === FingerType.THUMB_SECOND ||
+      this.type === FingerType.THUMB_THIRD
+    );
   }
 
   /**

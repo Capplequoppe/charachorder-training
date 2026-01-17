@@ -46,17 +46,29 @@ export const CHARACTER_CONFIG: CharacterConfigEntry[] = [
   // ==================== LEFT PINKY ====================
   // No printable characters - only modifiers (Alt, Shift, Layer2)
 
-  // ==================== LEFT THUMB INNER ====================
-  { char: 'v', fingerId: 'l_thumb_inner', direction: Direction.UP },
-  { char: 'c', fingerId: 'l_thumb_inner', direction: Direction.DOWN },
-  { char: 'm', fingerId: 'l_thumb_inner', direction: Direction.LEFT },
-  { char: 'k', fingerId: 'l_thumb_inner', direction: Direction.RIGHT },
+  // ==================== LEFT THUMB FIRST ====================
+  { char: 'v', fingerId: 'l_thumb_first', direction: Direction.UP },
+  { char: 'c', fingerId: 'l_thumb_first', direction: Direction.DOWN },
+  { char: 'm', fingerId: 'l_thumb_first', direction: Direction.LEFT },
+  { char: 'k', fingerId: 'l_thumb_first', direction: Direction.RIGHT },
 
-  // ==================== LEFT THUMB OUTER ====================
-  { char: 'z', fingerId: 'l_thumb_outer', direction: Direction.DOWN },
-  { char: 'g', fingerId: 'l_thumb_outer', direction: Direction.LEFT },
-  { char: 'w', fingerId: 'l_thumb_outer', direction: Direction.RIGHT },
+  // ==================== LEFT THUMB SECOND ====================
+  { char: 'z', fingerId: 'l_thumb_second', direction: Direction.DOWN },
+  { char: 'g', fingerId: 'l_thumb_second', direction: Direction.LEFT },
+  { char: 'w', fingerId: 'l_thumb_second', direction: Direction.RIGHT },
   // UP = unused
+
+  // ==================== LEFT THUMB THIRD ====================
+  // No printable characters by default - only modifiers (Shift, Ctrl, etc.)
+  // Can be customized via layout profiles
+
+  // ==================== LEFT ARROW ====================
+  // No printable characters by default - only arrow keys
+  // Can be customized via layout profiles
+
+  // ==================== LEFT TRACKBALL ====================
+  // No printable characters by default - only mouse/trackball controls
+  // Can be customized via layout profiles
 
   // ==================== RIGHT INDEX ====================
   { char: 't', fingerId: 'r_index', direction: Direction.DOWN },
@@ -78,18 +90,31 @@ export const CHARACTER_CONFIG: CharacterConfigEntry[] = [
 
   // ==================== RIGHT PINKY ====================
   // No printable characters - only modifiers (Alt, Shift, Layer2)
+  // Can be customized via layout profiles
 
-  // ==================== RIGHT THUMB INNER ====================
-  { char: 'p', fingerId: 'r_thumb_inner', direction: Direction.UP },
-  { char: 'd', fingerId: 'r_thumb_inner', direction: Direction.DOWN },
-  { char: 'f', fingerId: 'r_thumb_inner', direction: Direction.LEFT },
-  { char: 'h', fingerId: 'r_thumb_inner', direction: Direction.RIGHT },
+  // ==================== RIGHT THUMB FIRST ====================
+  { char: 'p', fingerId: 'r_thumb_first', direction: Direction.UP },
+  { char: 'd', fingerId: 'r_thumb_first', direction: Direction.DOWN },
+  { char: 'f', fingerId: 'r_thumb_first', direction: Direction.LEFT },
+  { char: 'h', fingerId: 'r_thumb_first', direction: Direction.RIGHT },
 
-  // ==================== RIGHT THUMB OUTER ====================
-  { char: 'x', fingerId: 'r_thumb_outer', direction: Direction.UP },
-  { char: 'q', fingerId: 'r_thumb_outer', direction: Direction.DOWN },
-  { char: 'b', fingerId: 'r_thumb_outer', direction: Direction.LEFT },
+  // ==================== RIGHT THUMB SECOND ====================
+  { char: 'x', fingerId: 'r_thumb_second', direction: Direction.UP },
+  { char: 'q', fingerId: 'r_thumb_second', direction: Direction.DOWN },
+  { char: 'b', fingerId: 'r_thumb_second', direction: Direction.LEFT },
   // RIGHT = DUP (not a character)
+
+  // ==================== RIGHT THUMB THIRD ====================
+  // No printable characters by default - only modifiers (Shift, Ctrl, etc.)
+  // Can be customized via layout profiles
+
+  // ==================== RIGHT ARROW ====================
+  // No printable characters by default - only arrow keys
+  // Can be customized via layout profiles
+
+  // ==================== RIGHT TRACKBALL ====================
+  // No printable characters by default - only mouse/trackball controls
+  // Can be customized via layout profiles
 ];
 
 /**
