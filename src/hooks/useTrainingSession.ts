@@ -23,6 +23,12 @@ import {
 } from '../domain';
 
 /**
+ * Maximum number of response times to keep per item.
+ * This prevents unbounded memory growth during long sessions.
+ */
+const MAX_RESPONSE_TIMES_PER_ITEM = 20;
+
+/**
  * Options for useTrainingSession hook.
  */
 export interface UseTrainingSessionOptions {
@@ -407,11 +413,17 @@ export function useTrainingSession(options: UseTrainingSessionOptions): UseTrain
         const newSuccesses = current.successes + 1;
         const isItemComplete = newSuccesses >= successesRequired;
 
+        // Cap responseTimes to prevent unbounded memory growth
+        const newResponseTimes = [...current.responseTimes, responseTimeMs];
+        if (newResponseTimes.length > MAX_RESPONSE_TIMES_PER_ITEM) {
+          newResponseTimes.shift();
+        }
+
         const updated: ItemProgress = {
           attempts: current.attempts + 1,
           successes: newSuccesses,
           completed: isItemComplete,
-          responseTimes: [...current.responseTimes, responseTimeMs],
+          responseTimes: newResponseTimes,
         };
 
         newMap.set(currentItem.id, updated);
@@ -494,10 +506,16 @@ export function useTrainingSession(options: UseTrainingSessionOptions): UseTrain
           responseTimes: [],
         };
 
+        // Cap responseTimes to prevent unbounded memory growth
+        const newResponseTimes = [...current.responseTimes, responseTimeMs];
+        if (newResponseTimes.length > MAX_RESPONSE_TIMES_PER_ITEM) {
+          newResponseTimes.shift();
+        }
+
         newMap.set(currentItem.id, {
           ...current,
           attempts: current.attempts + 1,
-          responseTimes: [...current.responseTimes, responseTimeMs],
+          responseTimes: newResponseTimes,
         });
 
         return newMap;

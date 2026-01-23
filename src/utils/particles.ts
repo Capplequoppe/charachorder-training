@@ -2,9 +2,17 @@
  * Particle System
  *
  * Simple canvas-based particle effects for combo celebrations.
+ * All spawn functions return a cancel function to stop animations
+ * and free memory when components unmount.
  */
 
 // ==================== Types ====================
+
+/**
+ * Function to cancel an ongoing particle animation.
+ * Returns true if animation was active, false if already stopped.
+ */
+export type CancelAnimation = () => boolean;
 
 export interface ParticleConfig {
   count: number;
@@ -33,14 +41,15 @@ interface Particle {
 // ==================== Particle Spawning ====================
 
 /**
- * Spawn particles on a canvas element
+ * Spawn particles on a canvas element.
+ * Returns a cancel function to stop the animation early.
  */
 export function spawnParticles(
   canvas: HTMLCanvasElement,
   config: ParticleConfig
-): void {
+): CancelAnimation {
   const context = canvas.getContext('2d');
-  if (!context) return;
+  if (!context) return () => false;
   const ctx = context; // Assign to const for closure capture
 
   // Ensure canvas is properly sized
@@ -97,8 +106,14 @@ export function spawnParticles(
     });
   }
 
+  // Track animation frame for cancellation
+  let animationId: number | null = null;
+  let isCancelled = false;
+
   // Animation loop
   function animate() {
+    if (isCancelled) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let hasActiveParticles = false;
@@ -126,27 +141,42 @@ export function spawnParticles(
       }
     });
 
-    if (hasActiveParticles) {
-      requestAnimationFrame(animate);
+    if (hasActiveParticles && !isCancelled) {
+      animationId = requestAnimationFrame(animate);
     } else {
       // Clear canvas when done
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      animationId = null;
     }
   }
 
-  animate();
+  animationId = requestAnimationFrame(animate);
+
+  // Return cancel function
+  return () => {
+    if (isCancelled) return false;
+    isCancelled = true;
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    // Clear particle array to free memory
+    particles.length = 0;
+    return true;
+  };
 }
 
 /**
- * Spawn confetti-style particles
+ * Spawn confetti-style particles.
+ * Returns a cancel function to stop the animation early.
  */
 export function spawnConfetti(
   canvas: HTMLCanvasElement,
   count: number = 50,
   colors: string[] = ['#3498db', '#2ecc71', '#f1c40f', '#e74c3c', '#9b59b6']
-): void {
+): CancelAnimation {
   const context = canvas.getContext('2d');
-  if (!context) return;
+  if (!context) return () => false;
   const ctx = context; // Assign to const for closure capture
 
   const rect = canvas.getBoundingClientRect();
@@ -183,7 +213,13 @@ export function spawnConfetti(
     });
   }
 
+  // Track animation frame for cancellation
+  let animationId: number | null = null;
+  let isCancelled = false;
+
   function animate() {
+    if (isCancelled) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let hasActive = false;
@@ -211,26 +247,41 @@ export function spawnConfetti(
       }
     });
 
-    if (hasActive) {
-      requestAnimationFrame(animate);
+    if (hasActive && !isCancelled) {
+      animationId = requestAnimationFrame(animate);
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      animationId = null;
     }
   }
 
-  animate();
+  animationId = requestAnimationFrame(animate);
+
+  // Return cancel function
+  return () => {
+    if (isCancelled) return false;
+    isCancelled = true;
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    // Clear particle array to free memory
+    particles.length = 0;
+    return true;
+  };
 }
 
 /**
- * Spawn a burst of stars
+ * Spawn a burst of stars.
+ * Returns a cancel function to stop the animation early.
  */
 export function spawnStars(
   canvas: HTMLCanvasElement,
   count: number = 20,
   color: string = '#ffd700'
-): void {
+): CancelAnimation {
   const context = canvas.getContext('2d');
-  if (!context) return;
+  if (!context) return () => false;
   const ctx = context; // Assign to const for closure capture
 
   const rect = canvas.getBoundingClientRect();
@@ -296,7 +347,13 @@ export function spawnStars(
     ctx.restore();
   }
 
+  // Track animation frame for cancellation
+  let animationId: number | null = null;
+  let isCancelled = false;
+
   function animate() {
+    if (isCancelled) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let hasActive = false;
@@ -317,12 +374,26 @@ export function spawnStars(
       }
     });
 
-    if (hasActive) {
-      requestAnimationFrame(animate);
+    if (hasActive && !isCancelled) {
+      animationId = requestAnimationFrame(animate);
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      animationId = null;
     }
   }
 
-  animate();
+  animationId = requestAnimationFrame(animate);
+
+  // Return cancel function
+  return () => {
+    if (isCancelled) return false;
+    isCancelled = true;
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    // Clear particle array to free memory
+    particles.length = 0;
+    return true;
+  };
 }

@@ -190,6 +190,22 @@ function navigationReducer(
       const existingArea = state.areas.get(action.areaId);
       if (!existingArea) return state;
 
+      // Check if items actually changed to prevent infinite re-render loops
+      const existingItems = existingArea.items;
+      const newItems = action.items;
+
+      // Shallow comparison of items array
+      if (existingItems.length === newItems.length) {
+        const itemsUnchanged = existingItems.every((item, index) => {
+          const newItem = newItems[index];
+          return item.id === newItem.id && item.disabled === newItem.disabled;
+          // Note: We intentionally don't compare onActivate as it's often a new function reference
+        });
+        if (itemsUnchanged) {
+          return state; // No change, return same state to prevent re-render
+        }
+      }
+
       const newAreas = new Map(state.areas);
       newAreas.set(action.areaId, { ...existingArea, items: action.items });
 

@@ -107,6 +107,9 @@ export interface IAudioService {
   isInstrumentLoaded(): boolean;
   setUseSoundfonts(enabled: boolean): void;
   getUseSoundfonts(): boolean;
+
+  // Cleanup
+  dispose(): void;
 }
 
 /**
@@ -134,6 +137,9 @@ export class AudioService implements IAudioService {
 
   // Track active soundfont notes for sustained playback
   private activeSoundfontNotes: Map<string, { stop: (time?: number) => void }> = new Map();
+
+  // Cache for distortion curves to avoid repeated 176KB allocations
+  private distortionCurveCache: Map<number, Float32Array<ArrayBuffer>> = new Map();
 
   constructor(fingerRepo: IFingerRepository, characterRepo?: ICharacterRepository) {
     this.fingerRepo = fingerRepo;
@@ -172,6 +178,12 @@ export class AudioService implements IAudioService {
 
     this.instrumentLoading = true;
     try {
+      // Dispose old instrument to free memory before loading new one
+      if (this.instrument) {
+        this.instrument.stop();
+        this.instrument = null;
+      }
+
       const ctx = this.getContext();
       this.instrument = await Soundfont.instrument(ctx, name, {
         soundfont: 'MusyngKite',
@@ -375,28 +387,6 @@ export class AudioService implements IAudioService {
 
   playWordResolution(_word: Word): void {
     // No extra sound on correct - keypress notes are sufficient feedback
-  }
-
-  private playResolutionChime(): void {
-    // Ascending two-note resolution: A5, C6
-    const notes = [81, 84]; // MIDI notes
-
-    if (this.useSoundfonts && this.instrument) {
-      const ctx = this.getContext();
-      notes.forEach((note, index) => {
-        this.instrument!.play(note, ctx.currentTime + index * 0.06, {
-          gain: 0.15 * this.masterVolume,
-          duration: 0.15,
-        });
-      });
-    } else {
-      const freqs = [880, 1047];
-      freqs.forEach((freq, index) => {
-        setTimeout(() => {
-          this.playSimpleNote(freq, 0.15, 0.1 * this.masterVolume);
-        }, index * 60);
-      });
-    }
   }
 
   // ==================== Feedback Sounds ====================
@@ -824,6 +814,8 @@ export class AudioService implements IAudioService {
     panner.connect(masterGain);
     masterGain.connect(ctx.destination);
 
+    const gainNodes: GainNode[] = [];
+
     [frequency, frequency * 1.5, frequency * 2].forEach((freq, index) => {
       const oscillator = ctx.createOscillator();
       const gainNode = ctx.createGain();
@@ -840,12 +832,18 @@ export class AudioService implements IAudioService {
 
       oscillator.start();
       oscillators.push(oscillator);
-
-      (oscillator as any)._gainNode = gainNode;
+      gainNodes.push(gainNode);
     });
 
     this.activeOscillators.set(noteId, oscillators);
-    (oscillators as any)._masterGain = masterGain;
+    // Store all nodes for proper cleanup
+    (oscillators as any)._allNodes = {
+      gainNodes,
+      distortion,
+      filter,
+      panner,
+      masterGain,
+    };
   }
 
   stopSustainedNote(noteId: string): void {
@@ -862,22 +860,39 @@ export class AudioService implements IAudioService {
     if (!oscillators) return;
 
     const ctx = this.getContext();
+    const allNodes = (oscillators as any)._allNodes as {
+      gainNodes: GainNode[];
+      distortion: WaveShaperNode;
+      filter: BiquadFilterNode;
+      panner: StereoPannerNode;
+      masterGain: GainNode;
+    } | undefined;
 
-    oscillators.forEach((oscillator) => {
-      const gainNode = (oscillator as any)._gainNode as GainNode;
-      if (gainNode) {
+    // Fade out gain nodes
+    if (allNodes?.gainNodes) {
+      allNodes.gainNodes.forEach((gainNode) => {
         gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-      }
-    });
+      });
+    }
 
     setTimeout(() => {
+      // Stop and disconnect oscillators
       oscillators.forEach((osc) => {
-        try {
-          osc.stop();
-        } catch {
-          // Already stopped
-        }
+        try { osc.stop(); } catch { /* Already stopped */ }
+        try { osc.disconnect(); } catch { /* Already disconnected */ }
       });
+
+      // Disconnect all other nodes to free memory
+      if (allNodes) {
+        allNodes.gainNodes.forEach((node) => {
+          try { node.disconnect(); } catch { /* Already disconnected */ }
+        });
+        try { allNodes.distortion.disconnect(); } catch { /* Already disconnected */ }
+        try { allNodes.filter.disconnect(); } catch { /* Already disconnected */ }
+        try { allNodes.panner.disconnect(); } catch { /* Already disconnected */ }
+        try { allNodes.masterGain.disconnect(); } catch { /* Already disconnected */ }
+      }
+
       this.activeOscillators.delete(noteId);
     }, 150);
   }
@@ -965,6 +980,9 @@ export class AudioService implements IAudioService {
     filter.frequency.setValueAtTime(2000 + brightnessOffset, now);
     filter.Q.setValueAtTime(1, now);
 
+    // Track all nodes for cleanup
+    const nodesToDisconnect: AudioNode[] = [masterGain, panner, distortion, filter];
+
     if (chorusDepth > 0) {
       const dryGain = ctx.createGain();
       const wetGain = ctx.createGain();
@@ -986,6 +1004,8 @@ export class AudioService implements IAudioService {
       chorusMix.connect(panner);
       panner.connect(masterGain);
       masterGain.connect(ctx.destination);
+
+      nodesToDisconnect.push(dryGain, wetGain, chorusMix, chorusDelay);
     } else {
       distortion.connect(filter);
       filter.connect(panner);
@@ -999,6 +1019,9 @@ export class AudioService implements IAudioService {
     const decayEnd = attackEnd + decaySec;
     const sustainEnd = now + duration - releaseSec;
     const releaseEnd = now + duration;
+
+    const oscillators: OscillatorNode[] = [];
+    const gainNodes: GainNode[] = [];
 
     frequencies.forEach((freq, index) => {
       const oscillator = ctx.createOscillator();
@@ -1023,10 +1046,28 @@ export class AudioService implements IAudioService {
 
       oscillator.start(now);
       oscillator.stop(releaseEnd + 0.1);
+
+      oscillators.push(oscillator);
+      gainNodes.push(gainNode);
     });
 
     masterGain.gain.setValueAtTime(0.8, now);
     masterGain.gain.exponentialRampToValueAtTime(0.001, releaseEnd + 0.1);
+
+    // Schedule cleanup after note ends to free memory
+    // Use the first oscillator's onended event as the trigger
+    oscillators[0].onended = () => {
+      // Disconnect all nodes to allow garbage collection
+      oscillators.forEach((osc) => {
+        try { osc.disconnect(); } catch { /* already disconnected */ }
+      });
+      gainNodes.forEach((gain) => {
+        try { gain.disconnect(); } catch { /* already disconnected */ }
+      });
+      nodesToDisconnect.forEach((node) => {
+        try { node.disconnect(); } catch { /* already disconnected */ }
+      });
+    };
   }
 
   private playSimpleNote(frequency: number, duration: number, volume: number): void {
@@ -1048,9 +1089,26 @@ export class AudioService implements IAudioService {
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + duration);
+
+    // Disconnect nodes after note ends to free memory
+    oscillator.onended = () => {
+      try { oscillator.disconnect(); } catch { /* already disconnected */ }
+      try { gainNode.disconnect(); } catch { /* already disconnected */ }
+    };
   }
 
+  /**
+   * Creates or retrieves a cached distortion curve.
+   * Curves are cached by amount to avoid repeated 176KB allocations per note.
+   */
   private makeDistortionCurve(amount: number): Float32Array<ArrayBuffer> | null {
+    // Check cache first
+    const cached = this.distortionCurveCache.get(amount);
+    if (cached) {
+      return cached;
+    }
+
+    // Create new curve with explicit ArrayBuffer for type compatibility
     const k = amount;
     const nSamples = 44100;
     const buffer = new ArrayBuffer(nSamples * 4); // 4 bytes per float32
@@ -1061,6 +1119,9 @@ export class AudioService implements IAudioService {
       const x = (i * 2) / nSamples - 1;
       curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
     }
+
+    // Cache for reuse
+    this.distortionCurveCache.set(amount, curve);
     return curve;
   }
 
@@ -1082,8 +1143,37 @@ export class AudioService implements IAudioService {
     lfo.connect(lfoGain);
     lfoGain.connect(delay.delayTime);
     lfo.start();
-    lfo.stop(ctx.currentTime + duration + 0.5);
+
+    const stopTime = ctx.currentTime + duration + 0.5;
+    lfo.stop(stopTime);
+
+    // Schedule cleanup to disconnect nodes after effect ends
+    lfo.onended = () => {
+      try {
+        lfo.disconnect();
+        lfoGain.disconnect();
+        delay.disconnect();
+      } catch {
+        // Already disconnected
+      }
+    };
 
     return { delay, lfo };
+  }
+
+  /**
+   * Clears cached resources. Call when the service is no longer needed.
+   */
+  dispose(): void {
+    this.stopAllNotes();
+    this.distortionCurveCache.clear();
+    if (this.instrument) {
+      this.instrument.stop();
+      this.instrument = null;
+    }
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
   }
 }

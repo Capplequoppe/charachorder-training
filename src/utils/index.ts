@@ -5,7 +5,7 @@
  */
 
 export { spawnParticles, spawnConfetti, spawnStars } from './particles';
-export type { ParticleConfig } from './particles';
+export type { ParticleConfig, CancelAnimation } from './particles';
 
 export {
   detectChordUsage,
